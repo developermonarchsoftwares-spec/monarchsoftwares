@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "gsap": "^3.14.2",
+    "lenis": "^1.3.25",
+    "lucide": "^1.25.0",
     "lucide-static": "^1.6.0",
     "ogl": "^1.0.11"
   }

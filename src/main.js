@@ -1,6 +1,79 @@
-// Import styles and components
+// Import styles and core libraries
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Lenis from 'lenis'
+import {
+    createIcons,
+    ArrowRight,
+    Award,
+    BarChart3,
+    Briefcase,
+    Check,
+    ChevronDown,
+    Clock,
+    Code,
+    Code2,
+    Coffee,
+    FileText,
+    GitBranch,
+    GitMerge,
+    Layers,
+    Mail,
+    MapPin,
+    Megaphone,
+    MessageSquare,
+    Monitor,
+    Phone,
+    Puzzle,
+    Rocket,
+    Send,
+    Shield,
+    ShieldCheck,
+    Target,
+    TrendingUp,
+    Users,
+    Video,
+    X,
+    Zap
+} from 'lucide'
+
+const icons = {
+    ArrowRight,
+    Award,
+    BarChart3,
+    Briefcase,
+    Check,
+    ChevronDown,
+    Clock,
+    Code,
+    Code2,
+    Coffee,
+    FileText,
+    GitBranch,
+    GitMerge,
+    Layers,
+    Mail,
+    MapPin,
+    Megaphone,
+    MessageSquare,
+    Monitor,
+    Phone,
+    Puzzle,
+    Rocket,
+    Send,
+    Shield,
+    ShieldCheck,
+    Target,
+    TrendingUp,
+    Users,
+    Video,
+    X,
+    Zap
+}
+
 import './style.css'
 import './border-glow.css'
+import './premium.css'
 import { Orb } from './orb.js'
 import { Galaxy } from './galaxy.js'
 import { Prism } from './prism.js'
@@ -8,14 +81,79 @@ import { Antigravity } from './antigravity.js'
 import { initBorderGlow } from './border-glow.js'
 import { initLegalModals } from './legal.js'
 import { Particles } from './particles.js'
+import { MaskedHeading, initMaskedHeadings } from './MaskedHeading.js'
 import './particles.css'
 import './jarvis.css'
 import { Jarvis } from './jarvis.js'
+import { PremiumCursor } from './cursor.js'
+import ScrollStack, { initScrollStack } from './ScrollStack.js'
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
+
+// Expose globals for component access
+window.gsap = gsap;
+window.ScrollTrigger = ScrollTrigger;
+window.Lenis = Lenis;
+window.MaskedHeading = MaskedHeading;
+window.initMaskedHeadings = initMaskedHeadings;
+window.ScrollStack = ScrollStack;
+window.initScrollStack = initScrollStack;
+window.lucide = {
+    createIcons: (opts) => createIcons({ icons, ...opts })
+};
 
 // Initialize everything when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize ScrollStack cards
+    initScrollStack();
     // Setup scroll progress bar and header scroll detection
     const header = document.getElementById('header');
+
+    // Helper to calculate static document offset of elements (bypasses sticky bounds)
+    const getStaticOffset = (element) => {
+        let offset = 0;
+        let el = element;
+        while (el) {
+            offset += el.offsetTop;
+            el = el.offsetParent;
+        }
+        return offset;
+    };
+
+    // Update active nav link based on scroll position
+    const updateActiveNavLink = () => {
+        const scrollPos = window.scrollY + 120; // Offset for active trigger point
+        const sections = [
+            { id: '#', link: document.querySelector('.nav-links a[href="#"]') },
+            { id: '#services', link: document.querySelector('.nav-links a[href="#services"]') },
+            { id: '#careers', link: document.querySelector('.nav-links a[href="#careers"]') },
+            { id: '#about', link: document.querySelector('.nav-links a[href="#about"]') },
+            { id: '#contact', link: document.querySelector('.nav-links a[href="#contact"]') }
+        ];
+
+        let activeSection = sections[0];
+        
+        for (let i = 1; i < sections.length; i++) {
+            const secEl = document.querySelector(sections[i].id);
+            if (secEl) {
+                const staticOffset = getStaticOffset(secEl);
+                if (scrollPos >= staticOffset) {
+                    activeSection = sections[i];
+                }
+            }
+        }
+
+        sections.forEach(sec => {
+            if (sec.link) {
+                if (sec === activeSection) {
+                    sec.link.classList.add('active');
+                } else {
+                    sec.link.classList.remove('active');
+                }
+            }
+        });
+    };
 
     // Create scroll progress indicator
     const progressBar = document.createElement('div');
@@ -47,12 +185,79 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Synchronize Lenis with GSAP ScrollTrigger
+    // High-Performance Background Video Engine (Full Homepage Span - Complete 100% Animation)
+    const bgVideo = document.getElementById('scroll-bg-video');
+    const homeSection = document.getElementById('page-home');
+
+    if (bgVideo && homeSection) {
+        bgVideo.muted = true;
+        bgVideo.playsInline = true;
+        
+        let targetProgress = 0;
+        let smoothProgress = 0;
+        let isSeeking = false;
+        let rafId = null;
+
+        const updateVideoScrub = () => {
+            const scrollY = lenis.scroll;
+            const homeHeight = homeSection.offsetHeight || window.innerHeight;
+            const maxHomeScroll = Math.max(100, homeHeight - window.innerHeight);
+
+            // Map progress strictly 0.0 to 1.0 across the full height of #page-home
+            targetProgress = Math.min(1, Math.max(0, scrollY / maxHomeScroll));
+
+            // Visibility: 30% (0.30) across homepage; fades out cleanly past homepage
+            if (scrollY > maxHomeScroll + 100) {
+                bgVideo.style.opacity = '0';
+            } else {
+                const fadeOpacity = scrollY < maxHomeScroll ? 0.30 : Math.max(0, 0.30 * (1 - (scrollY - maxHomeScroll) / 100));
+                bgVideo.style.opacity = fadeOpacity.toFixed(3);
+            }
+
+            if (bgVideo.duration && !isNaN(bgVideo.duration)) {
+                // Smooth Lerp progress scrubbing
+                smoothProgress += (targetProgress - smoothProgress) * 0.12;
+                if (Math.abs(targetProgress - smoothProgress) < 0.001) {
+                    smoothProgress = targetProgress;
+                }
+
+                const seekTime = smoothProgress * bgVideo.duration;
+
+                if (!bgVideo.seeking && !isSeeking && Math.abs(bgVideo.currentTime - seekTime) > 0.01) {
+                    isSeeking = true;
+                    try {
+                        bgVideo.currentTime = seekTime;
+                    } catch (e) {
+                        isSeeking = false;
+                    }
+                }
+            }
+
+            rafId = requestAnimationFrame(updateVideoScrub);
+        };
+
+        bgVideo.addEventListener('seeked', () => {
+            isSeeking = false;
+        });
+
+        if (bgVideo.readyState >= 1) {
+            rafId = requestAnimationFrame(updateVideoScrub);
+        } else {
+            bgVideo.addEventListener('loadedmetadata', () => {
+                if (!rafId) rafId = requestAnimationFrame(updateVideoScrub);
+            }, { once: true });
+            bgVideo.addEventListener('canplay', () => {
+                if (!rafId) rafId = requestAnimationFrame(updateVideoScrub);
+            }, { once: true });
+        }
+    }
+
     lenis.on('scroll', () => {
         if (window.ScrollTrigger) {
             window.ScrollTrigger.update();
         }
         updateScrollChrome();
+        updateActiveNavLink();
     });
 
     // Integration of Lenis with GSAP ticker for frame-perfect sync
@@ -85,12 +290,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // Initialize Lucide Icons with multiple retries if needed
+    // Initialize Lucide Icons
     const initIcons = () => {
-        if (window.lucide) {
-            window.lucide.createIcons();
-        } else {
-            setTimeout(initIcons, 500);
+        try {
+            createIcons({ icons });
+        } catch (err) {
+            console.error('Lucide icon initialization error:', err);
         }
     };
     initIcons();
@@ -439,94 +644,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.reveal-hidden').forEach(el => observer.observe(el));
     }
 
-    // Initialize Hero Orb
-    try {
-        const orbContainer = document.getElementById('hero-orb');
-        if (orbContainer) {
-            new Orb(orbContainer, {
-                trackElement: document.querySelector('.hero'),
-                hue: 0,
-                hoverIntensity: 2,
-                rotateOnHover: true,
-                forceHoverState: false,
-                backgroundColor: '#000000'
-            });
-        }
-    } catch (e) {
-        console.error('Orb initialization failed:', e);
-    }
+    // Background canvas effects disabled for clean background
 
-    // Initialize Galaxy on services hero
-    try {
-        const galaxyCanvas = document.getElementById('hero-galaxy');
-        const isTrainingPage = window.location.pathname.includes('training');
-        if (galaxyCanvas && !isTrainingPage) {
-            new Galaxy(galaxyCanvas, {
-                starSpeed: 0,
-                density: 3.0,
-                hueShift: 0,
-                speed: 1,
-                glowIntensity: 0.6,
-                saturation: 0,
-                mouseRepulsion: true,
-                repulsionStrength: 2.5,
-                twinkleIntensity: 0.8,
-                rotationSpeed: 0.002,
-                transparent: true,
-                starSize: 1.0,
-                brightness: 2.2,
-                exclusionRadius: 300
-            });
-        }
-    } catch (e) {
-        console.error('Galaxy initialization failed:', e);
-    }
-
-    // Initialize Prism on training hero
-    const prismCanvas = document.getElementById('hero-prism');
-    if (prismCanvas) {
-        new Prism(prismCanvas, {
-            height: 4,
-            baseWidth: 5.5,
-            glow: 0.6,
-            noise: 0.1,
-            transparent: true,
-            scale: 3.5,
-            hueShift: 0,
-            colorFrequency: 0.65,
-            hoverStrength: 2,
-            inertia: 0.05,
-            bloom: 0.5,
-            timeScale: 0.2
-        });
-    }
-
-    // Initialize Antigravity on various hero sections
-    const antiContainer = document.getElementById('hero-antigravity');
-    const contactAnti = document.getElementById('contact-antigravity');
-    const trainingAnti = document.getElementById('training-antigravity');
-    
-    const antiParams = {
-        count: 400,
-        magnetRadius: 6,
-        ringRadius: 12,
-        waveSpeed: 0.6,
-        waveAmplitude: 1.5,
-        particleSize: 0.1,
-        lerpSpeed: 0.08,
-        color: "#FFFFFF",
-        autoAnimate: true,
-        particleVariance: 1,
-        rotationSpeed: 0.2,
-        depthFactor: 1,
-        pulseSpeed: 3,
-        particleShape: "dot",
-        fieldStrength: 4
-    };
-
-    if (antiContainer) new Antigravity(antiContainer, antiParams);
-    if (contactAnti) new Antigravity(contactAnti, antiParams);
-    if (trainingAnti) new Antigravity(trainingAnti, antiParams);
 
     // Mobile Menu Toggle
     const mobileToggle = document.querySelector('.mobile-toggle');
@@ -573,15 +692,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!href || !href.startsWith('#')) {
                 return;
             }
-            const target = href.length > 1 ? document.querySelector(href) : null;
-            if (!target) {
-                if (href === '#') {
-                    e.preventDefault();
-                }
-                return;
-            }
+            
             e.preventDefault();
-            lenis.scrollTo(target, {
+            
+            let targetOffset = 0;
+            if (href.length > 1) {
+                const target = document.querySelector(href);
+                if (target) {
+                    targetOffset = getStaticOffset(target);
+                } else {
+                    return;
+                }
+            }
+            
+            lenis.scrollTo(targetOffset, {
                 offset: -90,
                 duration: 1.35,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
@@ -589,46 +713,73 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Form Handling
+    const form = document.getElementById('contact-form');
+    const result = document.getElementById('form-result');
+    const submitBtn = document.getElementById('submit-btn');
+
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Update UI
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span style="display:flex; align-items:center; gap:0.5rem;"><svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending...</span>';
+            
+            result.style.color = "var(--text-secondary)";
+            result.innerHTML = "Processing your inquiry...";
+
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                    result.style.color = "#00ff88";
+                    result.innerHTML = "Inquiry sent to Email! Redirecting to WhatsApp...";
+                    
+                    const name = object.name || '';
+                    const email = object.email || '';
+                    const service = object.service || '';
+                    const message = object.message || '';
+                    
+                    const whatsappMsg = encodeURIComponent(`*New Inquiry from MONARCH Website*\n\n*Name:* ${name}\n*Email:* ${email}\n*Service:* ${service}\n*Message:* ${message}`);
+                    const whatsappUrl = `https://wa.me/916385753874?text=${whatsappMsg}`;
+                    
+                    setTimeout(() => {
+                        window.open(whatsappUrl, '_blank');
+                        form.reset();
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Send Inquiry';
+                    }, 1000);
+                } else {
+                    result.style.color = "#ff4444";
+                    result.innerHTML = json.message || "Submission failed. Please try again.";
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Inquiry';
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                result.style.color = "#ff4444";
+                result.innerHTML = "Network error. Please check your connection.";
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Send Inquiry';
+            });
+        });
+    }
+
     // Legal Modals
     initLegalModals();
-
-    // Initialize Global Background Particles
-    const initGlobalParticles = () => {
-        const particleContainer = document.createElement('div');
-        particleContainer.id = 'global-particles';
-        particleContainer.className = 'particles-background';
-        document.body.appendChild(particleContainer);
-
-        const particles = new Particles(particleContainer, {
-            particleCount: 150,
-            particleSpread: 18,
-            speed: 0.08,
-            particleColors: ["#ffffff"],
-            moveParticlesOnHover: true,
-            particleHoverFactor: 0.5,
-            alphaParticles: true,
-            particleBaseSize: 60,
-            sizeRandomness: 0.8,
-            cameraDistance: 25,
-            disableRotation: false
-        });
-
-        // Toggle particle visibility based on hero section presence
-        const heroSections = document.querySelectorAll('.hero, .services-hero, .training-hero');
-        if (heroSections.length > 0 && window.IntersectionObserver) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        particleContainer.classList.add('hidden');
-                    } else {
-                        particleContainer.classList.remove('hidden');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            heroSections.forEach(hero => observer.observe(hero));
-        }
-    };
     // Interactive Cards Handler
     document.querySelectorAll('.service-card, .stack-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -637,10 +788,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mobile dropdown toggle — must match CSS nav breakpoint (968px), not 1024px.
-    // Using 1024 here left inline display:block on the menu while desktop nav still showed,
-    // which forced vertical stacking and overrode the horizontal mega-menu layout.
-    const NAV_MOBILE_MAX = 968;
+    // Mobile/Tablet dropdown toggle — matches CSS nav breakpoint (1024px)
+    const NAV_MOBILE_MAX = 1024;
 
     const clearDesktopDropdownInlineStyles = () => {
         if (window.innerWidth > NAV_MOBILE_MAX) {
@@ -662,7 +811,241 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    initGlobalParticles();
+    // Setup and manage sticky stacking sections
+    const updateStickyStack = () => {
+        const sections = document.querySelectorAll('.stack-section');
+        sections.forEach((section, index) => {
+            section.style.zIndex = index + 1;
+
+            // All sections are taller than the viewport — pin each at top:0
+            // so each subsequent section slides overtop of the previous one.
+            section.style.top = '0px';
+            section.style.bottom = 'auto';
+        });
+    };
+
+    updateStickyStack();
+
+    // ─── Card-Stacking Scroll Effect ─────────────────────────────────────────
+    // As the next .stack-section enters the viewport, the current one scales
+    // down and dims — like flipping a physical card deck.
+    const initCardStackEffect = () => {
+        const stackSections = gsap.utils.toArray('.stack-section');
+        if (stackSections.length < 2) return;
+
+        stackSections.forEach((section, i) => {
+            if (i === stackSections.length - 1) return; // last section: nothing slides over it
+
+            // ── Idempotency guard: skip if already initialised ──────────────
+            if (section.querySelector(':scope > .stack-section-inner')) return;
+
+            const nextSection = stackSections[i + 1];
+
+            // Wrap all original children in an inner div.
+            // We animate THIS wrapper (not the sticky root) to avoid
+            // browser bugs where transform on a sticky element breaks layout.
+            const inner = document.createElement('div');
+            inner.className = 'stack-section-inner';
+            // Only set non-height layout props inline — height is auto (natural content height)
+            inner.style.cssText = [
+                'width:100%',
+                'position:relative',
+                'transform-origin:top center',
+                'will-change:transform'
+            ].join(';');
+
+            // Move all existing children into the inner wrapper
+            while (section.firstChild) {
+                inner.appendChild(section.firstChild);
+            }
+            section.appendChild(inner);
+
+            // Semi-transparent black overlay — fades in as the next card covers this one.
+            // z-index:20 keeps it below the fixed nav (z-index:100).
+            const overlay = document.createElement('div');
+            overlay.className = 'stack-overlay';
+            overlay.style.cssText = [
+                'position:absolute',
+                'inset:0',
+                'background:#000',
+                'opacity:0',
+                'pointer-events:none',
+                'z-index:20'
+            ].join(';');
+            inner.appendChild(overlay);
+
+            // Scrub timeline: current section shrinks + darkens while next slides in.
+            // Explicit scroller set so this works regardless of ScrollTrigger.defaults order.
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: nextSection,
+                    scroller: document.documentElement, // explicit — Lenis proxy target
+                    start: 'top bottom',  // next card's top enters viewport bottom
+                    end: 'top top',       // next card's top reaches viewport top
+                    scrub: 0.8,
+                    invalidateOnRefresh: true
+                }
+            })
+            .to(inner, { scale: 0.9, ease: 'none' }, 0)
+            .to(overlay, { opacity: 0.5, ease: 'none' }, 0);
+        });
+        // NOTE: No ScrollTrigger.refresh() here — the window 'load' handler
+        // already calls it after all initialisation is complete.
+    };
+
+    initCardStackEffect();
+    updateActiveNavLink();
+
+    // ─── Premium Animations ───────────────────────────────────────────────────
+    const initPremiumAnimations = () => {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Custom cursor (desktop only)
+        if (!reduced && !window.matchMedia('(pointer: coarse)').matches) {
+            new PremiumCursor();
+        }
+
+        // Ambient background effects disabled
+
+
+        // 3. Button: ripple on click + arrow icon nudge
+        document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+            // Add arrow icon if button doesn't already have one from Lucide
+            if (!btn.querySelector('[data-lucide="arrow-right"]') && !btn.querySelector('.btn-arrow-icon')) {
+                const arrow = document.createElement('i');
+                arrow.className = 'btn-arrow-icon';
+                arrow.textContent = '→';
+                btn.appendChild(arrow);
+            }
+
+            // Ripple
+            btn.addEventListener('click', e => {
+                const r = btn.getBoundingClientRect();
+                const size = Math.max(r.width, r.height) * 2.2;
+                const ripple = document.createElement('span');
+                ripple.className = 'btn-ripple';
+                ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px;`;
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 700);
+            });
+        });
+
+        // 4. 3D card tilt on hover
+        if (!reduced) {
+            document.querySelectorAll('.glow-card').forEach(card => {
+                let tRaf = null;
+                card.addEventListener('mousemove', e => {
+                    if (tRaf) return;
+                    tRaf = requestAnimationFrame(() => {
+                        tRaf = null;
+                        const rect = card.getBoundingClientRect();
+                        const cx = rect.left + rect.width  / 2;
+                        const cy = rect.top  + rect.height / 2;
+                        const rx = ((e.clientY - cy) / (rect.height / 2)) * -5;
+                        const ry = ((e.clientX - cx) / (rect.width  / 2)) *  5;
+                        gsap.to(card, { rotateX: rx, rotateY: ry, duration: 0.4, ease: 'power2.out', overwrite: 'auto' });
+                    });
+                }, { passive: true });
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.7, ease: 'expo.out', overwrite: 'auto' });
+                });
+            });
+        }
+
+        // 5. Heading mask reveal (clip-path, lines slide up from bottom)
+        if (!reduced && window.ScrollTrigger) {
+            document.querySelectorAll('.section-header h2, .section-title').forEach(el => {
+                if (el.closest('.hero') || el.dataset.maskInit) return;
+                el.dataset.maskInit = '1';
+
+                // Wrap element for overflow clip
+                const mask = document.createElement('div');
+                mask.className = 'heading-mask';
+                el.parentNode.insertBefore(mask, el);
+                mask.appendChild(el);
+
+                gsap.from(el, {
+                    scrollTrigger: {
+                        trigger: mask,
+                        start: 'top 90%',
+                        once: true,
+                        scroller: document.documentElement
+                    },
+                    yPercent: 110,
+                    duration: 0.85,
+                    ease: 'expo.out',
+                    clearProps: 'transform'
+                });
+            });
+        }
+
+        // 6. Image parallax + reveal
+        if (!reduced && window.ScrollTrigger) {
+            document.querySelectorAll('.tech-visual img, .story-block img, .service-img-wrapper img').forEach(img => {
+                const wrap = img.closest('.service-img-wrapper, .tech-visual, .story-block div');
+                if (!wrap || wrap.dataset.imgInit) return;
+                wrap.dataset.imgInit = '1';
+
+                // Clip reveal: wipe from bottom
+                gsap.fromTo(img,
+                    { clipPath: 'inset(100% 0 0 0)', scale: 1.15 },
+                    {
+                        clipPath: 'inset(0% 0 0 0)', scale: 1,
+                        duration: 1.1, ease: 'expo.out',
+                        scrollTrigger: {
+                            trigger: wrap,
+                            start: 'top 85%',
+                            once: true,
+                            scroller: document.documentElement
+                        }
+                    }
+                );
+
+                // Subtle scroll parallax
+                gsap.to(img, {
+                    yPercent: -8,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: wrap,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1.2,
+                        scroller: document.documentElement
+                    }
+                });
+            });
+        }
+
+        // 7. Staggered card grid reveals (more cinematic than plain fade)
+        if (!reduced && window.ScrollTrigger) {
+            document.querySelectorAll(
+                '[style*="grid-template-columns: repeat(3"], [style*="grid-template-columns: repeat(2"]'
+            ).forEach(grid => {
+                if (grid.dataset.gridInit) return;
+                grid.dataset.gridInit = '1';
+                const cards = grid.querySelectorAll(':scope > *');
+                if (!cards.length) return;
+                gsap.from(cards, {
+                    scrollTrigger: {
+                        trigger: grid,
+                        start: 'top 88%',
+                        once: true,
+                        scroller: document.documentElement
+                    },
+                    y: 50, opacity: 0, scale: 0.96,
+                    duration: 0.7,
+                    stagger: { each: 0.08, from: 'start' },
+                    ease: 'expo.out',
+                    clearProps: 'transform,opacity'
+                });
+            });
+        }
+    };
+
+    initPremiumAnimations();
+    if (typeof initGlobalParticles === 'function') {
+        initGlobalParticles();
+    }
 
     clearDesktopDropdownInlineStyles();
 
@@ -670,6 +1053,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
+            updateStickyStack();
+            updateActiveNavLink();
             clearDesktopDropdownInlineStyles();
             if (typeof lenis.resize === 'function') {
                 lenis.resize();
@@ -682,6 +1067,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('load', () => {
+        updateStickyStack();
+        updateActiveNavLink();
         if (window.ScrollTrigger) {
             window.ScrollTrigger.refresh();
         }

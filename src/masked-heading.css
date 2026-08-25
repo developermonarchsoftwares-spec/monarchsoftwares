@@ -1,0 +1,96 @@
+/* MaskedHeading Component Styles - Monochrome & Refined Sizing */
+.masked-heading-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  overflow: hidden;
+  user-select: none;
+}
+
+.masked-heading-inner {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center center;
+  will-change: transform, clip-path, opacity;
+}
+
+/* Reveal Modes */
+.masked-heading-wrapper[data-reveal="wipe"] .masked-heading-inner {
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
+  opacity: 1;
+}
+
+.masked-heading-wrapper[data-reveal="rise"] .masked-heading-inner {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.masked-heading-wrapper[data-reveal="fade"] .masked-heading-inner {
+  opacity: 0;
+}
+
+.masked-heading-wrapper.is-revealed .masked-heading-inner {
+  clip-path: inset(0 0% 0 0) !important;
+  -webkit-clip-path: inset(0 0% 0 0) !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: clip-path 2.8s cubic-bezier(0.16, 1, 0.3, 1), transform 2.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s ease;
+}
+
+/* SVG Based Masking (High Performance for Videos) */
+.masked-heading-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 90px;
+  overflow: visible;
+}
+
+.masked-heading-svg text {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5em !important;
+}
+
+/* Media Element in Mask - Monochrome Palette */
+.masked-heading-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center center;
+  filter: grayscale(100%) contrast(130%) brightness(115%);
+  -webkit-filter: grayscale(100%) contrast(130%) brightness(115%);
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+/* Canvas / Background Clip Fallback */
+.masked-heading-text-css {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5em !important;
+  font-size: clamp(1.2rem, 3vw, 2.2rem);
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+  padding: 0.05em 0;
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  display: inline-block;
+  width: 100%;
+  filter: grayscale(100%);
+}

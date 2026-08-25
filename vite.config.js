@@ -11,18 +11,22 @@ export default defineConfig({
     },
   ],
   build: {
+    target: 'esnext',
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        services: resolve(__dirname, 'services.html'),
-        it_services: resolve(__dirname, 'it-services.html'),
-        digital_marketing: resolve(__dirname, 'digital-marketing.html'),
-        hr_services: resolve(__dirname, 'hr-services.html'),
-        training: resolve(__dirname, 'training.html'),
-        about: resolve(__dirname, 'about.html'),
-        contact: resolve(__dirname, 'contact.html'),
-        careers: resolve(__dirname, 'careers.html'),
       },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('gsap')) return 'vendor-gsap';
+            if (id.includes('ogl')) return 'vendor-ogl';
+            if (id.includes('lenis') || id.includes('lucide')) return 'vendor-ui';
+            return 'vendor';
+          }
+        }
+      }
     },
   },
 });

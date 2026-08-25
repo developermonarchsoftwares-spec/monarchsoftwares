@@ -1,0 +1,125 @@
+/* OptionWheel 3D Curved Navigation Component */
+
+.option-wheel-container {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 900;
+  pointer-events: auto;
+  user-select: none;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  perspective: 1200px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.option-wheel-container.side-left {
+  left: 80px;
+}
+
+.option-wheel-container.side-right {
+  right: 80px;
+  align-items: flex-end;
+}
+
+.option-wheel-viewport {
+  position: relative;
+  width: 320px;
+  height: 480px;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  cursor: grab;
+}
+
+.option-wheel-viewport:active {
+  cursor: grabbing;
+}
+
+.option-wheel-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.option-wheel-item {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: color 0.3s ease, opacity 0.3s ease, filter 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.option-wheel-container.side-right .option-wheel-item {
+  justify-content: flex-end;
+  left: auto;
+  right: 0;
+}
+
+.option-wheel-item .item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.option-wheel-item.active .item-dot {
+  opacity: 1;
+  transform: scale(1.5);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.option-wheel-badge {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-secondary, #a0a0a0);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 1200px) {
+  .option-wheel-container.side-left {
+    left: 20px;
+  }
+  .option-wheel-container.side-right {
+    right: 20px;
+  }
+  .option-wheel-viewport {
+    width: 240px;
+    height: 400px;
+  }
+  .option-wheel-item {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .option-wheel-container {
+    display: none !important; /* Hide floating wheel on mobile, standard grid handles touch */
+  }
+}
