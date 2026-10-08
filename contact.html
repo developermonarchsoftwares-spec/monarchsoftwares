@@ -214,9 +214,7 @@
                                     <label class="climax-form-label" for="form-message">Message</label>
                                     <textarea class="climax-form-textarea" id="form-message" name="message" rows="4" placeholder="Tell us briefly about your goals or requirements..." required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary" id="submit-btn" data-label="Send Inquiry &rarr;" style="width: 100%; padding: 1rem; margin-top: 0.5rem;">
-                                    Send Inquiry &rarr;
-                                </button>
+                                <div id="sling-send-root" class="sling-root"></div>
                                 <div id="form-result" role="status" aria-live="polite" style="text-align: center; font-size: 0.88rem; min-height: 1.2rem;"></div>
                             </div>
                         </form>
@@ -294,5 +292,6 @@
 
     <!-- Core App Module Entrypoint -->
     <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/contact-sling.jsx"></script>
 </body>
 </html>
