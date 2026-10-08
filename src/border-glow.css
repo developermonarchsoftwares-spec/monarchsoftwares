@@ -172,3 +172,4 @@
     rgba(0, 0, 0, 0.1) 0px 32px 64px !important;
 }
 .border-glow-card.bg-host > .border-glow-inner { display: contents; }
+.border-glow-card.bg-keep > .border-glow-inner { display: contents; }

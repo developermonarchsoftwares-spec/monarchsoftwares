@@ -5,10 +5,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Our Four Service Pillars — scroll-scrubbed zig-zag timeline.
- * Desktop: section pins (sticky stage); scroll progress is split into four stages.
- *   Each stage lights a node, draws a connector and grows a card out of the centre line
- *   (01 left, 02 right, 03 left, 04 right). Reverse scroll retracts them in reverse order.
- * Tablet / phone: same visuals in natural flow; each card is scrubbed by its own scroll position.
+ * Every row lights a node, draws a connector and grows a card out of the centre line
+ * (01 left, 02 right, 03 left, 04 right), scrubbed by the row's own scroll position, so scrolling
+ * back up retracts them in reverse. Desktop uses a tall, evenly spaced timeline; phones a vertical flow.
  */
 const NODE_OFF = { backgroundColor: '#1d1d1f', borderColor: 'rgba(255,255,255,0.28)', scale: 1, boxShadow: '0 0 0 0 rgba(255,255,255,0), 0 0 0 rgba(255,255,255,0)' };
 const NODE_ON = { backgroundColor: '#ffffff', borderColor: '#ffffff', scale: 1.5, boxShadow: '0 0 0 7px rgba(255,255,255,0.14), 0 0 26px rgba(255,255,255,0.65)' };
@@ -36,33 +35,22 @@ export function initPillarsScroll() {
 
     const mm = gsap.matchMedia();
 
+    // Desktop: tall, evenly spaced timeline in normal flow; each row is scrubbed by its own scroll position.
     mm.add('(min-width: 861px) and (min-height: 560px)', () => {
-        const tl = gsap.timeline({
-            defaults: { ease: 'none' },
-            scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
-        });
-        gsap.set(parts.map((p) => p.label), { opacity: 0.35 });
+        const triggers = [];
         gsap.set(parts.map((p) => p.node), NODE_OFF);
-
+        gsap.set(parts.map((p) => p.label), { opacity: 0.35 });
+        triggers.push(gsap.to(fill, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: timeline, start: 'top 65%', end: 'bottom 60%', scrub: true } }).scrollTrigger);
         parts.forEach((p, i) => {
-            const centre = (i * 25 + 12.5) / 100;
-            tl.to(fill, { scaleY: centre, duration: 0.5 }, i);
-            tl.to(p.node, { ...NODE_ON, duration: 0.3, ease: 'power2.out' }, i);
-            tl.to(p.label, { opacity: 1, duration: 0.3 }, i);
-            tl.fromTo(p.path, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.35, ease: 'power1.inOut' }, i + 0.15);
-            tl.fromTo(p.card, cardFrom(p.left, 90), { ...cardTo, duration: 0.55, ease: 'power2.out' }, i + 0.25);
-            if (i < parts.length - 1) {
-                // Next stage takes over: this one steps back slightly but stays on screen.
-                tl.to(p.node, { ...NODE_DONE, duration: 0.3 }, i + 1);
-                tl.to(p.label, { opacity: 0.35, duration: 0.3 }, i + 1);
-                tl.to(p.card, { opacity: 0.5, duration: 0.3 }, i + 1);
-                tl.to(p.path, { opacity: 0.4, duration: 0.3 }, i + 1);
-            }
+            const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: rows[i], start: 'top 78%', end: 'center 42%', scrub: true } });
+            tl.to(p.node, { ...NODE_ON, duration: 0.3, ease: 'power2.out' }, 0);
+            tl.to(p.label, { opacity: 1, duration: 0.35 }, 0);
+            tl.fromTo(p.path, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.4, ease: 'power1.inOut' }, 0.1);
+            tl.fromTo(p.card, cardFrom(p.left, 90), { ...cardTo, duration: 0.6, ease: 'power2.out' }, 0.25);
+            triggers.push(tl.scrollTrigger);
         });
-        tl.set({}, {}, parts.length + 0.5); // hold the finished state before the pin releases
         return () => {
-            if (tl.scrollTrigger) tl.scrollTrigger.kill();
-            tl.kill();
+            triggers.forEach((t) => t && t.kill());
             gsap.set([fill, ...parts.flatMap((p) => [p.node, p.path, p.card, p.label])], { clearProps: 'all' });
         };
     });

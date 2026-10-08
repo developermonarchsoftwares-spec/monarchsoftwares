@@ -2,8 +2,22 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 
-const cleanUrl = (req, _res, next) => {
+// Old multi-page URLs now live as sections of the homepage (mirrors the redirects in vercel.json)
+const MOVED = {
+  '/about': '/#about', '/services': '/#services', '/careers': '/#careers', '/contact': '/#cta',
+  '/corporate-training': '/#corporate-training', '/it-services': '/#it-services',
+  '/digital-marketing': '/#digital-marketing', '/hr-services': '/#training-placement',
+};
+
+const cleanUrl = (req, res, next) => {
   const [path, query = ''] = (req.url || '').split('?');
+  const moved = MOVED[path.replace(/\.html$/, '').replace(/\/$/, '')];
+  if (moved) {
+    res.statusCode = 301;
+    res.setHeader('Location', moved);
+    res.end();
+    return;
+  }
   if (path !== '/' && !path.includes('.') && !path.startsWith('/@') && !path.startsWith('/src') && !path.startsWith('/node_modules')) {
     const file = path.replace(/\/$/, '') + '.html';
     if (existsSync(resolve(__dirname, '.' + file))) req.url = file + (query ? '?' + query : '');
@@ -32,14 +46,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        about: resolve(__dirname, 'about.html'),
-        careers: resolve(__dirname, 'careers.html'),
-        contact: resolve(__dirname, 'contact.html'),
-        corporateTraining: resolve(__dirname, 'corporate-training.html'),
-        digitalMarketing: resolve(__dirname, 'digital-marketing.html'),
-        hrServices: resolve(__dirname, 'hr-services.html'),
-        itServices: resolve(__dirname, 'it-services.html'),
-        services: resolve(__dirname, 'services.html'),
         privacy: resolve(__dirname, 'privacy.html'),
         terms: resolve(__dirname, 'terms.html'),
       },

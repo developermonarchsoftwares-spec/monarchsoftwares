@@ -6,38 +6,6 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/services",
-      "destination": "/services.html"
-    },
-    {
-      "source": "/careers",
-      "destination": "/careers.html"
-    },
-    {
-      "source": "/about",
-      "destination": "/about.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/contact.html"
-    },
-    {
-      "source": "/corporate-training",
-      "destination": "/corporate-training.html"
-    },
-    {
-      "source": "/it-services",
-      "destination": "/it-services.html"
-    },
-    {
-      "source": "/digital-marketing",
-      "destination": "/digital-marketing.html"
-    },
-    {
-      "source": "/hr-services",
-      "destination": "/hr-services.html"
-    },
-    {
       "source": "/privacy",
       "destination": "/privacy.html"
     },
@@ -86,6 +54,88 @@
           "value": "public, max-age=2592000, stale-while-revalidate=86400"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/about",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/careers",
+      "destination": "/#careers",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/#cta",
+      "permanent": true
+    },
+    {
+      "source": "/corporate-training",
+      "destination": "/#corporate-training",
+      "permanent": true
+    },
+    {
+      "source": "/it-services",
+      "destination": "/#it-services",
+      "permanent": true
+    },
+    {
+      "source": "/digital-marketing",
+      "destination": "/#digital-marketing",
+      "permanent": true
+    },
+    {
+      "source": "/hr-services",
+      "destination": "/#training-placement",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/services.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/careers.html",
+      "destination": "/#careers",
+      "permanent": true
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/#cta",
+      "permanent": true
+    },
+    {
+      "source": "/corporate-training.html",
+      "destination": "/#corporate-training",
+      "permanent": true
+    },
+    {
+      "source": "/it-services.html",
+      "destination": "/#it-services",
+      "permanent": true
+    },
+    {
+      "source": "/digital-marketing.html",
+      "destination": "/#digital-marketing",
+      "permanent": true
+    },
+    {
+      "source": "/hr-services.html",
+      "destination": "/#training-placement",
+      "permanent": true
     }
   ]
 }

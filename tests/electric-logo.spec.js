@@ -10,7 +10,8 @@ test.describe('3D Electric Logo Background Verification', () => {
       }
     });
 
-    await page.goto('/about', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.locator('#about-electric-logo-root').scrollIntoViewIfNeeded();
 
     // Wait for the background root container
     const bgContainer = page.locator('#about-electric-logo-root');
@@ -21,7 +22,7 @@ test.describe('3D Electric Logo Background Verification', () => {
     await expect(canvas).toBeVisible({ timeout: 10000 });
 
     // Verify foreground content is visible on top
-    const heading = page.locator('.about-hero h1');
+    const heading = page.locator('.about-hero h2');
     await expect(heading).toBeVisible();
 
     // Wait for animation to settle

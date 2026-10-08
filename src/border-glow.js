@@ -85,7 +85,7 @@ export function initBorderGlow(element, options = {}) {
   if (!element || element.classList.contains('border-glow-card')) return;
   const {
     edgeSensitivity, glowColor, backgroundColor, borderRadius, glowRadius,
-    glowIntensity, coneSpread, animated, colors, fillOpacity
+    glowIntensity, coneSpread, animated, colors, fillOpacity, keepStyle
   } = { ...BORDER_GLOW_CONFIG, ...options };
 
   // Keep the element's original layout mode (the component's CSS would otherwise force `grid`).
@@ -103,7 +103,8 @@ export function initBorderGlow(element, options = {}) {
   };
   for (const [key, value] of Object.entries(styles)) element.style.setProperty(key, value);
 
-  element.classList.add('border-glow-card', 'bg-host');
+  // keepStyle: leave the element's own border / fill / shadow alone and only add the edge glow
+  element.classList.add('border-glow-card', keepStyle ? 'bg-keep' : 'bg-host');
   if (isLightColor(backgroundColor)) element.classList.add('border-glow-card--light');
   if (originalDisplay && originalDisplay !== 'none') element.style.display = originalDisplay;
 

@@ -28,6 +28,7 @@ import { initCanvasText } from './canvas-text.js';
 import { initSectionStack } from './section-stack.js';
 import { initAllBorderGlow } from './border-glow.js';
 import { initChallengeScroll } from './challenge-scroll.js';
+import { initWhySection } from './why-section.js';
 import { initPillarsScroll } from './pillars-scroll.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -100,9 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return top;
     };
 
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    const onHome = window.location.pathname === '/' || window.location.pathname === '/index.html';
+    document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
-            const hash = this.getAttribute('href');
+            let hash = this.getAttribute('href');
+            if (hash && hash.startsWith('/#')) {
+                if (!onHome) return; // other pages navigate normally
+                hash = hash.slice(1);
+            }
             if (!hash || hash === '#') return;
 
             const target = document.querySelector(hash);
@@ -278,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSectionStack();
     initChallengeScroll();
     initPillarsScroll();
+    initWhySection();
 
     // 12c. 3D Flip Down Scroll Animation for Selected Work & About Images
     const initWorkImageFlipDown = () => {
@@ -669,5 +676,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ScrollTrigger.refresh();
         onScrollUpdate();
         updateActiveNav();
+
+        // Arriving with a section hash (e.g. from an old page URL redirect): scroll to that section.
+        if (onHome && window.location.hash.length > 1) {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                setTimeout(() => lenis.scrollTo(getStaticTop(target) - 70, { immediate: true }), 150);
+            }
+        }
     });
 });

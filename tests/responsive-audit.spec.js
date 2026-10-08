@@ -1,18 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 const pagesToTest = [
-  { path: '/', name: 'Home Landing' },
-  { path: '/about', name: 'About Page' },
-  { path: '/services', name: 'Services Overview' },
-  { path: '/corporate-training', name: 'Corporate Training' },
-  { path: '/it-services', name: 'IT Services' },
-  { path: '/digital-marketing', name: 'Digital Marketing' },
-  { path: '/hr-services', name: 'Training & Placement' },
-  { path: '/careers', name: 'Careers' },
-  { path: '/contact', name: 'Contact Page' },
+  { path: '/', name: 'Single Page Site' },
   { path: '/privacy', name: 'Privacy Policy' },
   { path: '/terms', name: 'Terms of Service' },
 ];
+
+// Old multi-page URLs are now sections of the homepage
+const sections = ['about', 'services', 'corporate-training', 'it-services', 'digital-marketing', 'training-placement', 'careers', 'cta'];
+const moved = {
+  '/about': 'about', '/services': 'services', '/corporate-training': 'corporate-training', '/it-services': 'it-services',
+  '/digital-marketing': 'digital-marketing', '/hr-services': 'training-placement', '/careers': 'careers', '/contact': 'cta',
+};
 
 test.describe('Full-Site Responsive & UI Integrity Audit', () => {
   for (const pageInfo of pagesToTest) {
@@ -67,11 +66,23 @@ test.describe('Full-Site Responsive & UI Integrity Audit', () => {
     await expect(emailInput).toBeAttached();
   });
 
+  test('Homepage contains every merged section exactly once', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    for (const id of sections) await expect(page.locator(`section#${id}`)).toHaveCount(1);
+  });
+
+  for (const [oldPath, id] of Object.entries(moved)) {
+    test(`Old URL ${oldPath} redirects to /#${id}`, async ({ page }) => {
+      await page.goto(oldPath, { waitUntil: 'domcontentloaded' });
+      await expect(page).toHaveURL(new RegExp(`/#${id}$`));
+    });
+  }
+
   test('Contact form validates required fields before sending', async ({ page }) => {
-    await page.goto('/contact', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'networkidle' });
     await page.locator('#contact-form').evaluate((f) => f.requestSubmit());
     await expect(page.locator('#form-result')).toContainText('required fields');
-    for (const id of ['#form-name', '#form-email', '#form-company', '#form-service', '#form-message']) {
+    for (const id of ['#contact-name', '#contact-email', '#contact-company', '#contact-service', '#contact-message']) {
       await expect(page.locator(id)).toBeAttached();
     }
   });
