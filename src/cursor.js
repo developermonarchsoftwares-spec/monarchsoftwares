@@ -1,83 +1,69 @@
 /**
- * PremiumCursor
- * Smooth dot + ring cursor. Touch devices and reduced-motion are skipped.
+ * Smooth Interactive Precision Cursor (Awwwards / Apple Pro style)
+ * Precision dot + responsive ambient glow ring with magnetic hover states.
  */
-export class PremiumCursor {
-    constructor() {
-        if (window.matchMedia('(pointer: coarse)').matches) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+import gsap from 'gsap';
 
-        this._mx = -200; this._my = -200;  // mouse position
-        this._rx = -200; this._ry = -200;  // ring lerped position
-        this._alive = false;
-        this._raf = null;
+export function initPrecisionCursor() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return; // Ignore on touch
 
-        this._build();
-        this._bind();
-        this._tick();
+    // Create cursor elements
+    let cursor = document.getElementById('precision-cursor');
+    let ring = document.getElementById('precision-cursor-ring');
+
+    if (!cursor) {
+        cursor = document.createElement('div');
+        cursor.id = 'precision-cursor';
+        cursor.className = 'precision-cursor-dot';
+        document.body.appendChild(cursor);
     }
 
-    _build() {
-        document.documentElement.classList.add('has-cursor');
-        this.dot  = this._el('cursor-dot');
-        this.ring = this._el('cursor-ring');
-        document.body.append(this.dot, this.ring);
+    if (!ring) {
+        ring = document.createElement('div');
+        ring.id = 'precision-cursor-ring';
+        ring.className = 'precision-cursor-ring';
+        document.body.appendChild(ring);
     }
 
-    _el(cls) {
-        const d = document.createElement('div');
-        d.className = cls;
-        return d;
-    }
+    // Set initial position offscreen
+    gsap.set([cursor, ring], { xPercent: -50, yPercent: -50, opacity: 0 });
 
-    _bind() {
-        window.addEventListener('mousemove', e => {
-            this._mx = e.clientX;
-            this._my = e.clientY;
-            if (!this._alive) {
-                this._rx = e.clientX;
-                this._ry = e.clientY;
-                this._alive = true;
-                this.dot.style.opacity = this.ring.style.opacity = '1';
-            }
-        }, { passive: true });
+    const dotX = gsap.quickTo(cursor, 'x', { duration: 0.12, ease: 'power2.out' });
+    const dotY = gsap.quickTo(cursor, 'y', { duration: 0.12, ease: 'power2.out' });
 
-        const sel = 'a, button, .btn, .glow-card, .float-btn, label, [role="button"]';
-        document.addEventListener('mouseover', e => {
-            if (e.target.closest(sel)) this.ring.classList.add('ring-hover');
-        });
-        document.addEventListener('mouseout', e => {
-            if (e.target.closest(sel)) this.ring.classList.remove('ring-hover');
-        });
+    const ringX = gsap.quickTo(ring, 'x', { duration: 0.35, ease: 'power3.out' });
+    const ringY = gsap.quickTo(ring, 'y', { duration: 0.35, ease: 'power3.out' });
 
-        document.addEventListener('mousedown', () => this.ring.classList.add('ring-press'));
-        document.addEventListener('mouseup',   () => this.ring.classList.remove('ring-press'));
-        document.addEventListener('mouseleave', () => { this.dot.style.opacity = this.ring.style.opacity = '0'; });
-        document.addEventListener('mouseenter', () => {
-            if (this._alive) { this.dot.style.opacity = this.ring.style.opacity = '1'; }
-        });
-    }
+    let isVisible = false;
 
-    _tick() {
-        // Dot: instant; Ring: lerp at 10% per frame (~60 fps)
-        const lerp = (a, b, t) => a + (b - a) * t;
+    window.addEventListener('mousemove', (e) => {
+        if (!isVisible) {
+            gsap.to([cursor, ring], { opacity: 1, duration: 0.3 });
+            isVisible = true;
+        }
+        dotX(e.clientX);
+        dotY(e.clientY);
+        ringX(e.clientX);
+        ringY(e.clientY);
+    });
 
-        const loop = () => {
-            this._rx = lerp(this._rx, this._mx, 0.1);
-            this._ry = lerp(this._ry, this._my, 0.1);
+    window.addEventListener('mouseleave', () => {
+        gsap.to([cursor, ring], { opacity: 0, duration: 0.25 });
+        isVisible = false;
+    });
 
-            this.dot.style.transform  = `translate(${this._mx}px,${this._my}px) translate(-50%,-50%)`;
-            this.ring.style.transform = `translate(${this._rx}px,${this._ry}px) translate(-50%,-50%)`;
+    // Hover interactions
+    const interactiveTargets = 'a, button, input, select, textarea, .service-item, .project-card, .tech-matrix-card';
 
-            this._raf = requestAnimationFrame(loop);
-        };
-        this._raf = requestAnimationFrame(loop);
-    }
-
-    destroy() {
-        cancelAnimationFrame(this._raf);
-        document.documentElement.classList.remove('has-cursor');
-        this.dot?.remove();
-        this.ring?.remove();
-    }
+    document.addEventListener('mouseover', (e) => {
+        const target = e.target.closest(interactiveTargets);
+        if (target) {
+            cursor.classList.add('cursor-hover');
+            ring.classList.add('ring-hover');
+        } else {
+            cursor.classList.remove('cursor-hover');
+            ring.classList.remove('ring-hover');
+        }
+    });
 }

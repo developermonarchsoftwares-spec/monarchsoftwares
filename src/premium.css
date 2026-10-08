@@ -62,13 +62,57 @@
 .ambient-orb--a {
   width: 600px; height: 600px;
   top: -200px; left: -200px;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
 }
 
 .ambient-orb--b {
   width: 500px; height: 500px;
   bottom: -150px; right: -150px;
-  background: radial-gradient(circle, rgba(180,160,255,0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(10, 147, 191, 0.08) 0%, transparent 70%);
+}
+
+/* ── Hero Ambient Glow Effect ──────────────────────────────────────────────── */
+.hero-ambient-glow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 600px;
+  max-width: 90vw;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, rgba(10, 147, 191, 0.03) 45%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+  border-radius: 50%;
+  animation: hero-glow-breathe 9s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes hero-glow-breathe {
+  0% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate(-48%, -52%) scale(1.08);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-52%, -48%) scale(1.0);
+    opacity: 0.75;
+  }
+}
+
+.hero-scroll-dot {
+  animation: scroll-dot-slide 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scroll-dot-slide {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(7px); opacity: 0.25; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
 /* ── Heading Mask Reveal ───────────────────────────────────────────────────── */
@@ -90,8 +134,59 @@
   opacity: 0;
 }
 
-/* ── Ripple on .btn-primary ────────────────────────────────────────────────── */
-.btn-primary { position: relative; overflow: hidden; }
+/* ── Button Shine Sweep, Ripple & Press Interactions ───────────────────────── */
+.btn-primary, .btn-outline {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s ease,
+              border-color 0.3s ease !important;
+  will-change: transform;
+}
+
+.btn-primary:active, .btn-outline:active {
+  transform: scale(0.96) !important;
+}
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle shine sweep on primary buttons */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+  left: 135%;
+  transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.16), 0 8px 24px -6px rgba(0, 0, 0, 0.6) !important;
+  transform: translateY(-2px);
+}
+
+.btn-outline:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-2px);
+}
 
 .btn-ripple {
   position: absolute;
@@ -120,23 +215,111 @@
   transform: translateX(5px);
 }
 
-/* ── 3D Perspective for Card Tilt ─────────────────────────────────────────── */
-.glow-card {
+/* ── 3D Perspective & Restrained Card Elevation ───────────────────────────── */
+.glow-card, .service-card, .why-item, .stack-card, .service-card-box,
+.project-card, .service-preview-card, .tech-category-card, .pillar-col, .stat-box, .test-mini-card, .climax-form-wrap {
   transform-style: preserve-3d;
-  perspective: 800px;
-  transform: perspective(800px) rotateX(0) rotateY(0);
-  transition: box-shadow 0.4s ease;
+  perspective: 1000px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, border-color;
+  position: relative;
 }
 
-/* ── Enhanced Nav Active Indicator ────────────────────────────────────────── */
+.glow-card:hover, .service-card-box:hover, .tech-category-card:hover, .test-mini-card:hover {
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Cursor Spotlight Effect on cards */
+.card-spotlight,
+.card-spotlight-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.07), transparent 75%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+
+.glow-card:hover .card-spotlight,
+.service-card-box:hover .card-spotlight,
+.project-card:hover .card-spotlight-layer,
+.service-preview-card:hover .card-spotlight-layer,
+.tech-category-card:hover .card-spotlight-layer,
+.pillar-col:hover .card-spotlight-layer,
+.climax-form-wrap:hover .card-spotlight-layer {
+  opacity: 1;
+}
+
+/* ── Section Editorial Header Dynamic Border Line ─────────────────────────── */
+.section-editorial-header {
+  position: relative;
+}
+
+.section-editorial-header .header-line-bar {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--border-bright);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.section-editorial-header.line-expanded .header-line-bar {
+  transform: scaleX(1);
+}
+
+/* ── Project Media Parallax Setup ─────────────────────────────────────────── */
+.project-media-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.project-media-wrap img {
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* ── Enhanced Nav & Dropdown ───────────────────────────────────────────────── */
+header {
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease !important;
+}
+
+header.scrolled {
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8) !important;
+}
+
 .nav-links a {
   position: relative;
+  transition: color 0.25s ease, background 0.25s ease;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+}
+
+.nav-links a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff !important;
 }
 
 .nav-links a::after {
   content: '';
   position: absolute;
-  bottom: -4px; left: 0;
+  bottom: 0px; left: 0.75rem; right: 0.75rem;
   width: 0; height: 1.5px;
   background: #fff;
   transition: width 0.35s cubic-bezier(0.34,1.56,0.64,1);
@@ -144,7 +327,24 @@
 
 .nav-links a:hover::after,
 .nav-links a.active::after {
-  width: 100%;
+  width: calc(100% - 1.5rem);
+}
+
+/* Dropdown Menu Entrance */
+.dropdown-menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.25s;
+  transform-origin: top center;
+}
+
+.nav-item-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
 }
 
 /* ── Scroll Progress Bar ───────────────────────────────────────────────────── */
@@ -166,6 +366,74 @@
 
 .img-reveal-wrap img {
   transform-origin: center center;
+}
+
+/* ── Form Field Micro-Interactions ────────────────────────────────────────── */
+#contact-form input,
+#contact-form select,
+#contact-form textarea {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease !important;
+}
+
+#contact-form input:focus,
+#contact-form select:focus,
+#contact-form textarea:focus {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Icon subtle scale on card hover */
+.service-card-box:hover i,
+.service-card-box:hover svg,
+.glow-card:hover [data-lucide],
+.glow-card:hover svg {
+  transform: scale(1.08);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Social & Footer Links Hover */
+.footer-socials a {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.25s ease,
+              background 0.25s ease;
+}
+
+.footer-socials a:hover {
+  transform: translateY(-3px) scale(1.08);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.link-group ul li a {
+  transition: transform 0.25s ease, color 0.25s ease;
+  display: inline-block;
+}
+
+.link-group ul li a:hover {
+  transform: translateX(4px);
+  color: #fff !important;
+}
+
+/* Floating Action Pulse */
+.float-btn {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease !important;
+}
+
+.float-btn:hover {
+  transform: scale(1.1) translateY(-2px) !important;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4) !important;
+}
+
+/* ── Smooth Cross-Page Transition ─────────────────────────────────────────── */
+body {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+body.page-is-leaving {
+  opacity: 0;
 }
 
 /* ── Section Divider Shimmer ───────────────────────────────────────────────── */
@@ -194,13 +462,28 @@
 
 /* ── prefers-reduced-motion overrides ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
   .cursor-dot, .cursor-ring,
   .ambient-orb,
+  .hero-ambient-glow,
+  .hero-scroll-dot,
   .btn-arrow-icon,
+  .card-spotlight,
   .word-inner {
     animation: none !important;
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+  .hero .reveal,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
   }
 }

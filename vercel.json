@@ -3,7 +3,13 @@
     { "source": "/services", "destination": "/services.html" },
     { "source": "/careers", "destination": "/careers.html" },
     { "source": "/about", "destination": "/about.html" },
-    { "source": "/contact", "destination": "/contact.html" }
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/corporate-training", "destination": "/corporate-training.html" },
+    { "source": "/it-services", "destination": "/it-services.html" },
+    { "source": "/digital-marketing", "destination": "/digital-marketing.html" },
+    { "source": "/hr-services", "destination": "/hr-services.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" }
   ],
   "cleanUrls": true,
   "headers": [
@@ -14,6 +20,18 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*).(webp|png|jpg|jpeg|gif|svg|ico|mp4|woff2|woff)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=86400" }
       ]
     }
   ]

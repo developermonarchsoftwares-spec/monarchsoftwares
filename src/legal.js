@@ -9,63 +9,53 @@ const legalContent = {
         content: `
             <div class="legal-section">
                 <h3>1. Introduction</h3>
-                <p>Welcome to MONARCH SOFTWARES. We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website (regardless of where you visit it from) and tell you about your privacy rights and how the law protects you.</p>
+                <p>Welcome to MONARCH SOFTWARES. We respect your privacy and are committed to protecting your personal data. This privacy policy informs you how we handle personal data when you visit our website or get in touch regarding project engagements.</p>
             </div>
             <div class="legal-section">
                 <h3>2. The Data We Collect</h3>
-                <p>Personal data, or personal information, means any information about an individual from which that person can be identified. We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows:</p>
+                <p>We may collect, use, and process the following contact and technical information:</p>
                 <ul>
-                    <li><strong>Identity Data:</strong> includes first name, last name, username or similar identifier.</li>
-                    <li><strong>Contact Data:</strong> includes email address and telephone numbers.</li>
-                    <li><strong>Technical Data:</strong> includes internet protocol (IP) address, your login data, browser type and version, time zone setting and location.</li>
-                    <li><strong>Usage Data:</strong> includes information about how you use our website, products and services.</li>
+                    <li><strong>Contact Information:</strong> Your name, company name, email address, phone number, and project details provided in forms.</li>
+                    <li><strong>Technical Telemetry:</strong> Anonymized browser type, general geography, referral source, and device parameters to ensure reliable rendering.</li>
                 </ul>
             </div>
             <div class="legal-section">
                 <h3>3. How We Use Your Data</h3>
-                <p>We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:</p>
+                <p>We use your information exclusively to:</p>
                 <ul>
-                    <li>Where we need to perform the contract we are about to enter into or have entered into with you.</li>
-                    <li>Where it is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.</li>
-                    <li>Where we need to comply with a legal obligation.</li>
+                    <li>Evaluate project scope and respond to inquiries with technical architectures and cost estimates.</li>
+                    <li>Coordinate client sprint milestones and deliver custom software services.</li>
+                    <li>We never sell, rent, or trade your personal data to third parties for marketing.</li>
                 </ul>
             </div>
             <div class="legal-section">
                 <h3>4. Data Security</h3>
-                <p>We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorized way, altered or disclosed. In addition, we limit access to your personal data to those employees, agents, contractors and other third parties who have a business need to know.</p>
+                <p>We implement standard organizational and technical security measures to prevent unauthorized disclosure, alteration, or destruction of your information.</p>
             </div>
             <div class="legal-section">
-                <h3>5. Your Legal Rights</h3>
-                <p>Under certain circumstances, you have rights under data protection laws in relation to your personal data, including the right to request access, correction, erasure, restriction, transfer, to object to processing, and to withdraw consent.</p>
+                <h3>5. Contact Details</h3>
+                <p>If you have questions about this policy or your personal data, reach us at <a href="mailto:contact@monarchsoftwares.com">contact@monarchsoftwares.com</a> or +91 6385753874.</p>
             </div>
         `
     },
     terms: {
-        title: "Terms and Conditions",
+        title: "Terms of Service",
         content: `
             <div class="legal-section">
-                <h3>1. Terms</h3>
-                <p>By accessing the website at <a href="https://monarchsoftwares.company">monarchsoftwares.company</a>, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
+                <h3>1. Engagement Terms</h3>
+                <p>By accessing the website at <a href="https://monarchsoftwares.com">monarchsoftwares.com</a>, you agree to be bound by these terms of service, applicable laws, and regulations.</p>
             </div>
             <div class="legal-section">
-                <h3>2. Use License</h3>
-                <p>Permission is granted to temporarily download one copy of the materials (information or software) on MONARCH SOFTWARES's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.</p>
+                <h3>2. Professional Services & IP</h3>
+                <p>All custom software architectures, codebases, and digital assets developed under contract belong 100% to our clients upon fulfillment of contract milestones. Informational materials published on this website are protected by copyright.</p>
             </div>
             <div class="legal-section">
                 <h3>3. Disclaimer</h3>
-                <p>The materials on MONARCH SOFTWARES's website are provided on an 'as is' basis. MONARCH SOFTWARES makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                <p>Informational content and demonstration features on this website are provided on an 'as is' basis. While we maintain rigorous engineering standards, warranties regarding third-party platforms are governed by respective client agreements.</p>
             </div>
             <div class="legal-section">
-                <h3>4. Limitations</h3>
-                <p>In no event shall MONARCH SOFTWARES or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on MONARCH SOFTWARES's website, even if MONARCH SOFTWARES or a MONARCH SOFTWARES authorized representative has been notified orally or in writing of the possibility of such damage.</p>
-            </div>
-            <div class="legal-section">
-                <h3>5. Accuracy of Materials</h3>
-                <p>The materials appearing on MONARCH SOFTWARES's website could include technical, typographical, or photographic errors. MONARCH SOFTWARES does not warrant that any of the materials on its website are accurate, complete or current. MONARCH SOFTWARES may make changes to the materials contained on its website at any time without notice.</p>
-            </div>
-            <div class="legal-section">
-                <h3>6. Governing Law</h3>
-                <p>These terms and conditions are governed by and construed in accordance with the laws of India and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.</p>
+                <h3>4. Governing Law</h3>
+                <p>These terms and conditions are governed by and construed in accordance with the laws of India, with jurisdiction in Coimbatore, Tamil Nadu.</p>
             </div>
         `
     }
@@ -75,23 +65,21 @@ const legalContent = {
  * Initializes the legal modal structure and sets up event listeners for triggers.
  */
 export function initLegalModals() {
-    // Create Modal Structure
     const modalHTML = `
-        <div id="legal-modal" class="modal-overlay">
-            <div class="modal-container glass grow-card">
-                <div class="modal-header">
-                    <h2 id="modal-title" class="gradient-text"></h2>
-                    <button id="modal-close" class="modal-close-btn">&times;</button>
+        <div id="legal-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+            <div class="modal-container">
+                <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid var(--border-light); padding-bottom:1rem;">
+                    <h2 id="modal-title" style="font-size:1.4rem; font-weight:600; color:var(--text-primary); margin:0;"></h2>
+                    <button id="modal-close" class="modal-close-btn" aria-label="Close modal" style="font-size:1.5rem; cursor:pointer; line-height:1; color:var(--text-secondary);">&times;</button>
                 </div>
-                <div id="modal-content" class="modal-body"></div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary close-footer-btn">Close</button>
+                <div id="modal-content" class="modal-body" style="font-size:0.95rem; line-height:1.7; color:var(--text-secondary);"></div>
+                <div class="modal-footer" style="margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border-light); display:flex; justify-content:flex-end;">
+                    <button class="btn btn-outline close-footer-btn" style="padding:0.6rem 1.5rem;">Close</button>
                 </div>
             </div>
         </div>
     `;
 
-    // Inject into body
     if (!document.getElementById('legal-modal')) {
         document.body.insertAdjacentHTML('beforeend', modalHTML);
     }
@@ -109,24 +97,23 @@ export function initLegalModals() {
         title.innerText = data.title;
         body.innerHTML = data.content;
         modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
-        
-        // Triggers lucide icon creation if content has icons
-        if (window.lucide) window.lucide.createIcons();
     };
 
     const closeModal = () => {
         modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
     };
 
-    // Event Listeners for links
     document.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target.matches('.privacy-trigger')) {
+        const privTrigger = e.target.closest('.privacy-trigger, #open-privacy-link');
+        const termsTrigger = e.target.closest('.terms-trigger, #open-terms-link');
+        if (privTrigger) {
             e.preventDefault();
             openModal('privacy');
-        } else if (target.matches('.terms-trigger')) {
+        } else if (termsTrigger) {
             e.preventDefault();
             openModal('terms');
         }
@@ -140,8 +127,7 @@ export function initLegalModals() {
         });
     }
 
-    // Close on Escape
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
     });
 }
