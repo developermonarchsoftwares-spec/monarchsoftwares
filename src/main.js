@@ -29,6 +29,7 @@ import { initSectionStack } from './section-stack.js';
 import { initAllBorderGlow } from './border-glow.js';
 import { initChallengeScroll } from './challenge-scroll.js';
 import { initWhySection } from './why-section.js';
+import { initHorizontalSlide } from './horizontal-slide.js';
 import { initPillarsScroll } from './pillars-scroll.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -281,10 +282,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initCardStackShowcase();
 
     // 12b. Global Section Stacking Engine (Every section stacks like cards)
-    initSectionStack();
+    // initSectionStack(); // slide-over card stacking disabled so the Galaxy background can show through the sections
     initChallengeScroll();
     initPillarsScroll();
     initWhySection();
+    initHorizontalSlide();
 
     // 12c. 3D Flip Down Scroll Animation for Selected Work & About Images
     const initWorkImageFlipDown = () => {
@@ -655,6 +657,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.dropdown-item').forEach((a) => {
         if (a.getAttribute('href') === window.location.pathname.replace(/\.html$/, '')) a.setAttribute('aria-current', 'page');
     });
+
+    // Footer wordmark rendered with the React Bits WarpText (loaded on demand)
+    if (document.querySelector('.footer-wordmark__stage')) import('./footer-warp.jsx');
 
     // 20. Legal Modals
     initLegalModals();

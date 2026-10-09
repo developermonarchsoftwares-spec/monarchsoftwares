@@ -28,6 +28,7 @@ export function initWhySection() {
 
     // ---- connector path --------------------------------------------------------
     let pathLen = 0;
+    let lineFrac = 1; // how much of the connector is revealed (shared with the card reveal below)
     const buildPath = () => {
         const w = track.offsetWidth;
         const h = track.offsetHeight;
@@ -64,7 +65,7 @@ export function initWhySection() {
         line.setAttribute('d', d);
         pathLen = line.getTotalLength();
         line.style.strokeDasharray = `${pathLen}`;
-        line.style.strokeDashoffset = '0';
+        line.style.strokeDashoffset = String(pathLen * (1 - lineFrac));
         // gradient follows the path direction
         const grad = svg.querySelector('#why-grad');
         if (grad) {
@@ -79,8 +80,9 @@ export function initWhySection() {
     let t0 = 0;
     const moveDot = (now) => {
         if (!pathLen) return;
+        if (lineFrac < 0.005) { dot.style.opacity = 0; trail.style.opacity = 0; return; }
         const dur = isSmall() ? 12000 : 10000;
-        const p = ((now - t0) % dur) / dur;
+        const p = (((now - t0) % dur) / dur) * lineFrac; // the light only travels along the part that is revealed
         const pt = line.getPointAtLength(p * pathLen);
         const tp = line.getPointAtLength(Math.max(0, p - 0.012) * pathLen);
         dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
@@ -128,23 +130,32 @@ export function initWhySection() {
     if (!reduce) {
         const dim = { opacity: 0, scale: 0.94, filter: 'blur(8px) brightness(0.5)', '--glow': 0.15 };
         const lit = { opacity: 1, scale: 1, filter: 'blur(0px) brightness(1)', '--glow': 1 };
+        // ONE shared progress: the connector is drawn exactly as far as the cards are revealed
+        // (mean reveal of the four cards), driven by the same scrubbed tweens, never by its own timer.
+        const syncLine = () => {
+            lineFrac = cards.reduce((sum, c) => sum + Number(gsap.getProperty(c, 'opacity')), 0) / cards.length;
+            line.style.strokeDashoffset = String(pathLen * (1 - lineFrac));
+        };
         const mm = gsap.matchMedia();
         mm.add('(min-width: 1100px)', () => {
             gsap.set(cards, dim);
+            syncLine();
             const tl = gsap.timeline({
                 defaults: { ease: 'power1.inOut' },
+                onUpdate: syncLine,
                 scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true }
             });
             cards.forEach((card, i) => tl.to(card, { ...lit, duration: 1 }, i));
             tl.set({}, {}, cards.length + 0.6); // hold the fully revealed state before the pin releases
-            return () => { tl.scrollTrigger && tl.scrollTrigger.kill(); tl.kill(); gsap.set(cards, { clearProps: 'opacity,scale,filter,transform,--glow' }); };
+            return () => { tl.scrollTrigger && tl.scrollTrigger.kill(); tl.kill(); gsap.set(cards, { clearProps: 'opacity,scale,filter,transform,--glow' }); lineFrac = 1; line.style.strokeDashoffset = '0'; };
         });
         mm.add('(max-width: 1099px)', () => {
             const tls = cards.map((card) => {
                 gsap.set(card, dim);
-                return gsap.to(card, { ...lit, ease: 'none', scrollTrigger: { trigger: card, start: 'top 90%', end: 'top 58%', scrub: 0.6 } });
+                return gsap.to(card, { ...lit, ease: 'none', onUpdate: syncLine, scrollTrigger: { trigger: card, start: 'top 90%', end: 'top 58%', scrub: 0.6 } });
             });
-            return () => { tls.forEach((t) => { t.scrollTrigger && t.scrollTrigger.kill(); t.kill(); }); gsap.set(cards, { clearProps: 'opacity,scale,filter,transform,--glow' }); };
+            syncLine();
+            return () => { tls.forEach((t) => { t.scrollTrigger && t.scrollTrigger.kill(); t.kill(); }); gsap.set(cards, { clearProps: 'opacity,scale,filter,transform,--glow' }); lineFrac = 1; line.style.strokeDashoffset = '0'; };
         });
     }
 

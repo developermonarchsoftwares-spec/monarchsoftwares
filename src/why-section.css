@@ -109,7 +109,7 @@
   will-change: transform;
 }
 .why-card__rim { /* soft rim light (own element: ::before/::after belong to BorderGlow) */
-  position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; padding: 1px;
+  position: absolute; inset: -1px; border-radius: 29px; clip-path: inset(0 round 29px); pointer-events: none; padding: 1px;
   background: linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,0) 32%, rgba(255,255,255,0) 70%, rgba(255,255,255,.35));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask-composite: exclude;
