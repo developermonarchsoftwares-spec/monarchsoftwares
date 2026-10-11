@@ -325,6 +325,7 @@ uniform vec2 uResolution;
 uniform float uUnit;
 uniform float uTime;
 uniform float uPresence;
+uniform float uDrawProgress;
 uniform vec3 uHover;
 uniform float uHoverRadius;
 uniform vec4 uPulses[${PULSES}];
@@ -516,13 +517,31 @@ void main() {
   float breath = 1.0 + uFlicker * 0.6 * wobble(vec2(t * 2.1, 7.0), 3u);
   float grow = uPresence;
 
+  vec2 fLogo = (pr - uMapTo.xy) / uMapTo.z;
+  vec2 relLogo = fLogo - uSizeTo.xy * 0.5;
+  float normPos = abs(atan(relLogo.x, -relLogo.y)) / 3.14159265;
+  float drawMask = 1.0;
+  float leadTip = 0.0;
+  if (uDrawProgress < 1.0) {
+    if (uDrawProgress <= 0.001) {
+      drawMask = 0.0;
+    } else {
+      float diff = uDrawProgress - normPos;
+      drawMask = smoothstep(-0.035, 0.015, diff);
+      leadTip = exp(-diff * diff / 0.0008) * 1.8;
+    }
+  }
+  grow *= drawMask;
+
   float edge = abs(base);
   vec2 halo = aura(pr, k);
+  leadTip *= smoothstep(uUnit * 6.0, 0.0, edge) * min(halo.x * 2.5, 1.0);
   float ink = uInk;
   float bloom = (halo.x * 0.16 + halo.y * 0.08) * (1.0 - ink * 0.65) * uGlow * (1.0 + heat * 1.2);
   float body = smoothstep(0.75, -0.75, base) * uFill * (0.06 + 1.2 * min(halo.x, 1.0)) * (1.0 + heat * 0.5);
-  light += uGlowColor * bloom * grow * grow;
-  energy += bloom * grow * grow;
+  light += uGlowColor * (bloom * grow * grow + leadTip * uPresence);
+  energy += bloom * grow * grow + leadTip * uPresence;
+  hot += leadTip * uPresence;
 
   float reachScale = mix(0.15, 1.0, grow) * (1.0 + heat * 0.9);
   float reach = (uUnit * uBend * 16.0 + uCrackle * 3.0) * (1.0 + heatCap * 0.9) + uThickness * 20.0 + 8.0;
@@ -596,6 +615,7 @@ const ElectricLogo = ({
   cursorIntensity = 0.75,
   cursorRadius = 100,
   theme = 'dark',
+  drawProgress,
   onRender,
   className = '',
   style
@@ -623,6 +643,7 @@ const ElectricLogo = ({
       cursorIntensity,
       cursorRadius,
       theme,
+      drawProgress,
       onRender
     };
   });
@@ -719,6 +740,7 @@ const ElectricLogo = ({
       uUnit: { value: 1 },
       uTime: { value: 0 },
       uPresence: { value: 0 },
+      uDrawProgress: { value: 1.0 },
       uHover: { value: [0, 0, 0] },
       uHoverRadius: { value: 120 },
       uPulses: { value: pulseData },
@@ -817,8 +839,21 @@ const ElectricLogo = ({
 
       const to = slots[target].shape;
       const from = morph < 1 ? slots[1 - target].shape : null;
-      if (to) progress = Math.min(1, progress + dt / 1.4);
-      const presence = progress * progress * (3 - 2 * progress);
+      let drawProg = 1.0;
+      let presence = 1.0;
+
+      const explicitDraw = (s?.drawProgress !== undefined && s?.drawProgress !== null)
+        ? s.drawProgress
+        : (typeof window !== 'undefined' ? window.__aboutLogoDrawProgress : undefined);
+
+      if (explicitDraw !== undefined && explicitDraw !== null) {
+        drawProg = Math.max(0, Math.min(1, explicitDraw));
+        presence = Math.min(1.0, drawProg * 1.5);
+      } else {
+        if (to) progress = Math.min(1, progress + dt / 1.4);
+        presence = progress * progress * (3 - 2 * progress);
+        drawProg = 1.0;
+      }
 
       if (to && s) {
         const near = place(to, s);
@@ -840,7 +875,11 @@ const ElectricLogo = ({
         hover.power += ((engaged ? 1 : 0) - hover.power) * (1 - Math.exp(-dt / (engaged ? 0.3 : 0.55)));
 
         const motion = reducedMotion ? 0.2 : 1;
-        time += dt * s.speed * motion;
+        if (explicitDraw !== undefined && explicitDraw !== null && drawProg < 1.0) {
+          time = drawProg * 10.0;
+        } else {
+          time += dt * s.speed * motion * 0.6;
+        }
 
         for (let i = sparks.length - 1; i >= 0; i--) {
           if (time - sparks[i].born > sparks[i].life) sparks.splice(i, 1);
@@ -921,6 +960,7 @@ const ElectricLogo = ({
         uniforms.uUnit.value = unit;
         uniforms.uTime.value = time;
         uniforms.uPresence.value = presence;
+        uniforms.uDrawProgress.value = drawProg;
         uniforms.uHover.value = [hover.x, hover.y, hover.power * Math.max(0, s.cursorIntensity)];
         uniforms.uHoverRadius.value = Math.max(1, s.cursorRadius);
         uniforms.uPulseBoost.value = boost;

@@ -1,0 +1,350 @@
+/* =============================================================================
+   CORE PRINCIPLES — Smooth Scroll-Scrubbed Horizontal Storytelling
+   ============================================================================= */
+
+#core-principles.principles-section {
+  position: relative;
+  box-sizing: border-box;
+  background: transparent;
+  border-top: none;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Pinned Full-Viewport Container on Desktop */
+.principles-pin-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* Top padding clears the fixed navbar (~75px-80px) with comfortable breathing room */
+  padding: clamp(5.25rem, 9.5vh, 6.75rem) 0 clamp(1.25rem, 2.5vh, 2rem);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Visually Stable Heading at Top */
+.principles-head {
+  flex-shrink: 0;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  z-index: 5;
+}
+
+.principles-head .tag-mono {
+  display: inline-block;
+  margin-bottom: 0.45rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
+}
+
+.principles-head h3 {
+  margin: 0;
+  font-size: clamp(2rem, 3.2vw, 2.85rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+/* Viewport Clipping Area: Absolutely NO browser horizontal scrollbar */
+.principles-viewport {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Continuous Horizontal Canvas / Track */
+.principles-track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(2rem, 3.5vw, 3.5rem);
+  padding: 0 clamp(2.5rem, 7vw, 7vw);
+  width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Single Unified Horizontal Principle Card */
+.principle-card {
+  flex: 0 0 clamp(720px, 78vw, 1260px);
+  width: clamp(720px, 78vw, 1260px);
+  height: clamp(380px, 50vh, 480px);
+  display: grid;
+  grid-template-columns: 1.15fr 1px 1fr;
+  align-items: stretch;
+  background: rgba(12, 12, 12, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  will-change: transform, opacity;
+  transform-origin: center center;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.principle-card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+}
+
+/* Divider Between Content & Media */
+.principle-divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  height: 100%;
+}
+
+/* Card Content (Left Column) */
+.principle-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(2.25rem, 3.8vw, 3.5rem);
+  box-sizing: border-box;
+  background: transparent;
+  min-width: 0;
+}
+
+.principle-badge {
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--accent, #ffffff);
+  opacity: 0.85;
+}
+
+.principle-title {
+  font-size: clamp(1.45rem, 2.1vw, 1.85rem);
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  margin: 0 0 0.85rem 0;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.principle-desc {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.65));
+  line-height: 1.68;
+  font-size: clamp(0.92rem, 1.05vw, 1rem);
+  margin: 0;
+  max-width: 500px;
+}
+
+/* Card Media (Right Column) */
+.principle-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.principle-media img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+/* Minimal Horizontal Progress Indicator */
+.principles-progress-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  margin: 0 auto;
+  padding: 0.5rem 1.5rem 0;
+  z-index: 5;
+}
+
+.principles-counter {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--text-primary, #ffffff);
+  min-width: 65px;
+  font-family: var(--font-mono, monospace);
+}
+
+.principles-progress-track {
+  position: relative;
+  width: clamp(200px, 28vw, 340px);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.principles-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.6), #ffffff);
+  width: 0%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.principles-node {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #333333;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 2;
+}
+
+.principles-node--active {
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: scale(1.35);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Tablet Optimizations */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .principles-pin-container {
+    padding-top: 5rem;
+  }
+
+  .principle-card {
+    flex: 0 0 84vw;
+    width: 84vw;
+    height: clamp(360px, 46vh, 440px);
+  }
+}
+
+/* Mobile Responsive: Clean Vertical Flow to prevent sticky touch-pin traps & overflow */
+@media (max-width: 768px) {
+  #core-principles.principles-section {
+    padding: clamp(3.5rem, 7vh, 5rem) 0 clamp(4rem, 8vh, 6rem);
+    overflow: visible;
+  }
+
+  .principles-pin-container {
+    height: auto;
+    min-height: auto;
+    max-height: none;
+    padding: 0 1rem;
+    gap: 2.5rem;
+    overflow: visible;
+  }
+
+  .principles-viewport {
+    overflow: visible;
+  }
+
+  .principles-track {
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    gap: 2.25rem;
+    transform: none !important;
+  }
+
+  .principle-card {
+    flex: none;
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    grid-template-columns: 1fr;
+    border-radius: 14px;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .principle-divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .principle-media {
+    height: clamp(220px, 35vh, 280px);
+  }
+
+  .principle-media img {
+    position: relative;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .principles-progress-bar {
+    display: none;
+  }
+}
+
+/* Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  #core-principles.principles-section {
+    padding: 4rem 0 !important;
+    overflow: visible !important;
+  }
+
+  .principles-pin-container {
+    height: auto !important;
+    max-height: none !important;
+    padding: 0 1rem !important;
+    gap: 2.5rem !important;
+    overflow: visible !important;
+  }
+
+  .principles-viewport {
+    overflow: visible !important;
+  }
+
+  .principles-track {
+    flex-direction: column !important;
+    transform: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    gap: 2.5rem !important;
+  }
+
+  .principle-card {
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .principle-media img {
+    position: relative;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .principles-progress-bar {
+    display: none !important;
+  }
+}

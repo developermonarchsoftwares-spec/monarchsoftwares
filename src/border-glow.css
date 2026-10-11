@@ -1,11 +1,11 @@
 .border-glow-card {
   --edge-proximity: 0;
   --cursor-angle: 45deg;
-  --edge-sensitivity: 30;
+  --edge-sensitivity: 10;
   --color-sensitivity: calc(var(--edge-sensitivity) + 20);
-  --border-radius: 28px;
-  --glow-padding: 40px;
-  --cone-spread: 25;
+  --border-radius: 40px;
+  --glow-padding: 31px;
+  --cone-spread: 16;
 
   position: relative;
   border-radius: var(--border-radius);
@@ -45,6 +45,7 @@
   border-radius: inherit;
   transition: opacity 0.25s ease-out;
   z-index: -1;
+  pointer-events: none;
 }
 
 .border-glow-card:not(:hover):not(.sweep-active)::before,
@@ -148,16 +149,14 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: auto;
+  overflow: visible;
   z-index: 1;
+  width: 100%;
+  height: 100%;
 }
 
 /* =============================================================================
-   PROJECT INTEGRATION (not part of the official React Bits component)
-   The site is plain HTML/JS, so BorderGlow is applied to existing card elements in place
-   (src/border-glow.js). `.bg-host` marks those elements: the old border / radius / fill /
-   shadow are replaced by the component's, and the inner wrapper is transparent to layout so
-   each card keeps its original flex/grid/block behaviour and positioning.
+   PROJECT INTEGRATION (reusable across all cards without changing layouts)
    ============================================================================= */
 .border-glow-card.bg-host {
   border: 1px solid rgb(255 255 255 / 15%) !important;

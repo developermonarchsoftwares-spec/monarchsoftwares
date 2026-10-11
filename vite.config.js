@@ -5,21 +5,35 @@ import { existsSync } from 'fs';
 // Old multi-page URLs now live as sections of the homepage (mirrors the redirects in vercel.json)
 const MOVED = {
   '/about': '/#about', '/services': '/#services', '/careers': '/#careers', '/contact': '/#cta',
-  '/corporate-training': '/#corporate-training', '/it-services': '/#it-services',
-  '/digital-marketing': '/#digital-marketing', '/hr-services': '/#training-placement',
+  '/hr-services': '/training-placement',
 };
 
 const cleanUrl = (req, res, next) => {
+  // Prevent any browser 301 cache retention in dev mode
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.setHeader('Clear-Site-Data', '"cache"');
+
   const [path, query = ''] = (req.url || '').split('?');
-  const moved = MOVED[path.replace(/\.html$/, '').replace(/\/$/, '')];
+  const normalized = path.replace(/\.html$/, '').replace(/\/$/, '');
+
+  // Direct rewrite for /services/<slug> -> /<slug>.html without redirecting
+  const serviceMatch = normalized.match(/^\/services\/(corporate-training|it-services|digital-marketing|training-placement)$/);
+  if (serviceMatch) {
+    req.url = `/${serviceMatch[1]}.html${query ? '?' + query : ''}`;
+    next();
+    return;
+  }
+
+  const moved = MOVED[normalized];
   if (moved) {
-    res.statusCode = 301;
+    res.statusCode = 302; // Use 302 Temporary in dev to avoid permanent browser cache poisoning
     res.setHeader('Location', moved);
     res.end();
     return;
   }
+
   if (path !== '/' && !path.includes('.') && !path.startsWith('/@') && !path.startsWith('/src') && !path.startsWith('/node_modules')) {
-    const file = path.replace(/\/$/, '') + '.html';
+    const file = normalized + '.html';
     if (existsSync(resolve(__dirname, '.' + file))) req.url = file + (query ? '?' + query : '');
   }
   next();
@@ -48,6 +62,10 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         privacy: resolve(__dirname, 'privacy.html'),
         terms: resolve(__dirname, 'terms.html'),
+        corporateTraining: resolve(__dirname, 'corporate-training.html'),
+        itServices: resolve(__dirname, 'it-services.html'),
+        digitalMarketing: resolve(__dirname, 'digital-marketing.html'),
+        trainingPlacement: resolve(__dirname, 'training-placement.html'),
       },
       output: {
         manualChunks(id) {

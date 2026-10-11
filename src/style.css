@@ -507,6 +507,15 @@ button, input, textarea, select {
   line-height: 1.4;
 }
 
+.dropdown-item.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 2px solid var(--text-primary);
+}
+
+.dropdown-item.active .dropdown-content h5 {
+  color: #ffffff;
+}
+
 .mobile-toggle {
   display: none;
   background: none;
@@ -564,6 +573,67 @@ button, input, textarea, select {
   font-family: var(--font-sans);
   font-size: 0.85rem;
   color: var(--text-tertiary);
+}
+
+.mobile-nav-dropdown-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mobile-dropdown-toggle {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.mobile-dropdown-toggle svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.25s ease;
+}
+
+.mobile-dropdown-toggle.open {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.mobile-dropdown-toggle.open svg {
+  transform: rotate(180deg);
+}
+
+.mobile-subnav-list {
+  list-style: none;
+  display: none;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.85rem 0 0.5rem 1.75rem;
+}
+
+.mobile-subnav-list.open {
+  display: flex;
+}
+
+.mobile-subnav-link {
+  font-size: 1.05rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+}
+
+.mobile-subnav-link:hover,
+.mobile-subnav-link.active {
+  color: #ffffff;
 }
 
 .mobile-drawer-footer {
@@ -867,7 +937,7 @@ button, input, textarea, select {
 
 .section-services {
   padding: var(--section-space) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   background: #000000;
 }
 
@@ -1037,7 +1107,7 @@ button, input, textarea, select {
 /* ── Work / Case Studies ────────────────────────────────────────────────────── */
 .section-work {
   padding: var(--section-space) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   background: #000000;
 }
 
@@ -1201,7 +1271,7 @@ button, input, textarea, select {
 /* ── Commitments / Numbers ──────────────────────────────────────────────────── */
 .section-numbers {
   padding: var(--section-space) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   background: #000000;
 }
 
@@ -1258,7 +1328,7 @@ button, input, textarea, select {
 /* ── Process Timeline ───────────────────────────────────────────────────────── */
 .section-process {
   padding: var(--section-space) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   background: #000000;
 }
 
@@ -1350,7 +1420,7 @@ button, input, textarea, select {
 /* ── Tech Matrix ────────────────────────────────────────────────────────────── */
 .section-tech-matrix {
   padding: var(--section-space) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   background: #000000;
 }
 
@@ -1418,7 +1488,7 @@ button, input, textarea, select {
 /* ── About Section ──────────────────────────────────────────────────────────── */
 .section-about {
   padding: var(--section-space) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   background: #000000;
 }
 
@@ -1509,7 +1579,7 @@ button, input, textarea, select {
 /* ── Testimonials / Collaboration ───────────────────────────────────────────── */
 .section-testimonials {
   padding: var(--section-space) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   background: #000000;
 }
 
@@ -1598,7 +1668,7 @@ button, input, textarea, select {
 /* ── CTA Section ────────────────────────────────────────────────────────────── */
 .section-climax-cta {
   padding: clamp(6rem, 12vw, 12rem) 0;
-  border-top: 1px solid var(--border);
+  border-top: none;
   text-align: center;
   position: relative;
   background: #000000;
@@ -1711,7 +1781,7 @@ button, input, textarea, select {
 
 /* ── Footer ─────────────────────────────────────────────────────────────────── */
 .footer-editorial {
-  border-top: 1px solid var(--border);
+  border-top: none;
   padding: clamp(4rem, 7vw, 6rem) 0 2rem;
   background: #000000;
   color: #ffffff;
@@ -1801,7 +1871,7 @@ button, input, textarea, select {
 
 /* Giant brandmark */
 .footer-giant-brandmark {
-  border-top: 1px solid var(--border);
+  border-top: none;
   padding-top: clamp(1.5rem, 3vw, 3rem);
   margin-bottom: 2rem;
   text-align: center;
@@ -1822,7 +1892,7 @@ button, input, textarea, select {
   justify-content: space-between;
   align-items: center;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+  border-top: none;
   font-size: 0.8rem;
   color: var(--text-tertiary);
 }
@@ -2250,8 +2320,8 @@ button, input, textarea, select {
 /* =============================================================================
    CONTENT PAGES — shared sections for service / about / overview pages
    ============================================================================= */
-.content-section { padding: clamp(3rem, 6vw, 5rem) 0; border-top: 1px solid var(--border); }
-.content-section.alt { background: var(--bg-subtle); }
+.content-section { padding: clamp(3rem, 6vw, 5rem) 0; border-top: none; }
+.content-section.alt { background: transparent; }
 .content-wrap { max-width: 1100px; margin: 0 auto; }
 .content-head { max-width: 760px; margin: 0 auto 2.5rem; text-align: center; }
 .content-head h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 1rem; }
@@ -2418,7 +2488,7 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
 .pillars-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: rgba(255, 255, 255, 0.12); border-radius: 2px; }
 .pillars-line-fill { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.35), #fff); transform-origin: 50% 0; transform: scaleY(0); will-change: transform; box-shadow: 0 0 14px rgba(255,255,255,0.45); }
 
-.pillar-row { position: relative; }
+.pillar-row { position: relative; scroll-margin-top: 90px; }
 .pillar-node { position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #1d1d1f; border: 2px solid rgba(255,255,255,0.28); z-index: 3; will-change: transform; }
 .pillar-connector { position: absolute; top: 50%; width: 5rem; height: 24px; margin-top: -12px; color: rgba(255,255,255,0.85); z-index: 2; overflow: visible; }
 .pillar-connector path { stroke-dasharray: 1; stroke-dashoffset: 1; }
@@ -2623,12 +2693,12 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
 }
 
 /* Single-page layout: merged page sections (services, careers, about details) */
-.section-merged { padding: 0; border-top: 1px solid var(--border); background: #000000; }
+.section-merged { padding: 0; border-top: none; background: #000000; }
 .section-merged .merged-head { border-top: 0; padding-top: clamp(5rem, 9vw, 8rem); }
 .content-head h3 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 1rem; }
 .content-card h4 { font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.65rem; }
 .about-more { margin-top: clamp(3rem, 6vw, 5rem); }
-.about-more .content-section:first-child { border-top: 1px solid var(--border); }
+.about-more .content-section:first-child { border-top: none; }
 .climax-contact-details { margin-top: 2.25rem; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.92rem; color: var(--text-secondary); text-align: left; }
 .climax-contact-details span { display: inline-block; min-width: 3.6rem; font-weight: 600; color: var(--text-primary); }
 .climax-contact-details a { color: var(--accent); text-decoration: underline; }
@@ -2642,7 +2712,7 @@ main > section, footer.footer-editorial { background: transparent !important; }
 #galaxy-bg .galaxy-container { width: 100%; height: 100%; }
 
 /* Footer wordmark band: oversized, very dark "MONARCH SOFTWARES" between the footer links and the legal bar */
-.footer-wordmark { margin: clamp(2rem, 4vw, 3.5rem) 0 0; padding: clamp(0.9rem, 2vw, 1.6rem) 0; border-top: 1px solid rgba(255, 255, 255, 0.07); border-bottom: 1px solid rgba(255, 255, 255, 0.07); overflow: hidden; user-select: none; }
+.footer-wordmark { margin: clamp(2rem, 4vw, 3.5rem) 0 0; padding: clamp(0.9rem, 2vw, 1.6rem) 0; border-top: none; border-bottom: none; overflow: hidden; user-select: none; }
 .footer-wordmark svg { display: block; width: 100%; height: auto; }
 .footer-wordmark text { font-family: var(--font-headline); font-weight: 900; font-size: 138px; fill: #111114; text-transform: uppercase; }
 
@@ -2658,3 +2728,95 @@ main > section, footer.footer-editorial { background: transparent !important; }
 }
 .content-wrap { max-width: var(--container-wide); }
 .section-merged .container { max-width: var(--container-wide) !important; }
+
+/* =============================================================================
+   SCENE SPACING — every major section reads as its own full-screen "scene".
+   Spacing/height only: no colours, typography, cards or animation logic are touched.
+   Sticky/pinned tracks (#positioning, #why) keep their own tall heights; min-height never shrinks them.
+   ============================================================================= */
+:root { --scene-pad: clamp(6.25rem, 11vw, 10rem); } /* ~100px - 160px */
+
+/* Desktop / large tablet: each scene is at least one full viewport */
+@media (min-width: 861px) {
+  main > section { min-height: 100vh; }
+
+  /* Sub-slides inside the About / service pages: one centred scene each */
+  .content-section {
+    min-height: 100vh;
+    padding: var(--scene-pad) 0;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  .content-section > .container { width: 100%; }
+  .section-merged .merged-head { padding-top: var(--scene-pad); }
+
+  /* About hero + the split intro block that follows it */
+  .about-hero { min-height: 100vh; }
+  .section-about > .container-wide {
+    min-height: 100vh;
+    padding-top: var(--scene-pad);
+    padding-bottom: var(--scene-pad);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+  }
+  .section-about > .container-wide > * { width: 100%; }
+  .about-more { margin-top: 0; }
+
+  /* Final call-to-action scene */
+  .section-climax-cta {
+    min-height: 100vh;
+    padding: var(--scene-pad) 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+  }
+  .section-climax-cta > .container { width: 100%; }
+}
+
+/* Tablet / mobile: generous but natural spacing — sections grow with their content, no forced 100vh */
+@media (max-width: 860px) {
+  .content-section { padding: clamp(4.5rem, 14vw, 6.25rem) 0; }
+  .section-merged .merged-head { padding-top: clamp(4.5rem, 14vw, 6.25rem); }
+  .section-about > .container-wide { padding-top: clamp(4.5rem, 14vw, 6.25rem); padding-bottom: clamp(4.5rem, 14vw, 6.25rem); }
+  .about-more { margin-top: 0; }
+  .section-climax-cta { padding: clamp(4.5rem, 14vw, 6.25rem) 0; }
+}
+
+/* =============================================================================
+   UNIVERSAL DIVIDER REMOVAL — Guarantees NO horizontal lines cut across sections
+   ============================================================================= */
+section,
+main > section,
+.section,
+.content-section,
+.section-merged,
+.section-services,
+.section-work,
+.section-numbers,
+.section-process,
+.section-tech-matrix,
+.section-about,
+.section-testimonials,
+.section-climax-cta,
+.career-hero-section,
+.principles-section,
+.footer-editorial,
+.about-more,
+.about-more .content-section,
+#about,
+#mission-vision,
+#core-principles,
+#why,
+#why-work,
+#careers,
+#careers-overview,
+#positions,
+#hiring-process,
+.career-hero,
+.why-space {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+

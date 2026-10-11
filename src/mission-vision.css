@@ -1,0 +1,171 @@
+/* =============================================================================
+   MISSION & VISION — Cinematic Scroll-Driven Reveal
+   ============================================================================= */
+
+#mission-vision {
+  position: relative;
+  width: 100%;
+  min-height: 80vh;
+  background: transparent !important;
+  overflow: visible;
+  padding: clamp(3.5rem, 7vh, 5.5rem) 0 clamp(2.5rem, 5vh, 4rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mv-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Heading section */
+.mv-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+/* Scroll-Driven Animated Connector System between Heading and Cards */
+.mv-bridge {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 1.25rem 0 2.25rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Thin horizontal white line expanding from center outward */
+.mv-bridge-line {
+  width: min(560px, 85%);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 20%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0.35) 80%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform-origin: center center;
+  transform: scaleX(0);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Small vertical connector line growing downward from center */
+.mv-bridge-connector {
+  position: relative;
+  width: 1px;
+  height: clamp(26px, 3.5vh, 38px);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.25)
+  );
+  transform-origin: top center;
+  transform: scaleY(0);
+  will-change: transform;
+}
+
+/* Subtle glowing point node at end of connector */
+.mv-bridge-node {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%) scale(0);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 6px rgba(255, 255, 255, 0.8),
+    0 0 12px rgba(255, 255, 255, 0.35);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Content grid holding Mission & Vision cards */
+.mv-grid {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+/* Mission & Vision cards */
+.mv-card {
+  position: relative;
+  box-sizing: border-box;
+  will-change: transform, opacity, filter;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #mission-vision {
+    min-height: auto;
+    padding: 3rem 0 2.5rem;
+  }
+
+  .mv-bridge {
+    margin: 1rem 0 1.75rem;
+  }
+
+  .mv-bridge-line {
+    width: min(460px, 88%);
+  }
+
+  .mv-bridge-connector {
+    height: 24px;
+  }
+
+  .mv-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .mv-head {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .mv-bridge-line {
+    transform: scaleX(1) !important;
+    opacity: 1 !important;
+  }
+
+  .mv-bridge-connector {
+    transform: scaleY(1) !important;
+  }
+
+  .mv-bridge-node {
+    transform: translate(-50%, 50%) scale(1) !important;
+    opacity: 1 !important;
+  }
+
+  .mv-card {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

@@ -12,7 +12,7 @@
   overflow: clip; /* clip (not hidden) so the sticky stage below keeps working */
   isolation: isolate;
   background: #000;
-  border-top: 1px solid var(--border);
+  border-top: none;
 }
 
 /* ---------- cosmic background ---------- */

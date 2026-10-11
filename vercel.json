@@ -12,6 +12,38 @@
     {
       "source": "/terms",
       "destination": "/terms.html"
+    },
+    {
+      "source": "/corporate-training",
+      "destination": "/corporate-training.html"
+    },
+    {
+      "source": "/it-services",
+      "destination": "/it-services.html"
+    },
+    {
+      "source": "/digital-marketing",
+      "destination": "/digital-marketing.html"
+    },
+    {
+      "source": "/training-placement",
+      "destination": "/training-placement.html"
+    },
+    {
+      "source": "/services/corporate-training",
+      "destination": "/corporate-training.html"
+    },
+    {
+      "source": "/services/it-services",
+      "destination": "/it-services.html"
+    },
+    {
+      "source": "/services/digital-marketing",
+      "destination": "/digital-marketing.html"
+    },
+    {
+      "source": "/services/training-placement",
+      "destination": "/training-placement.html"
     }
   ],
   "cleanUrls": true,
@@ -78,23 +110,13 @@
       "permanent": true
     },
     {
-      "source": "/corporate-training",
-      "destination": "/#corporate-training",
-      "permanent": true
-    },
-    {
-      "source": "/it-services",
-      "destination": "/#it-services",
-      "permanent": true
-    },
-    {
-      "source": "/digital-marketing",
-      "destination": "/#digital-marketing",
-      "permanent": true
-    },
-    {
       "source": "/hr-services",
-      "destination": "/#training-placement",
+      "destination": "/training-placement",
+      "permanent": true
+    },
+    {
+      "source": "/hr-services.html",
+      "destination": "/training-placement",
       "permanent": true
     },
     {
@@ -115,26 +137,6 @@
     {
       "source": "/contact.html",
       "destination": "/#cta",
-      "permanent": true
-    },
-    {
-      "source": "/corporate-training.html",
-      "destination": "/#corporate-training",
-      "permanent": true
-    },
-    {
-      "source": "/it-services.html",
-      "destination": "/#it-services",
-      "permanent": true
-    },
-    {
-      "source": "/digital-marketing.html",
-      "destination": "/#digital-marketing",
-      "permanent": true
-    },
-    {
-      "source": "/hr-services.html",
-      "destination": "/#training-placement",
       "permanent": true
     }
   ]

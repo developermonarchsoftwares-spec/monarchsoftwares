@@ -1,0 +1,254 @@
+/* =============================================================================
+   HIRING PROCESS — React Bits DepthCarousel Scroll-Driven Presentation
+   ============================================================================= */
+
+#hiring-process {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent !important;
+  border-top: none !important;
+  overflow: visible;
+}
+
+/* Pinned Full-Viewport Stage on Desktop */
+@media (min-width: 769px) {
+  #hiring-process {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(2rem, 5vh, 4rem) 0;
+  }
+}
+
+@media (max-width: 768px) {
+  #hiring-process {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(3rem, 5vh, 4.5rem) 0;
+  }
+}
+
+.hiring-process-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.hiring-process-header {
+  max-width: 780px;
+  margin: 0 auto clamp(1.25rem, 2.5vh, 2.25rem);
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.hiring-process-header h3 {
+  font-size: clamp(2rem, 3.2vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin: 0.5rem 0 0.85rem;
+  color: var(--text-primary, #ffffff);
+}
+
+.hiring-process-header p {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.72));
+  line-height: 1.75;
+  font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+  margin: 0;
+}
+
+/* React Bits DepthCarousel Stage Mount */
+.hiring-carousel-mount {
+  width: 100%;
+  max-width: 1300px;
+  height: clamp(430px, 48vh, 500px);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* Custom Card Body inside DepthCarousel */
+.hiring-process-card {
+  width: 100%;
+  height: 100%;
+  padding: clamp(2rem, 3.2vw, 2.75rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: rgba(14, 15, 20, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 25px 60px -15px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  color: var(--text-primary, #ffffff);
+  user-select: none;
+  -webkit-user-select: none;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.depth-carousel__card.is-active .hiring-process-card {
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow:
+    0 35px 75px -15px rgba(0, 0, 0, 0.95),
+    0 0 35px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* Card Header row */
+.hiring-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.hiring-card-stage {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+  text-transform: uppercase;
+  transition: all 0.35s ease;
+}
+
+.depth-carousel__card.is-active .hiring-card-stage {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+.hiring-card-number {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+}
+
+.depth-carousel__card.is-active .hiring-card-number {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Card Content */
+.hiring-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.hiring-card-title {
+  font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 0.85rem;
+  letter-spacing: -0.02em;
+}
+
+.hiring-card-desc {
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  color: var(--text-secondary, rgba(255, 255, 255, 0.78));
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* Card Bottom footer */
+.hiring-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hiring-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.hiring-card-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.35s ease;
+}
+
+.depth-carousel__card.is-active .hiring-card-indicator-dot {
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.95);
+}
+
+.depth-carousel__card.is-active .hiring-card-status {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Glowing lower accent hairline */
+.hiring-card-accent-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), #ffffff, rgba(255, 255, 255, 0.1));
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.depth-carousel__card.is-active .hiring-card-accent-line {
+  width: 100%;
+}
+
+/* Fallback Grid when reduced motion */
+.hiring-process-fallback-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.75rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .hiring-process-fallback-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hiring-process-fallback-grid {
+    grid-template-columns: 1fr;
+  }
+}

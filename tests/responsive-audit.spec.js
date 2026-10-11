@@ -4,13 +4,16 @@ const pagesToTest = [
   { path: '/', name: 'Single Page Site' },
   { path: '/privacy', name: 'Privacy Policy' },
   { path: '/terms', name: 'Terms of Service' },
+  { path: '/corporate-training', name: 'Corporate Training' },
+  { path: '/it-services', name: 'IT Services' },
+  { path: '/digital-marketing', name: 'Digital Marketing' },
+  { path: '/training-placement', name: 'IT Training & Placement Support' },
 ];
 
 // Old multi-page URLs are now sections of the homepage
 const sections = ['about', 'services', 'corporate-training', 'it-services', 'digital-marketing', 'training-placement', 'careers', 'cta'];
 const moved = {
-  '/about': 'about', '/services': 'services', '/corporate-training': 'corporate-training', '/it-services': 'it-services',
-  '/digital-marketing': 'digital-marketing', '/hr-services': 'training-placement', '/careers': 'careers', '/contact': 'cta',
+  '/about': 'about', '/services': 'services', '/careers': 'careers', '/contact': 'cta',
 };
 
 test.describe('Full-Site Responsive & UI Integrity Audit', () => {
@@ -75,6 +78,21 @@ test.describe('Full-Site Responsive & UI Integrity Audit', () => {
     test(`Old URL ${oldPath} redirects to /#${id}`, async ({ page }) => {
       await page.goto(oldPath, { waitUntil: 'domcontentloaded' });
       await expect(page).toHaveURL(new RegExp(`/#${id}$`));
+    });
+  }
+
+  const serviceMoved = {
+    '/services/corporate-training': '/corporate-training',
+    '/services/it-services': '/it-services',
+    '/services/digital-marketing': '/digital-marketing',
+    '/services/training-placement': '/training-placement',
+    '/hr-services': '/training-placement',
+  };
+  for (const [from, to] of Object.entries(serviceMoved)) {
+    test(`Legacy service URL ${from} loads service page ${to}`, async ({ page }) => {
+      await page.goto(from, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('h1')).toHaveCount(1);
+      expect((await page.title()).length).toBeGreaterThan(10);
     });
   }
 

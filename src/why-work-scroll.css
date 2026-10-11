@@ -1,0 +1,13 @@
+/* =============================================================================
+   WHY WORK WITH US? — Slow Sequential Scroll-Scrubbed Reveal
+   ============================================================================= */
+
+#why-work {
+  position: relative;
+  overflow: visible;
+}
+
+#why-work .why-work-card {
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+}

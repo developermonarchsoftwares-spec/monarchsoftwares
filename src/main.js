@@ -29,8 +29,12 @@ import { initSectionStack } from './section-stack.js';
 import { initAllBorderGlow } from './border-glow.js';
 import { initChallengeScroll } from './challenge-scroll.js';
 import { initWhySection } from './why-section.js';
-import { initHorizontalSlide } from './horizontal-slide.js';
 import { initPillarsScroll } from './pillars-scroll.js';
+import { initMissionVisionScroll } from './mission-vision.js';
+import { initPrinciplesScroll } from './principles-scroll.js';
+import { initWhyWorkScroll } from './why-work-scroll.js';
+import { initCareerHero } from './career-hero.js';
+import { initHiringProcessCarousel } from './hiring-process.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         smooth: true,
         smoothTouch: false
     });
+    window.lenis = lenis;
 
     gsap.ticker.add((time) => {
         lenis.raf(time * 1000);
@@ -91,16 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     onScrollUpdate();
 
-    // 3. Smooth Anchor Link Scrolling
-    const getStaticTop = (element) => {
-        let top = 0;
-        let el = element;
-        while (el) {
-            top += el.offsetTop;
-            el = el.offsetParent;
-        }
-        return top;
+    // 3. Smooth Anchor Link Scrolling (for hash links on the same page)
+    const getTargetScrollTop = (element) => {
+        if (!element) return 0;
+        return element.getBoundingClientRect().top + lenis.scroll;
     };
+
+    const updateDropdownActive = () => {
+        const hash = window.location.hash;
+        document.querySelectorAll('.dropdown-item').forEach((a) => {
+            const href = a.getAttribute('href');
+            if (hash && (href === hash || href === '/' + hash)) {
+                a.setAttribute('aria-current', 'page');
+            } else {
+                a.removeAttribute('aria-current');
+            }
+        });
+    };
+    window.addEventListener('hashchange', updateDropdownActive);
+    updateDropdownActive();
 
     const onHome = window.location.pathname === '/' || window.location.pathname === '/index.html';
     document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach((anchor) => {
@@ -116,16 +130,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!target) return;
 
             e.preventDefault();
-            const targetTop = getStaticTop(target);
-            lenis.scrollTo(targetTop - 70, {
+            if (history.pushState) {
+                history.pushState(null, '', hash);
+                updateDropdownActive();
+            }
+            if (this.blur) this.blur();
+
+            const targetTop = getTargetScrollTop(target);
+            lenis.scrollTo(targetTop - 80, {
                 duration: 1.1,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
             });
         });
     });
 
-    // 4. Active Nav Link Indicator
-    const navAnchors = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+    // 4. Active Nav Link Indicator (top-level items only)
+    const navAnchors = Array.from(document.querySelectorAll('.nav-links > li > a[href^="#"]'));
     const updateActiveNav = () => {
         if (!navAnchors.length) return;
         const scrollPosition = lenis.scroll + 140;
@@ -136,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!hash || hash === '#') return;
             const sec = document.querySelector(hash);
             if (sec) {
-                const top = getStaticTop(sec);
+                const top = getTargetScrollTop(sec);
                 if (scrollPosition >= top) {
                     currentActive = a;
                 }
@@ -286,7 +306,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initChallengeScroll();
     initPillarsScroll();
     initWhySection();
-    initHorizontalSlide();
+    initMissionVisionScroll();
+    initPrinciplesScroll();
+    initWhyWorkScroll();
+    initCareerHero();
+    initHiringProcessCarousel();
 
     // 12c. 3D Flip Down Scroll Animation for Selected Work & About Images
     const initWorkImageFlipDown = () => {
@@ -686,7 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (onHome && window.location.hash.length > 1) {
             const target = document.querySelector(window.location.hash);
             if (target) {
-                setTimeout(() => lenis.scrollTo(getStaticTop(target) - 70, { immediate: true }), 150);
+                setTimeout(() => lenis.scrollTo(getTargetScrollTop(target) - 80, { immediate: true }), 150);
             }
         }
     });

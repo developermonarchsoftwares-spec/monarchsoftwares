@@ -1,8 +1,10 @@
 /**
- * BorderGlow — vanilla JS port of the official React Bits <BorderGlow /> (JS + CSS variant,
- * https://reactbits.dev/r/BorderGlow-JS-CSS.json). The helper functions, CSS variables and
- * pointer / sweep logic below mirror the official BorderGlow.jsx one-to-one; only the React
- * wrapper (refs/hooks/JSX) is replaced by direct DOM manipulation because this site has no React.
+ * BorderGlow — Official React Bits <BorderGlow /> implementation (JS + CSS variant,
+ * https://reactbits.dev/r/BorderGlow-JS-CSS.json).
+ *
+ * Provides site-wide reusable BorderGlow that integrates seamlessly onto all grid cards
+ * across the website while strictly preserving existing layouts, spacing, content,
+ * card dimensions, scroll reveal animations, and border-radii.
  */
 import './border-glow.css';
 
@@ -63,38 +65,46 @@ function animateValue({ start = 0, end = 100, duration = 1000, delay = 0, ease =
   setTimeout(() => requestAnimationFrame(tick), delay);
 }
 
-/** Official default props, overridden by the configuration requested for this site. */
+/** Official React Bits BorderGlow configuration requested for this site */
 export const BORDER_GLOW_CONFIG = {
-  edgeSensitivity: 30,
+  edgeSensitivity: 10,
   glowColor: '40 80 80',
   backgroundColor: '#120F17',
-  borderRadius: 28,
-  glowRadius: 40,
-  glowIntensity: 1.0,
-  coneSpread: 25,
-  animated: false,
+  borderRadius: 40,
+  glowRadius: 31,
+  glowIntensity: 2.5,
+  coneSpread: 16,
+  animated: true,
   colors: ['#c084fc', '#f472b6', '#38bdf8'],
   fillOpacity: 0.5
 };
 
 /**
- * Apply BorderGlow to an existing element in place (the element itself becomes the
- * `.border-glow-card`, so its position in the grid/layout does not change).
+ * Apply BorderGlow to an existing element in place (the element becomes the
+ * `.border-glow-card`, preserving its existing layout, dimensions, and DOM hierarchy).
  */
 export function initBorderGlow(element, options = {}) {
   if (!element || element.classList.contains('border-glow-card')) return;
+
   const {
     edgeSensitivity, glowColor, backgroundColor, borderRadius, glowRadius,
     glowIntensity, coneSpread, animated, colors, fillOpacity, keepStyle
   } = { ...BORDER_GLOW_CONFIG, ...options };
 
-  // Keep the element's original layout mode (the component's CSS would otherwise force `grid`).
+  // Preserve existing border-radius if the card already has a specific shape
+  const computedRadius = getComputedStyle(element).borderRadius;
+  let finalRadius = typeof borderRadius === 'number' ? `${borderRadius}px` : borderRadius;
+  if (computedRadius && computedRadius !== '0px' && computedRadius !== '40px' && !options.borderRadius) {
+    finalRadius = computedRadius;
+  }
+
+  // Preserve original layout display (grid, flex, block, etc.)
   const originalDisplay = getComputedStyle(element).display;
 
   const styles = {
     '--card-bg': backgroundColor,
     '--edge-sensitivity': edgeSensitivity,
-    '--border-radius': `${borderRadius}px`,
+    '--border-radius': finalRadius,
     '--glow-padding': `${glowRadius}px`,
     '--cone-spread': coneSpread,
     '--fill-opacity': fillOpacity,
@@ -103,7 +113,6 @@ export function initBorderGlow(element, options = {}) {
   };
   for (const [key, value] of Object.entries(styles)) element.style.setProperty(key, value);
 
-  // keepStyle: leave the element's own border / fill / shadow alone and only add the edge glow
   element.classList.add('border-glow-card', keepStyle ? 'bg-keep' : 'bg-host');
   if (isLightColor(backgroundColor)) element.classList.add('border-glow-card--light');
   if (originalDisplay && originalDisplay !== 'none') element.style.display = originalDisplay;
@@ -111,6 +120,7 @@ export function initBorderGlow(element, options = {}) {
   // <span class="edge-light"/> + <div class="border-glow-inner">children</div>
   const edge = document.createElement('span');
   edge.className = 'edge-light';
+  edge.setAttribute('aria-hidden', 'true');
   const inner = document.createElement('div');
   inner.className = 'border-glow-inner';
   while (element.firstChild) inner.appendChild(element.firstChild);
@@ -145,6 +155,7 @@ export function initBorderGlow(element, options = {}) {
   };
 
   element.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;
     const rect = element.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -152,7 +163,8 @@ export function initBorderGlow(element, options = {}) {
     element.style.setProperty('--cursor-angle', `${getCursorAngle(element, x, y).toFixed(3)}deg`);
   });
 
-  if (animated) {
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (animated && !isReducedMotion) {
     const angleStart = 110;
     const angleEnd = 465;
     element.classList.add('sweep-active');
@@ -172,15 +184,22 @@ export function initBorderGlow(element, options = {}) {
   }
 }
 
-/** Every bordered card / grid item across the site. Add `data-border-glow` to opt any other element in. */
+/** Every bordered card / grid item across the entire website */
 export const BORDER_GLOW_SELECTOR = [
   '[data-border-glow]',
-  '.content-card',      // service, about, overview & benefit cards
-  '.pillar-card',       // homepage service pillars
-  '.stat-box',          // homepage "Why Monarch" cards
-  '.faq-item',          // FAQ cards
-  '.climax-form-wrap',  // homepage inquiry form card
-  '#contact-form-card'  // contact page form card
+  '.content-card',          // service grids, about grids, mission/vision cards
+  '.pillar-card',           // homepage service pillars
+  '.principle-card',        // Core Principles cards
+  '.job-card',              // Career open positions cards
+  '.stat-box',              // "Why Monarch" cards
+  '.faq-item',              // FAQ cards
+  '.project-card',          // Project/portfolio grids
+  '.tech-matrix-card',      // Technology cards
+  '.service-preview-card',  // Service preview cards
+  '.about-image-card',      // About visual cards
+  '.climax-form-wrap',      // Inquiry form card
+  '#contact-form-card',     // Contact page form card
+  '.content-grid > div'     // Any card inside content grids across all pages
 ].join(',');
 
 export function initAllBorderGlow(root = document) {
