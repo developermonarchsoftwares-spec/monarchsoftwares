@@ -35,10 +35,10 @@ if (mount) {
                 accentColor="#f5f5f5"
                 wellColor="#27272a"
                 bandColor="#52525b"
-                size={56}
-                strokeWidth={3}
-                armAt={48}
-                maxPull={160}
+                size={38}
+                strokeWidth={2.5}
+                armAt={32}
+                maxPull={120}
                 launchSpeed={2600}
                 recoil={0.2}
                 flight={120}
@@ -47,7 +47,7 @@ if (mount) {
                 axis="any"
                 tapSends
             >
-                <HugeiconsIcon icon={SentIcon} size={22} strokeWidth={2} />
+                <HugeiconsIcon icon={SentIcon} size={16} strokeWidth={2} />
             </SlingButton>
         </div>
     );

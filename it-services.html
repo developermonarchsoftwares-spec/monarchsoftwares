@@ -143,9 +143,9 @@
 
             <nav class="nav-center" aria-label="Primary Navigation">
                 <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
+                    <li><a href="/">HOME</a></li>
                     <li class="nav-item-dropdown">
-                        <a class="active dropdown-toggle" href="/#services">Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
+                        <a class="active dropdown-toggle" href="/#services">SERVICES <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/corporate-training">
                                 <div class="dropdown-content"><h5>Corporate Training &amp; Trainer Deployment</h5><p>Custom programs &amp; on-demand trainers</p></div>
@@ -161,9 +161,9 @@
                             </a>
                         </div>
                     </li>
-                    <li><a href="/#careers">Careers</a></li>
-                    <li><a href="/#about">About</a></li>
-                    <li><a href="/#cta">Contact</a></li>
+                    <li><a href="/#careers">CAREERS</a></li>
+                    <li><a href="/#about">ABOUT</a></li>
+                    <li><a href="/#cta">CONTACT</a></li>
                 </ul>
             </nav>
 
@@ -186,71 +186,67 @@
     <!-- Main Page Content -->
     <main>
         <!-- Hero -->
-        <section class="hero">
-            <div class="container" style="max-width: 850px;">
-                <div style="margin-bottom: 1.5rem;">
+        <section class="hero service-hero">
+            <div class="service-hero-bg" aria-hidden="true"></div>
+            <div class="service-hero-overlay" aria-hidden="true"></div>
+            <div class="container service-hero-content" style="max-width: 850px;">
+                <div style="margin-bottom: 1.5rem;" class="service-hero-tag">
                     <span class="tag-mono">SERVICE 02 / IT &amp; SOFTWARE</span>
                 </div>
-                <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.5rem;">
+                <h1 class="service-hero-heading" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.5rem;">
                     IT Services &amp; Software Development
                 </h1>
-                <p style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem;">
+                <p class="service-hero-desc" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem;">
                     Monarch Softwares provides end-to-end IT services to power your digital infrastructure. From responsive websites and mobile apps to AI-driven automation and enterprise systems, our development teams turn your ideas into high-performance products. We don't just write code; we architect solutions built to scale and integrate with your operations.
                 </p>
-                <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2.25rem;"><a class="btn btn-primary" href="/#cta">Discuss Your Project</a></div>
+                <div class="service-hero-actions" style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2.25rem;"><a class="btn btn-primary" href="/#cta">Discuss Your Project</a></div>
             </div>
         </section>
-        <section class="content-section alt">
-            <div class="container content-wrap">
-                <div class="content-head">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">WEB &amp; MOBILE</span>
-                    <h2>Web &amp; Mobile Applications</h2>
-                    
-                </div>
-                <div class="content-grid">
-                    <div class="content-card">
-                        <h3>Full-Stack Development</h3>
-                        <p>We design and build custom web applications using modern frameworks such as Next.js, React, and Node.js. Sites are responsive, SEO-optimized, and can include analytics integration for conversion tracking.</p>
+        <section id="web-mobile-apps" class="customized-training-track">
+            <div class="customized-training-stage">
+                <!-- Abstract glowing ambient background treatment (from reference) -->
+                <div class="customized-ambient-glow" aria-hidden="true"></div>
+
+                <div class="customized-training-container">
+                    <!-- LEFT COLUMN: Fixed / Sticky Heading -->
+                    <div class="customized-left-col">
+                        <div class="customized-head-wrap">
+                            <span class="tag-mono customized-tag">WEB &amp; MOBILE</span>
+                            <h2 class="customized-main-heading">Web &amp; Mobile<br>Applications</h2>
+                            <p class="customized-subhead">
+                                Custom web platforms and native mobile applications architected for scalable performance, speed, and conversion.
+                            </p>
+                        </div>
                     </div>
-                    <div class="content-card">
-                        <h3>Native &amp; Cross-Platform Apps</h3>
-                        <p>Our mobile solutions cover iOS, Android, and cross-platform (React Native/Flutter). From consumer apps to internal tools, we handle everything from ideation through App Store and Play Store deployment and support.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Progressive Web Apps</h3>
-                        <p>For startups and businesses needing speed-to-market, we deliver PWAs that behave like native apps on mobile and desktop.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <div class="content-head">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">ADVANCED TECHNOLOGY</span>
-                    <h2>Advanced Technology Services</h2>
-                    
-                </div>
-                <div class="content-grid">
-                    <div class="content-card">
-                        <h3>AI &amp; Machine Learning</h3>
-                        <p>We implement practical AI solutions &mdash; from custom LLM pipelines and ML models to intelligent automation that streamlines workflows &mdash; with attention to safeguards, monitoring, and clear documentation.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Cloud &amp; DevOps</h3>
-                        <p>Our cloud engineering covers scalable infrastructure (containerization, serverless architectures), CI/CD pipelines, and security and monitoring practices on platforms such as AWS.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Big Data &amp; Analytics</h3>
-                        <p>Turn raw data into actionable insights. We build data pipelines and dashboards for real-time analytics, funnel attribution, and predictive modeling to guide strategic decisions.</p>
+
+                    <!-- RIGHT COLUMN: React Bits CardSwap 3D Grid Stack Area -->
+                    <div class="customized-right-col" id="web-mobile-cardswap-mount">
                     </div>
                 </div>
             </div>
         </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <figure class="content-media content-media--square">
-                    <img src="/src/assets/a-modern-sleek-illustration-of-a-full-st_60h0X8_tRLKbvrS2eClBiw_-K_2i9KdTWm69YjleGpFbQ_sd.jpeg" alt="Illustration of web, mobile, and cloud application architecture connected through data services" loading="lazy" width="1024" height="1024">
-                </figure>
+        <section class="content-section trainer-deployment-track" id="advanced-technology">
+            <div class="trainer-deployment-stage">
+                <div class="container content-wrap">
+                    <div class="content-head">
+                        <span class="tag-mono trainer-step-label" style="margin-bottom: 1rem;">ADVANCED TECHNOLOGY</span>
+                        <h2 class="trainer-step-heading">Advanced Technology Services</h2>
+                    </div>
+                    <div class="content-grid trainer-cards-grid">
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>AI &amp; Machine Learning</h3>
+                            <p>We implement practical AI solutions &mdash; from custom LLM pipelines and ML models to intelligent automation that streamlines workflows &mdash; with attention to safeguards, monitoring, and clear documentation.</p>
+                        </div>
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>Cloud &amp; DevOps</h3>
+                            <p>Our cloud engineering covers scalable infrastructure (containerization, serverless architectures), CI/CD pipelines, and security and monitoring practices on platforms such as AWS.</p>
+                        </div>
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>Big Data &amp; Analytics</h3>
+                            <p>Turn raw data into actionable insights. We build data pipelines and dashboards for real-time analytics, funnel attribution, and predictive modeling to guide strategic decisions.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         <section class="content-section alt">
@@ -283,45 +279,26 @@
                     <h2>Frequently Asked Questions</h2>
                 </div>
                 <div class="faq-list">
-                    <details class="faq-item">
-                        <summary>What is your development process?</summary>
-                        <p>We work in agile iterations with regular demos and planning. From day one we map out milestones, run code reviews in Git, and keep you in the loop so you have visibility into progress.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>Which technologies do you use?</summary>
-                        <p>Our stack includes modern web (React, Node.js, Python, and more), mobile (Swift, Kotlin, React Native), cloud platforms such as AWS, and database technologies. We choose the best tools for your project's needs.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>How long does a project take?</summary>
-                        <p>Timeline depends on scope. Smaller projects, such as a brochure website, can launch sooner than larger platforms like a custom app or ERP. We provide an estimated schedule in our proposal.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>Do you offer post-launch support?</summary>
-                        <p>Yes. Post-launch support, including bug fixes, performance tuning, and minor updates, is discussed and agreed as part of your project proposal, and ongoing maintenance options are available.</p>
-                    </details>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">What is your development process?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>We work in agile iterations with regular demos and planning. From day one we map out milestones, run code reviews in Git, and keep you in the loop so you have visibility into progress.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">Which technologies do you use?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>Our stack includes modern web (React, Node.js, Python, and more), mobile (Swift, Kotlin, React Native), cloud platforms such as AWS, and database technologies. We choose the best tools for your project's needs.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">How long does a project take?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>Timeline depends on scope. Smaller projects, such as a brochure website, can launch sooner than larger platforms like a custom app or ERP. We provide an estimated schedule in our proposal.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">Do you offer post-launch support?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>Yes. Post-launch support, including bug fixes, performance tuning, and minor updates, is discussed and agreed as part of your project proposal, and ongoing maintenance options are available.</p></div></div>
+                    </div>
                 </div>
             </div>
         </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <div class="content-head" style="margin-bottom: 1.75rem;">
-                    <h2 style="font-size: 1.3rem;">Related Pages</h2>
-                </div>
-                <nav class="related-links" aria-label="Related Pages"><a href="/training-placement">IT Training &amp; Placement Support</a><a href="/digital-marketing">Digital Marketing</a><a href="/#cta">Contact Us</a><a href="/#services">All Services</a></nav>
-            </div>
-        </section>
-        <!-- CTA -->
-        <section id="cta" class="section-climax-cta">
-            <div class="container climax-content reveal">
-                <span class="tag-mono" style="margin-bottom: 1rem;">GET STARTED</span>
-                <h2 class="climax-statement">Ready to Build Scalable Software?</h2>
-                <p class="climax-subtext">Tell us about your requirements and we'll prepare a proposal.</p>
-                <div class="climax-actions">
-                    <a href="/#cta" class="btn btn-primary">Discuss Your Project</a>
-                    <a href="/#services" class="btn btn-outline">All Services Overview</a>
-                </div>
-            </div>
-        </section>
+
     </main>
 
     <!-- Footer -->

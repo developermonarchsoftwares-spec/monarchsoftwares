@@ -143,9 +143,9 @@
 
             <nav class="nav-center" aria-label="Primary Navigation">
                 <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
+                    <li><a href="/">HOME</a></li>
                     <li class="nav-item-dropdown">
-                        <a class="active dropdown-toggle" href="/#services">Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
+                        <a class="active dropdown-toggle" href="/#services">SERVICES <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/corporate-training">
                                 <div class="dropdown-content"><h5>Corporate Training &amp; Trainer Deployment</h5><p>Custom programs &amp; on-demand trainers</p></div>
@@ -161,9 +161,9 @@
                             </a>
                         </div>
                     </li>
-                    <li><a href="/#careers">Careers</a></li>
-                    <li><a href="/#about">About</a></li>
-                    <li><a href="/#cta">Contact</a></li>
+                    <li><a href="/#careers">CAREERS</a></li>
+                    <li><a href="/#about">ABOUT</a></li>
+                    <li><a href="/#cta">CONTACT</a></li>
                 </ul>
             </nav>
 
@@ -186,79 +186,71 @@
     <!-- Main Page Content -->
     <main>
         <!-- Hero -->
-        <section class="hero">
-            <div class="container" style="max-width: 850px;">
-                <div style="margin-bottom: 1.5rem;">
+        <section class="hero service-hero">
+            <div class="service-hero-bg" aria-hidden="true"></div>
+            <div class="service-hero-overlay" aria-hidden="true"></div>
+            <div class="container service-hero-content" style="max-width: 850px;">
+                <div style="margin-bottom: 1.5rem;" class="service-hero-tag">
                     <span class="tag-mono">SERVICE 01 / CORPORATE TRAINING</span>
                 </div>
-                <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.5rem;">
+                <h1 class="service-hero-heading" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.5rem;">
                     Corporate Training &amp; Trainer Deployment
                 </h1>
-                <p style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem;">
+                <p class="service-hero-desc" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem;">
                     Monarch Softwares delivers tailored training programs and on-demand trainers to businesses, colleges, and training institutes. Whether you want to upskill employees with the latest IT and business skills, or supplement your institute's faculty with industry experts, we've got you covered. Our courses are built around real-world projects and practical outcomes.
                 </p>
-                <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2.25rem;"><a class="btn btn-primary" href="/#cta">Request a Corporate Training Consultation</a><a class="btn btn-outline" href="/#cta">Hire a Trainer</a></div>
+                <div class="service-hero-actions" style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2.25rem;"><a class="btn btn-primary" href="/#cta">Request a Corporate Training Consultation</a><a class="btn btn-outline" href="/#cta">Hire a Trainer</a></div>
             </div>
         </section>
-        <section class="content-section alt">
-            <div class="container content-wrap">
-                <div class="content-head">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">PROGRAMS</span>
-                    <h2>Customized Training Programs</h2>
-                    
-                </div>
-                <div class="content-grid">
-                    <div class="content-card">
-                        <h3>Curriculum Design</h3>
-                        <p>We collaborate with your leadership to create training content that meets your goals &mdash; for example a new technology adoption, leadership development, or digital marketing skills.</p>
+        <section id="customized-training" class="customized-training-track">
+            <div class="customized-training-stage">
+                <!-- Abstract glowing ambient background treatment (from reference) -->
+                <div class="customized-ambient-glow" aria-hidden="true"></div>
+
+                <div class="customized-training-container">
+                    <!-- LEFT COLUMN: Fixed / Sticky Heading -->
+                    <div class="customized-left-col">
+                        <div class="customized-head-wrap">
+                            <span class="tag-mono customized-tag">PROGRAMS</span>
+                            <h2 class="customized-main-heading">Customized Training<br>Programs</h2>
+                            <p class="customized-subhead">
+                                Tailored learning tracks engineered around your organization's specific technical and strategic objectives.
+                            </p>
+                        </div>
                     </div>
-                    <div class="content-card">
-                        <h3>Hands-on Learning</h3>
-                        <p>Trainees work on live projects and case studies, not just lectures. This project-based approach helps skills become immediately applicable.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Flexible Delivery</h3>
-                        <p>Choose from onsite workshops, virtual classrooms, or blended learning. Sessions can be one-off seminars or multi-week bootcamps, depending on need.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Progress Tracking</h3>
-                        <p>Pre- and post-training assessments gauge improvement, and we provide reports on trainee performance to help verify learning outcomes.</p>
+
+                    <!-- RIGHT COLUMN: React Bits CardSwap 3D Grid Stack Area -->
+                    <div class="customized-right-col" id="customized-training-mount">
                     </div>
                 </div>
             </div>
         </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <div class="content-head">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">TRAINERS</span>
-                    <h2>On-Demand Trainer Deployment</h2>
-                    
+        <section class="content-section trainer-deployment-track" id="trainer-deployment">
+            <div class="trainer-deployment-stage">
+                <div class="container content-wrap">
+                    <div class="content-head">
+                        <span class="tag-mono trainer-step-label" style="margin-bottom: 1rem;">TRAINERS</span>
+                        <h2 class="trainer-step-heading">On-Demand Trainer Deployment</h2>
+                    </div>
+                    <div class="content-grid trainer-cards-grid">
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>Industry-Experienced Instructors</h3>
+                            <p>We work with trainers who bring practical, on-the-job insight &mdash; they don't just teach theory, they share how the work is done in the real world.</p>
+                        </div>
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>For Institutes &amp; Colleges</h3>
+                            <p>Enhance your institution's offerings by bringing in qualified IT and soft-skills trainers when you need them. We help with recruitment, vetting, and scheduling.</p>
+                        </div>
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>For Corporates</h3>
+                            <p>Whether you're training a small leadership group or staff across locations, we plan the right trainers and schedule with you. Logistics and training materials can be managed by Monarch.</p>
+                        </div>
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>Matched to Your Needs</h3>
+                            <p>We assess trainers for subject-matter expertise and communication skills, and match them to your culture and program requirements.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="content-card">
-                        <h3>Industry-Experienced Instructors</h3>
-                        <p>We work with trainers who bring practical, on-the-job insight &mdash; they don't just teach theory, they share how the work is done in the real world.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>For Institutes &amp; Colleges</h3>
-                        <p>Enhance your institution's offerings by bringing in qualified IT and soft-skills trainers when you need them. We help with recruitment, vetting, and scheduling.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>For Corporates</h3>
-                        <p>Whether you're training a small leadership group or staff across locations, we plan the right trainers and schedule with you. Logistics and training materials can be managed by Monarch.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Matched to Your Needs</h3>
-                        <p>We assess trainers for subject-matter expertise and communication skills, and match them to your culture and program requirements.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <figure class="content-media content-media--square">
-                    <img src="/src/assets/a-professional-business-meeting-in-a-hig_sS_c49feSsino60hRoLvgA_hyVYnefeTxSrIosinFj8wA_sd.jpeg" alt="Professionals collaborating in a business planning meeting" loading="lazy" width="1024" height="1024">
-                </figure>
             </div>
         </section>
         <section class="content-section alt">
@@ -291,45 +283,26 @@
                     <h2>Frequently Asked Questions</h2>
                 </div>
                 <div class="faq-list">
-                    <details class="faq-item">
-                        <summary>What training topics can Monarch cover?</summary>
-                        <p>We offer a wide range of topics including software development fundamentals, data science, cloud computing, digital marketing, leadership, communication skills, and more. If you have a specific skill gap, we can tailor a program for it.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>Who are your trainers?</summary>
-                        <p>Our trainers bring industry experience and a practical, project-based approach to teaching. We match trainers to your topic, audience, and program requirements.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>How do you ensure training quality?</summary>
-                        <p>Each program includes milestones, feedback sessions, and practical assessments. We gather feedback from participants and adjust content as needed, with a focus on practical competency.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>Can you handle training for a large corporation?</summary>
-                        <p>We can plan programs for teams of different sizes, from small groups to larger cohorts. Share your requirements and we'll discuss how best to scale delivery.</p>
-                    </details>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">What training topics can Monarch cover?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>We offer a wide range of topics including software development fundamentals, data science, cloud computing, digital marketing, leadership, communication skills, and more. If you have a specific skill gap, we can tailor a program for it.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">Who are your trainers?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>Our trainers bring industry experience and a practical, project-based approach to teaching. We match trainers to your topic, audience, and program requirements.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">How do you ensure training quality?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>Each program includes milestones, feedback sessions, and practical assessments. We gather feedback from participants and adjust content as needed, with a focus on practical competency.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">Can you handle training for a large corporation?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>We can plan programs for teams of different sizes, from small groups to larger cohorts. Share your requirements and we'll discuss how best to scale delivery.</p></div></div>
+                    </div>
                 </div>
             </div>
         </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <div class="content-head" style="margin-bottom: 1.75rem;">
-                    <h2 style="font-size: 1.3rem;">Related Pages</h2>
-                </div>
-                <nav class="related-links" aria-label="Related Pages"><a href="/training-placement">IT Training &amp; Placement Support</a><a href="/#careers">Careers</a><a href="/#cta">Contact Us for a Training Proposal</a><a href="/#services">All Services</a></nav>
-            </div>
-        </section>
-        <!-- CTA -->
-        <section id="cta" class="section-climax-cta">
-            <div class="container climax-content reveal">
-                <span class="tag-mono" style="margin-bottom: 1rem;">GET STARTED</span>
-                <h2 class="climax-statement">Plan Your Training Program</h2>
-                <p class="climax-subtext">Share your training needs and we'll propose a custom solution.</p>
-                <div class="climax-actions">
-                    <a href="/#cta" class="btn btn-primary">Request a Corporate Training Consultation</a>
-                    <a href="/#cta" class="btn btn-outline">Hire a Trainer</a>
-                </div>
-            </div>
-        </section>
+
     </main>
 
     <!-- Footer -->

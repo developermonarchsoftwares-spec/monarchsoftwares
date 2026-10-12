@@ -1,0 +1,157 @@
+/* =============================================================================
+   CULTURE & ENVIRONMENT — DESKTOP OPTIMIZED 3D SCROLL-DRIVEN CONVERGENCE
+   ============================================================================= */
+.culture-track {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Stage container pinned by GSAP ScrollTrigger on desktop */
+.culture-stage {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  perspective: 1400px;
+  background: transparent;
+}
+
+.culture-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  perspective: 1400px;
+}
+
+.culture-head {
+  max-width: 760px;
+  margin: 0 auto clamp(2.5rem, 5vh, 4rem);
+  text-align: center;
+  will-change: transform, opacity, filter;
+}
+
+.culture-tag {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.culture-title {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.culture-desc {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* Cards Grid: Desktop 3-Column Clean Balanced Composition */
+.culture-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+  align-items: stretch;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+}
+
+/* Responsive: 1440px / 1366px / 1920px adjustments */
+@media (min-width: 1441px) {
+  .culture-cards-grid {
+    max-width: 1180px; /* Prevents cards from becoming oversized on 1920px+ monitors */
+  }
+}
+
+@media (max-width: 960px) {
+  .culture-cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 540px;
+    margin: 0 auto;
+    gap: 1.5rem;
+  }
+  .culture-stage {
+    min-height: auto;
+    padding: 4rem 1.25rem;
+  }
+}
+
+/* Individual Culture Card: Monochrome Luxury Black & White */
+.culture-card {
+  position: relative;
+  background: var(--bg-card, #0a0a0a);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  padding: clamp(1.85rem, 3vw, 2.35rem);
+  box-sizing: border-box;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 250px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.culture-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Moving Light Sweep Border Effect during Reveal */
+.card-border-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%);
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.card-tag {
+  display: inline-block;
+  margin-bottom: 0.85rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.card-desc {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 0.93rem;
+  margin: 0;
+}

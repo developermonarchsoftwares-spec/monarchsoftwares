@@ -1,0 +1,17 @@
+.scroll-float {
+  overflow: visible;
+  margin: 0;
+  padding: 0;
+}
+
+.scroll-float-text {
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
+}

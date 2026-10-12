@@ -1,0 +1,240 @@
+/* =============================================================================
+   WEB & MOBILE APPLICATIONS — Two-Column Cinematic Scroll Experience
+   Left: Fixed Heading (40%) • Right: Sequential Scroll-Driven Content (60%)
+   Monochrome Black & White • Editorial • No Cards • No Grids
+   ============================================================================= */
+
+.web-mobile-track {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background: #000000;
+  border-top: none !important;
+  border-bottom: none !important;
+  overflow: visible;
+}
+
+/* Full-Screen Pinned Stage on Desktop */
+.web-mobile-stage {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 5vw, 6rem);
+  box-sizing: border-box;
+  background: #000000;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Subtle Ambient Glow */
+.web-mobile-ambient-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 65% 50% at 20% 40%, rgba(255, 255, 255, 0.04) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 45% at 75% 60%, rgba(255, 248, 235, 0.025) 0%, transparent 60%);
+  z-index: 1;
+}
+
+/* Two-Column Container */
+.web-mobile-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(3rem, 6vw, 7rem);
+  box-sizing: border-box;
+}
+
+/* LEFT COLUMN — Fixed Content (~40% width) */
+.web-mobile-left-col {
+  flex: 0 0 40%;
+  max-width: 500px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.web-mobile-head-wrap {
+  width: 100%;
+}
+
+.web-mobile-eyebrow {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+}
+
+.web-mobile-main-heading {
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+/* RIGHT COLUMN — CardSwap 3D Grid Mount Area (~60% width) */
+.web-mobile-right-col {
+  flex: 1 1 60%;
+  max-width: 760px;
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.web-mobile-cardswap-wrapper {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  perspective: 900px;
+  user-select: none;
+}
+
+.web-mobile-cardswap {
+  width: 100%;
+  height: 100%;
+  max-width: 680px;
+}
+
+/* Step Items (01, 02, 03) */
+.web-mobile-step-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 620px;
+  box-sizing: border-box;
+  pointer-events: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  will-change: transform, opacity, filter;
+}
+
+.web-mobile-step-item.is-active {
+  pointer-events: auto;
+}
+
+/* Large Subtle Step Number */
+.web-mobile-step-num {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: clamp(3rem, 4.5vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: -0.04em;
+  margin-bottom: 1.25rem;
+  user-select: none;
+}
+
+/* Subtle Glowing Horizontal Line */
+.web-mobile-glow-line {
+  width: 100%;
+  max-width: 240px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.25) 75%, transparent 100%);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.25), 0 0 16px rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+/* Large Bright Title */
+.web-mobile-step-title {
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0 0 1.25rem;
+}
+
+/* Muted Grey Description */
+.web-mobile-step-desc {
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  color: var(--text-secondary, rgba(255, 255, 255, 0.65));
+  line-height: 1.8;
+  max-width: 580px;
+  margin: 0;
+}
+
+/* =============================================================================
+   RESPONSIVENESS (Mobile & Tablet)
+   ============================================================================= */
+
+@media (max-width: 960px) {
+  .web-mobile-stage {
+    height: auto;
+    min-height: auto;
+    padding: clamp(3rem, 6vh, 5rem) clamp(1.25rem, 4vw, 2.5rem);
+    user-select: auto;
+    overflow: visible;
+  }
+
+  .web-mobile-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3.5rem;
+  }
+
+  .web-mobile-left-col {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .web-mobile-right-col {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-height: auto;
+    width: 100%;
+  }
+
+  .web-mobile-stage-viewport {
+    position: relative;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+    width: 100%;
+  }
+
+  .web-mobile-step-item {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .web-mobile-step-item {
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}

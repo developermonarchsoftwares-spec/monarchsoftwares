@@ -258,9 +258,9 @@
 
             <nav class="nav-center" aria-label="Primary Navigation">
                 <ul class="nav-links">
-                    <li><a class="active" href="/">Home</a></li>
+                    <li><a class="active" href="/">HOME</a></li>
                     <li class="nav-item-dropdown">
-                        <a class="dropdown-toggle" href="#services">Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
+                        <a class="dropdown-toggle" href="#services">SERVICES <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/corporate-training">
                                 <div class="dropdown-content"><h5>Corporate Training &amp; Trainer Deployment</h5><p>Custom programs &amp; on-demand trainers</p></div>
@@ -276,9 +276,9 @@
                             </a>
                         </div>
                     </li>
-                    <li><a href="#careers">Careers</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#cta">Contact</a></li>
+                    <li><a href="#careers">CAREERS</a></li>
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#cta">CONTACT</a></li>
                 </ul>
             </nav>
 
@@ -787,40 +787,48 @@
 
         </section>
 
-<div id="careers-overview" style="padding: 2rem 0 4rem; border-top: none;">
-            <div class="container" style="max-width: 1100px;">
-                <div style="max-width: 760px; margin: 0 auto 4rem; text-align: center;">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">CULTURE &amp; ENVIRONMENT</span>
-                    <h3 style="font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; margin-bottom: 1.25rem; color: var(--text-primary); letter-spacing: -0.02em;">
-                        Built Around Engineering Excellence.
-                    </h3>
-                    <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem;">
-                        We strip away corporate bureaucracy to focus on execution, craft, and tangible business outcomes. Every team member has direct ownership over their projects.
-                    </p>
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <div data-border-glow style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 2.25rem;">
-                        <span class="tag-mono" style="margin-bottom: 0.75rem;">COLLABORATION</span>
-                        <h4 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">High-Performance Proximity</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.92rem;">Direct collaboration with senior engineers and founders designed for rapid feedback and shared intelligence.</p>
+        <div id="careers-overview" class="culture-track">
+            <div class="culture-stage">
+                <div class="container culture-container">
+                    <div class="culture-head">
+                        <span class="tag-mono culture-tag">CULTURE &amp; ENVIRONMENT</span>
+                        <h3 class="culture-title">
+                            Built Around Engineering Excellence.
+                        </h3>
+                        <p class="culture-desc">
+                            We strip away corporate bureaucracy to focus on execution, craft, and tangible business outcomes. Every team member has direct ownership over their projects.
+                        </p>
                     </div>
 
-                    <div data-border-glow style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 2.25rem;">
-                        <span class="tag-mono" style="margin-bottom: 0.75rem;">CRAFT</span>
-                        <h4 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Modern Technical Stack</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.92rem;">We build with modern TypeScript, React, Next.js, and Python. We prioritize tools that let you build cleanly without legacy friction.</p>
-                    </div>
+                    <div class="culture-cards-grid">
+                        <!-- Left Card: Collaboration -->
+                        <div class="culture-card card-left" data-border-glow>
+                            <div class="card-border-sweep" aria-hidden="true"></div>
+                            <span class="tag-mono card-tag">COLLABORATION</span>
+                            <h4 class="card-title">High-Performance Proximity</h4>
+                            <p class="card-desc">Direct collaboration with senior engineers and founders designed for rapid feedback and shared intelligence.</p>
+                        </div>
 
-                    <div data-border-glow style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 2.25rem;">
-                        <span class="tag-mono" style="margin-bottom: 0.75rem;">AUTONOMY</span>
-                        <h4 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">End-to-End Ownership</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.92rem;">You own architectural decisions, sprint deliverables, and code quality from initial schema design to production launch.</p>
+                        <!-- Center Card: Craft -->
+                        <div class="culture-card card-center" data-border-glow>
+                            <div class="card-border-sweep" aria-hidden="true"></div>
+                            <span class="tag-mono card-tag">CRAFT</span>
+                            <h4 class="card-title">Modern Technical Stack</h4>
+                            <p class="card-desc">We build with modern TypeScript, React, Next.js, and Python. We prioritize tools that let you build cleanly without legacy friction.</p>
+                        </div>
+
+                        <!-- Right Card: Autonomy -->
+                        <div class="culture-card card-right" data-border-glow>
+                            <div class="card-border-sweep" aria-hidden="true"></div>
+                            <span class="tag-mono card-tag">AUTONOMY</span>
+                            <h4 class="card-title">End-to-End Ownership</h4>
+                            <p class="card-desc">You own architectural decisions, sprint deliverables, and code quality from initial schema design to production launch.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-<div id="positions" style="padding: 4rem 0 clamp(4rem, 8vw, 8rem); border-top: 1px solid var(--border); background: var(--bg-subtle);">
+<div id="positions" style="padding: 4rem 0 clamp(4rem, 8vw, 8rem); border-top: 1px solid var(--border); background: transparent;">
             <div class="container" style="max-width: 900px;">
                 <div style="text-align: center; margin-bottom: 3.5rem;">
                     <span class="tag-mono" style="margin-bottom: 1rem;">OPPORTUNITIES</span>
@@ -881,57 +889,77 @@
             </div>
         </div>
         <div id="hiring-process">
-            <div class="hiring-process-container">
-                <div class="hiring-process-header">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">EVALUATION PROCESS</span>
-                    <h3>Our Hiring Process.</h3>
-                    <p>We respect your time. Our technical interview cycle is transparent and designed to give you an answer within two weeks.</p>
-                </div>
+            <div id="hiring-process-root" style="width: 100%; position: relative;">
+                <div class="hiring-cinematic-stage">
+                    <div class="hiring-header-wrap">
+                        <span class="tag-mono hiring-header-tag">OUR HIRING PROCESS</span>
+                        <h3 class="hiring-header-title">Our Hiring Process.</h3>
+                        <p class="hiring-header-desc">
+                            We respect your time. Our technical interview cycle is transparent and designed to give you an answer within two weeks.
+                        </p>
+                    </div>
 
-                <div id="hiring-process-root" style="width: 100%; position: relative;">
-                    <!-- Fallback / initial cards before mount -->
-                    <div class="hiring-process-fallback-grid">
-                        <div class="hiring-process-card" data-border-glow>
-                            <div class="hiring-card-top">
-                                <span class="tag-mono hiring-card-stage">STAGE 01</span>
-                                <span class="hiring-card-number">01 / 04</span>
-                            </div>
-                            <div class="hiring-card-body">
-                                <h4 class="hiring-card-title">Profile Review</h4>
-                                <p class="hiring-card-desc">Review of your past projects, GitHub repositories, and practical engineering experience.</p>
+                    <div class="hiring-cinematic-body">
+                        <div class="hiring-left-col">
+                            <div class="hiring-stages-viewport">
+                                <div class="hiring-stage-panel is-active">
+                                    <span class="hiring-stage-num">01 / 04</span>
+                                    <h2 class="scroll-float hiring-stage-title">
+                                        <span class="scroll-float-text">Profile Review</span>
+                                    </h2>
+                                    <div class="hiring-stage-divider" aria-hidden="true"></div>
+                                    <p class="hiring-stage-desc">
+                                        Review of your past projects, GitHub repositories, and practical engineering experience.
+                                    </p>
+                                    <div class="hiring-stage-meta">
+                                        <span class="hiring-meta-dot" aria-hidden="true"></span>
+                                        <span>INITIAL EVALUATION</span>
+                                        <span class="hiring-meta-line" aria-hidden="true"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="hiring-process-card" data-border-glow>
-                            <div class="hiring-card-top">
-                                <span class="tag-mono hiring-card-stage">STAGE 02</span>
-                                <span class="hiring-card-number">02 / 04</span>
-                            </div>
-                            <div class="hiring-card-body">
-                                <h4 class="hiring-card-title">Technical Call</h4>
-                                <p class="hiring-card-desc">A 30-minute conversation with an engineering lead covering architecture decisions and system tradeoffs.</p>
-                            </div>
-                        </div>
-
-                        <div class="hiring-process-card" data-border-glow>
-                            <div class="hiring-card-top">
-                                <span class="tag-mono hiring-card-stage">STAGE 03</span>
-                                <span class="hiring-card-number">03 / 04</span>
-                            </div>
-                            <div class="hiring-card-body">
-                                <h4 class="hiring-card-title">Practical Task</h4>
-                                <p class="hiring-card-desc">A focused real-world coding exercise focused on clean structure, readability, and documentation.</p>
-                            </div>
-                        </div>
-
-                        <div class="hiring-process-card" data-border-glow>
-                            <div class="hiring-card-top">
-                                <span class="tag-mono hiring-card-stage">STAGE 04</span>
-                                <span class="hiring-card-number">04 / 04</span>
-                            </div>
-                            <div class="hiring-card-body">
-                                <h4 class="hiring-card-title">Final Offer</h4>
-                                <p class="hiring-card-desc">Clear offer letter with transparent compensation, role expectations, and start date.</p>
+                        <div class="hiring-right-col">
+                            <div class="hiring-timeline" aria-label="Hiring Process Stages">
+                                <div class="hiring-timeline-track" aria-hidden="true"></div>
+                                <div class="hiring-timeline-progress" aria-hidden="true"></div>
+                                <div class="hiring-timeline-item is-active">
+                                    <div class="hiring-timeline-node">
+                                        <span class="hiring-timeline-dot"></span>
+                                    </div>
+                                    <div class="hiring-timeline-info">
+                                        <span class="hiring-timeline-num">01</span>
+                                        <span class="hiring-timeline-title">Profile Review</span>
+                                    </div>
+                                </div>
+                                <div class="hiring-timeline-item">
+                                    <div class="hiring-timeline-node">
+                                        <span class="hiring-timeline-dot"></span>
+                                    </div>
+                                    <div class="hiring-timeline-info">
+                                        <span class="hiring-timeline-num">02</span>
+                                        <span class="hiring-timeline-title">Technical Interview</span>
+                                    </div>
+                                </div>
+                                <div class="hiring-timeline-item">
+                                    <div class="hiring-timeline-node">
+                                        <span class="hiring-timeline-dot"></span>
+                                    </div>
+                                    <div class="hiring-timeline-info">
+                                        <span class="hiring-timeline-num">03</span>
+                                        <span class="hiring-timeline-title">Team Discussion</span>
+                                    </div>
+                                </div>
+                                <div class="hiring-timeline-item">
+                                    <div class="hiring-timeline-node">
+                                        <span class="hiring-timeline-dot"></span>
+                                    </div>
+                                    <div class="hiring-timeline-info">
+                                        <span class="hiring-timeline-num">04</span>
+                                        <span class="hiring-timeline-title">Offer</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -975,8 +1003,8 @@
                             <input type="hidden" name="from_name" value="MONARCH SOFTWARES Form">
                             <input type="checkbox" name="botcheck" class="hidden" style="display: none;" tabindex="-1" autocomplete="off">
 
-                            <h3 style="margin-bottom: 0.5rem; font-size: 1.35rem; font-weight: 600; color: var(--text-primary);">Send Us an Inquiry</h3>
-                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6;">Tell us how we can help. We respect your privacy &mdash; no spam or data-sharing.</p>
+                            <h3 class="climax-form-title">Send Us an Inquiry</h3>
+                            <p class="climax-form-desc">Tell us how we can help. We respect your privacy &mdash; no spam or data-sharing.</p>
 
                             <div class="climax-form-grid">
                                 <div class="climax-form-field">
@@ -995,11 +1023,11 @@
                                     <label class="climax-form-label" for="contact-service">How Can We Help?</label>
                                     <select class="climax-form-select" id="contact-service" name="service" required>
                                         <option value="">Select an option</option>
-                                    <option value="Training">Training</option>
-                                    <option value="Recruitment">Recruitment</option>
-                                    <option value="Software">Software</option>
-                                    <option value="Marketing">Marketing</option>
-                                    <option value="Other">Other</option>
+                                        <option value="Training">Training</option>
+                                        <option value="Recruitment">Recruitment</option>
+                                        <option value="Software">Software</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                                 <div class="climax-form-field">
@@ -1007,7 +1035,7 @@
                                     <textarea class="climax-form-textarea" id="contact-message" name="message" rows="4" placeholder="Tell us briefly about your goals or requirements..." required></textarea>
                                 </div>
                                 <div id="sling-send-root" class="sling-root"></div>
-                                <div id="form-result" role="status" aria-live="polite" style="text-align: center; font-size: 0.88rem; min-height: 1.2rem;"></div>
+                                <div id="form-result" role="status" aria-live="polite"></div>
                             </div>
                         </form>
                 </div>
@@ -1091,7 +1119,6 @@
 
     <!-- Core App Module Entrypoint -->
     <script type="module" src="/src/main.js"></script>
-    <script type="module" src="/src/galaxy-bg.jsx"></script>
     <script type="module" src="/src/contact-sling.jsx"></script>
     <script type="module" src="/src/about-electric-logo.jsx"></script>
 </body>

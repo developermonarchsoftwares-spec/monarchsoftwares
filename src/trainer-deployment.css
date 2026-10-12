@@ -1,0 +1,122 @@
+/* =============================================================================
+   STANDARDIZED SERVICE 3RD SECTION — CINEMATIC SCROLL REVEAL
+   Master Design & Animation Component across all 4 Service Pages
+   ============================================================================= */
+
+.trainer-deployment-track,
+#trainer-deployment.trainer-deployment-track {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-main, #000000);
+  overflow: visible;
+}
+
+.trainer-deployment-track .trainer-deployment-stage,
+#trainer-deployment .trainer-deployment-stage {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* On desktop (>=769px), stage is centered for pinned cinematic presentation */
+@media (min-width: 769px) {
+  .trainer-deployment-track,
+  #trainer-deployment.trainer-deployment-track {
+    padding: 0 !important;
+  }
+  .trainer-deployment-track .trainer-deployment-stage,
+  #trainer-deployment .trainer-deployment-stage {
+    min-height: 100vh;
+    padding: clamp(3rem, 6vh, 5rem) 1.5rem;
+  }
+}
+
+/* Horizontal card layout on desktop with compact cohesive gap */
+@media (min-width: 1025px) {
+  .trainer-deployment-track .content-wrap,
+  #trainer-deployment .content-wrap {
+    max-width: 1320px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .trainer-deployment-track .trainer-cards-grid,
+  #trainer-deployment .trainer-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
+  }
+  /* 3-card balance when a section has 3 cards (Pages 2, 3, 4) */
+  .trainer-deployment-track .trainer-cards-grid:not(:has(> :nth-child(4))),
+  #trainer-deployment .trainer-cards-grid:not(:has(> :nth-child(4))) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+/* 2-column layout on tablet with 20px gap */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .trainer-deployment-track .content-wrap,
+  #trainer-deployment .content-wrap {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .trainer-deployment-track .trainer-cards-grid,
+  #trainer-deployment .trainer-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
+  }
+}
+
+/* 1-column layout on mobile with 16px gap */
+@media (max-width: 768px) {
+  .trainer-deployment-track .content-wrap,
+  #trainer-deployment .content-wrap {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .trainer-deployment-track .trainer-deployment-stage,
+  #trainer-deployment .trainer-deployment-stage {
+    padding: clamp(3rem, 8vw, 4.5rem) 1.25rem;
+  }
+  .trainer-deployment-track .trainer-cards-grid,
+  #trainer-deployment .trainer-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+}
+
+/* Smooth GPU hardware acceleration for animated elements */
+.trainer-deployment-track .trainer-step-label,
+.trainer-deployment-track .trainer-step-heading,
+.trainer-deployment-track .trainer-card,
+#trainer-deployment .trainer-step-label,
+#trainer-deployment .trainer-step-heading,
+#trainer-deployment .trainer-card {
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Ensure cards maintain their exact styling, borders, and hover interaction */
+.trainer-deployment-track .trainer-card,
+#trainer-deployment .trainer-card {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.trainer-deployment-track .trainer-card:hover,
+#trainer-deployment .trainer-card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+}

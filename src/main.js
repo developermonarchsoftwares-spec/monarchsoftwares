@@ -35,6 +35,13 @@ import { initPrinciplesScroll } from './principles-scroll.js';
 import { initWhyWorkScroll } from './why-work-scroll.js';
 import { initCareerHero } from './career-hero.js';
 import { initHiringProcessCarousel } from './hiring-process.jsx';
+import { initCultureSection } from './culture-section.js';
+import './service-hero.css';
+import { initServiceHero } from './service-hero.jsx';
+import { initCustomizedTrainingCardSwap, initAllServiceSecondSections } from './customized-training.jsx';
+import { initHoverFAQ } from './faq.js';
+import { initWebMobileCardSwap } from './web-mobile-cardswap.jsx';
+import { initTrainerDeploymentScroll } from './trainer-deployment.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -310,7 +317,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initPrinciplesScroll();
     initWhyWorkScroll();
     initCareerHero();
+    initCultureSection();
     initHiringProcessCarousel();
+    initServiceHero();
+    initAllServiceSecondSections();
+    initTrainerDeploymentScroll();
+    initHoverFAQ();
 
     // 12c. 3D Flip Down Scroll Animation for Selected Work & About Images
     const initWorkImageFlipDown = () => {

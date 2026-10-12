@@ -135,9 +135,9 @@
 
             <nav class="nav-center" aria-label="Primary Navigation">
                 <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
+                    <li><a href="/">HOME</a></li>
                     <li class="nav-item-dropdown">
-                        <a class="active dropdown-toggle" href="/#services">Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
+                        <a class="active dropdown-toggle" href="/#services">SERVICES <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/corporate-training">
                                 <div class="dropdown-content"><h5>Corporate Training &amp; Trainer Deployment</h5><p>Custom programs &amp; on-demand trainers</p></div>
@@ -153,9 +153,9 @@
                             </a>
                         </div>
                     </li>
-                    <li><a href="/#careers">Careers</a></li>
-                    <li><a href="/#about">About</a></li>
-                    <li><a href="/#cta">Contact</a></li>
+                    <li><a href="/#careers">CAREERS</a></li>
+                    <li><a href="/#about">ABOUT</a></li>
+                    <li><a href="/#cta">CONTACT</a></li>
                 </ul>
             </nav>
 
@@ -178,62 +178,65 @@
     <!-- Main Page Content -->
     <main>
         <!-- Hero -->
-        <section class="hero">
-            <div class="container" style="max-width: 850px;">
-                <div style="margin-bottom: 1.5rem;">
+        <section class="hero service-hero">
+            <div class="service-hero-bg" aria-hidden="true"></div>
+            <div class="service-hero-overlay" aria-hidden="true"></div>
+            <div class="container service-hero-content" style="max-width: 850px;">
+                <div style="margin-bottom: 1.5rem;" class="service-hero-tag">
                     <span class="tag-mono">SERVICE 04 / TRAINING &amp; PLACEMENT</span>
                 </div>
-                <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.5rem;">
+                <h1 class="service-hero-heading" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 1.5rem;">
                     IT Training &amp; Placement Support
                 </h1>
-                <p style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem;">
+                <p class="service-hero-desc" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem;">
                     Monarch Softwares helps aspiring IT professionals become job-ready and connects them with companies. Our career engineering programs immerse freshers and career-switchers in hands-on projects under expert mentorship. Trainees build a portfolio of project work and receive support with applications and interview preparation, while companies gain access to trained candidates matched to the skills they need.
                 </p>
-                <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2.25rem;"><a class="btn btn-primary" href="/#cta">Hire Trained Candidates</a><a class="btn btn-outline" href="/#cta">Enroll in a Training Program</a></div>
+                <div class="service-hero-actions" style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2.25rem;"><a class="btn btn-primary" href="/#cta">Hire Trained Candidates</a><a class="btn btn-outline" href="/#cta">Enroll in a Training Program</a></div>
             </div>
         </section>
-        <section class="content-section alt">
-            <div class="container content-wrap">
-                <div class="content-head">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">TRAINING</span>
-                    <h2>Comprehensive Training Programs</h2>
-                    
-                </div>
-                <div class="content-grid">
-                    <div class="content-card">
-                        <h3>Hands-On Curriculum</h3>
-                        <p>We teach industry-relevant skills &mdash; full-stack development, AI &amp; ML, digital marketing, HR operations &mdash; through practical projects. Graduates don't just have certificates; they have code and campaigns to show.</p>
+        <section id="comprehensive-training" class="customized-training-track">
+            <div class="customized-training-stage">
+                <!-- Abstract glowing ambient background treatment (from reference) -->
+                <div class="customized-ambient-glow" aria-hidden="true"></div>
+
+                <div class="customized-training-container">
+                    <!-- LEFT COLUMN: Fixed / Sticky Heading -->
+                    <div class="customized-left-col">
+                        <div class="customized-head-wrap">
+                            <span class="tag-mono customized-tag">TRAINING</span>
+                            <h2 class="customized-main-heading">Comprehensive Training<br>Programs</h2>
+                            <p class="customized-subhead">
+                                Hands-on learning tracks and industry mentorship designed to prepare aspiring technologists for immediate career impact.
+                            </p>
+                        </div>
                     </div>
-                    <div class="content-card">
-                        <h3>Mentorship</h3>
-                        <p>Learners receive guidance and feedback from working professionals. This personalized support helps accelerate learning and build confidence.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Structured Progress</h3>
-                        <p>Programs start with fundamentals and build toward advanced projects, with regular assessments to check mastery at each stage. Contact us for current program and batch details.</p>
+
+                    <!-- RIGHT COLUMN: React Bits CardSwap 3D Grid Stack Area -->
+                    <div class="customized-right-col" id="training-placement-cardswap-mount">
                     </div>
                 </div>
             </div>
         </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <div class="content-head">
-                    <span class="tag-mono" style="margin-bottom: 1rem;">FOR EMPLOYERS</span>
-                    <h2>Placement Support for Employers</h2>
-                    
-                </div>
-                <div class="content-grid">
-                    <div class="content-card">
-                        <h3>Candidate Sourcing</h3>
-                        <p>We maintain a talent pool of trained freshers and experienced candidates. Share your hiring requirements and we'll work to shortlist qualified candidates. Ask us about current terms.</p>
+        <section class="content-section trainer-deployment-track" id="placement-support">
+            <div class="trainer-deployment-stage">
+                <div class="container content-wrap">
+                    <div class="content-head">
+                        <span class="tag-mono trainer-step-label" style="margin-bottom: 1rem;">FOR EMPLOYERS</span>
+                        <h2 class="trainer-step-heading">Placement Support for Employers</h2>
                     </div>
-                    <div class="content-card">
-                        <h3>Requirement-Based Hiring &amp; Training</h3>
-                        <p>Have specific needs? We can design and run a custom training batch. Share your job descriptions and we'll train a cohort aimed at the roles you need to fill.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Retention Focus</h3>
-                        <p>Our selection approach combines skills assessment and interviews with in-depth training, so candidates are better prepared to stay on and contribute long-term.</p>
+                    <div class="content-grid trainer-cards-grid">
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>Candidate Sourcing</h3>
+                            <p>We maintain a talent pool of trained freshers and experienced candidates. Share your hiring requirements and we'll work to shortlist qualified candidates. Ask us about current terms.</p>
+                        </div>
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>Requirement-Based Hiring &amp; Training</h3>
+                            <p>Have specific needs? We can design and run a custom training batch. Share your job descriptions and we'll train a cohort aimed at the roles you need to fill.</p>
+                        </div>
+                        <div class="content-card trainer-card" data-border-glow>
+                            <h3>Retention Focus</h3>
+                            <p>Our selection approach combines skills assessment and interviews with in-depth training, so candidates are better prepared to stay on and contribute long-term.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -268,41 +271,22 @@
                     <h2>Frequently Asked Questions</h2>
                 </div>
                 <div class="faq-list">
-                    <details class="faq-item">
-                        <summary>Who is eligible for your training programs?</summary>
-                        <p>We train fresh graduates and working professionals looking to upskill or switch careers. Basic computer literacy is helpful; we build on that foundation with technical and soft skills.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>How does placement support work?</summary>
-                        <p>We help trained candidates prepare for and apply to opportunities, including interview practice. Employers can share their requirements and access trained candidates from our talent pool. Contact us for current terms.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary>How are requirements communicated to Monarch?</summary>
-                        <p>Companies can submit a brief of their open roles and required skills. We then source candidates and/or run a custom training batch targeting those skills &mdash; like outsourcing recruitment and training together.</p>
-                    </details>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">Who is eligible for your training programs?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>We train fresh graduates and working professionals looking to upskill or switch careers. Basic computer literacy is helpful; we build on that foundation with technical and soft skills.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">How does placement support work?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>We help trained candidates prepare for and apply to opportunities, including interview practice. Employers can share their requirements and access trained candidates from our talent pool. Contact us for current terms.</p></div></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-summary" role="button" tabindex="0">How are requirements communicated to Monarch?</div>
+                        <div class="faq-answer"><div class="faq-answer-inner"><p>Companies can submit a brief of their open roles and required skills. We then source candidates and/or run a custom training batch targeting those skills &mdash; like outsourcing recruitment and training together.</p></div></div>
+                    </div>
                 </div>
             </div>
         </section>
-        <section class="content-section">
-            <div class="container content-wrap">
-                <div class="content-head" style="margin-bottom: 1.75rem;">
-                    <h2 style="font-size: 1.3rem;">Related Pages</h2>
-                </div>
-                <nav class="related-links" aria-label="Related Pages"><a href="/#about">About Us</a><a href="/#careers">Careers</a><a href="/corporate-training">Corporate Training</a><a href="/#cta">Contact Us About Hiring or Training</a><a href="/#services">All Services</a></nav>
-            </div>
-        </section>
-        <!-- CTA -->
-        <section id="cta" class="section-climax-cta">
-            <div class="container climax-content reveal">
-                <span class="tag-mono" style="margin-bottom: 1rem;">GET STARTED</span>
-                <h2 class="climax-statement">Hire Trained Talent or Start Your IT Career</h2>
-                <p class="climax-subtext">Share your hiring needs or tell us about your goals and we'll get back to you.</p>
-                <div class="climax-actions">
-                    <a href="/#cta" class="btn btn-primary">Hire Trained Candidates</a>
-                    <a href="/#cta" class="btn btn-outline">Enroll in a Training Program</a>
-                </div>
-            </div>
-        </section>
+
     </main>
 
     <!-- Footer -->

@@ -1,0 +1,181 @@
+/* =============================================================================
+   CUSTOMIZED TRAINING PROGRAMS — Two-Column Cinematic Scroll Experience
+   Left: Fixed Heading • Right: Sequential Scroll-Driven Content
+   Monochrome Black & White • Editorial • No Cards • No Grids
+   ============================================================================= */
+
+.customized-training-track {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background: #000000;
+  border-top: none !important;
+  border-bottom: none !important;
+  overflow: visible;
+}
+
+/* Full-Screen Pinned Stage on Desktop */
+.customized-training-stage {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 5vw, 5rem);
+  box-sizing: border-box;
+  background: #000000;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Ambient Subtle Lighting Treatment (from reference image) */
+.customized-ambient-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 20% 35%, rgba(255, 255, 255, 0.05) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 50% at 80% 65%, rgba(255, 248, 235, 0.03) 0%, transparent 60%),
+    radial-gradient(circle 350px at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+  z-index: 1;
+}
+
+/* Two-Column Container */
+.customized-training-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(3rem, 6vw, 7rem);
+  box-sizing: border-box;
+}
+
+/* LEFT COLUMN — Fixed Content (40% - 45% width) */
+.customized-left-col {
+  flex: 0 0 42%;
+  max-width: 520px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.customized-head-wrap {
+  width: 100%;
+}
+
+.customized-tag {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+}
+
+.customized-main-heading {
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 1.5rem;
+}
+
+.customized-subhead {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.65));
+  line-height: 1.75;
+  font-size: clamp(1rem, 1.15vw, 1.12rem);
+  max-width: 440px;
+  margin: 0;
+}
+
+/* RIGHT COLUMN — CardSwap 3D Grid Area (55% - 60% width) */
+.customized-right-col {
+  flex: 1 1 58%;
+  max-width: 760px;
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.customized-cardswap-wrapper {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  perspective: 900px;
+  user-select: none;
+}
+
+.customized-training-cardswap {
+  width: 100%;
+  height: 100%;
+  max-width: 680px;
+}
+
+/* =============================================================================
+   RESPONSIVENESS (Tablet & Mobile)
+   ============================================================================= */
+
+/* Tablet (961px - 1200px) */
+@media (max-width: 1200px) {
+  .customized-main-heading {
+    font-size: clamp(2.2rem, 3.6vw, 3rem);
+  }
+  .customized-cardswap-wrapper {
+    height: 440px;
+  }
+}
+
+/* Mobile & Small Tablets (< 960px): Stack Layout Vertically */
+@media (max-width: 960px) {
+  .customized-training-stage {
+    height: auto;
+    min-height: 100vh;
+    padding: 5rem 1.5rem;
+    align-items: flex-start;
+  }
+
+  .customized-training-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+  .customized-left-col {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .customized-main-heading {
+    font-size: clamp(2rem, 6vw, 2.8rem);
+  }
+
+  .customized-right-col {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    min-height: 420px;
+  }
+
+  .customized-cardswap-wrapper {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .customized-cardswap-wrapper {
+    height: 360px;
+  }
+}

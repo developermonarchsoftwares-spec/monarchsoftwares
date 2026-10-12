@@ -27,7 +27,6 @@ export function initPrinciplesScroll() {
   const progressFill = document.getElementById('principles-progress-fill');
   const counterEl = document.getElementById('principles-counter');
   const nodes = Array.from(section.querySelectorAll('.principles-node'));
-  const galaxyBg = document.getElementById('galaxy-bg');
 
   const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (isReducedMotion) {
@@ -141,11 +140,6 @@ export function initPrinciplesScroll() {
         onUpdate: (self) => {
           updateCardInterpolation();
           updateProgressUI(self.progress);
-
-          // Subtle starfield parallax during horizontal scroll
-          if (galaxyBg) {
-            gsap.set(galaxyBg, { x: -30 * self.progress });
-          }
         },
       },
     });
@@ -166,9 +160,6 @@ export function initPrinciplesScroll() {
         }
       });
       track.style.transform = '';
-      if (galaxyBg) {
-        galaxyBg.style.transform = '';
-      }
     };
   });
 
