@@ -3250,3 +3250,71 @@ main > section,
 }
 
 
+
+/* =============================================================================
+   FOOTER REFINEMENT — calm, spacious, black & white. One top hairline, one line above and one below the
+   MONARCH SOFTWARES watermark; more room between columns; no other decoration.
+   ============================================================================= */
+.footer-editorial {
+  position: relative;
+  padding: clamp(5rem, 9vw, 8rem) 0 clamp(1.75rem, 3vw, 2.5rem);
+}
+.footer-editorial::before,
+.footer-wordmark::before,
+.footer-wordmark::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 18%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.22) 82%, rgba(255,255,255,0) 100%);
+  box-shadow: 0 0 10px rgba(255,255,255,0.08);
+}
+.footer-editorial::before { top: 0; }
+
+.footer-top-row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
+  gap: clamp(3.5rem, 7vw, 7rem);
+  margin-bottom: clamp(4rem, 7vw, 6.5rem);
+}
+.footer-brand-col { gap: 1.75rem; }
+.footer-mission { max-width: 360px; line-height: 1.8; }
+.footer-contact-details { gap: 0.8rem; line-height: 1.6; }
+.footer-links-grid { gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+.footer-link-group { gap: 1.5rem; }
+.footer-group-title { letter-spacing: 0.18em; color: var(--text-tertiary); }
+.footer-link-list { gap: 0.95rem; }
+.footer-link-list a { line-height: 1.5; }
+
+/* watermark band: a thin line above and below, clear spacing, very subtle fill */
+.footer-wordmark {
+  position: relative;
+  margin: 0;
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+.footer-wordmark::before { top: 0; }
+.footer-wordmark::after { bottom: 0; }
+.footer-wordmark text { fill: #141417; }
+
+.footer-legal-bar {
+  padding-top: clamp(1.75rem, 3vw, 2.5rem);
+  gap: 1.5rem;
+}
+.footer-legal-links { gap: 2rem; }
+
+@media (max-width: 900px) {
+  .footer-top-row { grid-template-columns: 1fr; gap: 3.5rem; }
+  .footer-links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2.75rem; }
+}
+@media (max-width: 560px) {
+  .footer-links-grid { grid-template-columns: 1fr; }
+}
+
+/* Footer: equal rhythm — top line -> content, content -> upper watermark line, watermark <-> its lines */
+.footer-editorial { padding-top: clamp(3rem, 5vw, 4rem); }
+.footer-top-row { margin-bottom: clamp(3rem, 5vw, 4rem); }
+.footer-wordmark { padding: clamp(1.5rem, 3vw, 2.25rem) 0; }
+.footer-legal-bar { padding-top: clamp(1.5rem, 2.5vw, 2rem); }
+/* the watermark glyphs carry ~12px of built-in air; pad a little less than the other gaps so the visual spacing matches */
+.footer-wordmark { padding: clamp(1.75rem, 3.6vw, 2.75rem) 0; }

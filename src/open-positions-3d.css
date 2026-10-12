@@ -1,0 +1,25 @@
+/* Open Positions — pinned cinematic 3D scene. Heading + job cards keep their existing styling. */
+.op-track { position: relative; height: 1050vh; border-top: 1px solid var(--border); background: transparent; }
+.op-stage { position: sticky; top: 0; height: 100vh; overflow: clip; background: #000; }
+.op-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.op-heading { position: absolute; top: clamp(5.5rem, 12vh, 7.5rem); left: 0; right: 0; text-align: center; z-index: 3; pointer-events: none; padding: 0 16px; }
+.op-cards { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.op-cards .job-card {
+    position: absolute; top: 0; left: 0; width: min(440px, calc(100vw - 32px)); box-sizing: border-box;
+    padding: 1.4rem 1.5rem !important; opacity: 0; transform-origin: 0 0; will-change: transform, opacity;
+    flex-direction: column; align-items: flex-start !important; gap: 1rem !important;
+}
+.op-cards .job-card > a { align-self: flex-start; }
+.op-cards .job-card h4 { font-size: 1.1rem !important; }
+
+/* No WebGL / reduced motion: plain stacked content */
+.op-track.op-static { height: auto; padding: 4rem 0; }
+.op-static .op-stage { position: relative; height: auto; overflow: visible; background: transparent; padding: 0 16px; }
+.op-static .op-canvas { display: none; }
+.op-static .op-heading { position: static; margin-bottom: 2.5rem; }
+.op-static .op-cards { position: static; display: flex; flex-direction: column; gap: 1.25rem; max-width: 900px; margin: 0 auto; pointer-events: auto; }
+.op-static .op-cards .job-card { position: static; opacity: 1; transform: none !important; width: auto; flex-direction: row; align-items: center !important; }
+
+@media (max-width: 759px) {
+    .op-track { height: 800vh; }
+}

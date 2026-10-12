@@ -34,6 +34,7 @@ import { initMissionVisionScroll } from './mission-vision.js';
 import { initPrinciplesScroll } from './principles-scroll.js';
 import { initWhyWorkScroll } from './why-work-scroll.js';
 import { initCareerHero } from './career-hero.js';
+import { initOpenPositions } from './open-positions-3d.js';
 import { initHiringProcessCarousel } from './hiring-process.jsx';
 import { initCultureSection } from './culture-section.js';
 import './service-hero.css';
@@ -151,34 +152,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 4. Active Nav Link Indicator (top-level items only)
+    // 4. Active Nav Link Indicator — one item active, driven by the section currently in view.
+    //    Home covers everything above #services; "Why Monarch" belongs to Services; Careers runs until Contact.
+    const homeLink = document.querySelector('.nav-links > li > a[href="/"]');
     const navAnchors = Array.from(document.querySelectorAll('.nav-links > li > a[href^="#"]'));
+    const navSections = [
+        { link: homeLink, el: document.getElementById('hero') },
+        ...navAnchors.map((a) => ({ link: a, el: document.querySelector(a.getAttribute('href')) })),
+        { link: navAnchors.find((a) => a.getAttribute('href') === '#services'), el: document.getElementById('why') }
+    ].filter((x) => x.link && x.el);
     const updateActiveNav = () => {
-        if (!navAnchors.length) return;
-        const scrollPosition = lenis.scroll + 140;
-
-        let currentActive = null;
-        navAnchors.forEach((a) => {
-            const hash = a.getAttribute('href');
-            if (!hash || hash === '#') return;
-            const sec = document.querySelector(hash);
-            if (sec) {
-                const top = getTargetScrollTop(sec);
-                if (scrollPosition >= top) {
-                    currentActive = a;
-                }
-            }
+        if (!navSections.length) return;
+        const scrollPosition = window.scrollY + 140;
+        let current = homeLink, best = -Infinity;
+        navSections.forEach(({ link, el }) => {
+            const top = el.getBoundingClientRect().top + window.scrollY;
+            if (scrollPosition >= top && top > best) { best = top; current = link; }
         });
-
-        navAnchors.forEach((a) => {
-            if (a === currentActive) {
-                a.classList.add('active');
-            } else {
-                a.classList.remove('active');
-            }
+        [homeLink, ...navAnchors].forEach((a) => {
+            if (!a) return;
+            a.classList.toggle('active', a === current);
+            if (a === current) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
         });
     };
     updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    window.addEventListener('resize', updateActiveNav);
 
     // 5. Initialize 3D WebGL Digital Horizon in Hero
     initHeroCanvas('hero-canvas-container');
@@ -317,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPrinciplesScroll();
     initWhyWorkScroll();
     initCareerHero();
+    initOpenPositions();
     initCultureSection();
     initHiringProcessCarousel();
     initServiceHero();

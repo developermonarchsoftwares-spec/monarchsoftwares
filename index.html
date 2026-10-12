@@ -303,8 +303,8 @@
         <ul class="mobile-nav-list">
             <li><a href="#services" class="mobile-nav-link"><span class="mobile-nav-num">01</span> Services</a></li>
             <li><a href="#why" class="mobile-nav-link"><span class="mobile-nav-num">02</span> Why Monarch</a></li>
-            <li><a href="#about" class="mobile-nav-link"><span class="mobile-nav-num">03</span> About</a></li>
-            <li><a href="#careers" class="mobile-nav-link"><span class="mobile-nav-num">04</span> Careers</a></li>
+            <li><a href="#careers" class="mobile-nav-link"><span class="mobile-nav-num">03</span> Careers</a></li>
+            <li><a href="#about" class="mobile-nav-link"><span class="mobile-nav-num">04</span> About</a></li>
             <li><a href="#cta" class="mobile-nav-link"><span class="mobile-nav-num">05</span> Contact</a></li>
         </ul>
         <div class="mobile-drawer-footer">
@@ -828,16 +828,15 @@
                 </div>
             </div>
         </div>
-<div id="positions" style="padding: 4rem 0 clamp(4rem, 8vw, 8rem); border-top: 1px solid var(--border); background: transparent;">
-            <div class="container" style="max-width: 900px;">
-                <div style="text-align: center; margin-bottom: 3.5rem;">
+<div id="positions" class="op-track">
+            <div class="op-stage">
+                <canvas class="op-canvas" aria-hidden="true"></canvas>
+                <div class="op-heading">
                     <span class="tag-mono" style="margin-bottom: 1rem;">OPPORTUNITIES</span>
                     <h3 style="font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; color: var(--text-primary);">Open Positions.</h3>
                     <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1rem;">Find your role in our engineering and growth team.</p>
                 </div>
-
-                <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                    <!-- Job 1 -->
+                <div class="op-cards">
                     <div class="job-card" style="background: rgba(12, 12, 12, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; transition: border-color 0.3s ease;">
                         <div>
                             <span class="tag-mono" style="margin-bottom: 0.4rem;">ENGINEERING</span>
@@ -850,8 +849,6 @@
                         </div>
                         <a class="btn btn-outline" href="#cta" style="font-size: 0.85rem; padding: 0.65rem 1.5rem;">Apply Now &rarr;</a>
                     </div>
-
-                    <!-- Job 2 -->
                     <div class="job-card" style="background: rgba(12, 12, 12, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; transition: border-color 0.3s ease;">
                         <div>
                             <span class="tag-mono" style="margin-bottom: 0.4rem;">GROWTH</span>
@@ -864,8 +861,6 @@
                         </div>
                         <a class="btn btn-outline" href="#cta" style="font-size: 0.85rem; padding: 0.65rem 1.5rem;">Apply Now &rarr;</a>
                     </div>
-
-                    <!-- Job 3 -->
                     <div class="job-card" style="background: rgba(12, 12, 12, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; transition: border-color 0.3s ease;">
                         <div>
                             <span class="tag-mono" style="margin-bottom: 0.4rem;">TALENT</span>
@@ -879,13 +874,14 @@
                         <a class="btn btn-outline" href="#cta" style="font-size: 0.85rem; padding: 0.65rem 1.5rem;">Apply Now &rarr;</a>
                     </div>
                 </div>
-
-                <div style="margin-top: 3.5rem; text-align: center;">
-                    <p style="color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.95rem;">Don't see a specific opening matching your background?</p>
-                    <a href="mailto:contact@monarchsoftwares.com" style="color: var(--accent); text-decoration: underline; font-weight: 550; font-size: 0.95rem;">
-                        Send your portfolio or GitHub profile to contact@monarchsoftwares.com &rarr;
-                    </a>
-                </div>
+            </div>
+        </div>
+        <div class="op-footnote container" style="max-width: 900px;">
+            <div style="padding: 3rem 0 clamp(4rem, 8vw, 8rem); text-align: center;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.95rem;">Don't see a specific opening matching your background?</p>
+                <a href="mailto:contact@monarchsoftwares.com" style="color: var(--accent); text-decoration: underline; font-weight: 550; font-size: 0.95rem;">
+                    Send your portfolio or GitHub profile to contact@monarchsoftwares.com &rarr;
+                </a>
             </div>
         </div>
         <div id="hiring-process">
