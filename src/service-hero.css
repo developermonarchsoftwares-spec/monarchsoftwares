@@ -100,3 +100,12 @@
 .service-hero-tag {
   will-change: transform, opacity;
 }
+
+/* Small screens: let the hero grow with its copy (a fixed 100vh box clipped the top of the heading under the
+   navbar on short / narrow viewports) and clear the fixed navbar. Desktop is unchanged. */
+@media (max-width: 900px) {
+  .service-hero {
+    height: auto !important;
+    padding: 6rem 0 3rem !important;
+  }
+}

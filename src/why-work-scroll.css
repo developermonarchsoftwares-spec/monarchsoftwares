@@ -4,10 +4,17 @@
 
 #why-work {
   position: relative;
+  background: var(--bg-main, #000000);
+  z-index: 5;
   overflow: visible;
 }
 
 #why-work .why-work-card {
   will-change: transform, opacity, filter;
   transform-origin: center center;
+}
+
+/* Tablet: the grid is two columns wide, so the third card would sit alone on the left — let it span the row */
+@media (min-width: 700px) and (max-width: 1099px) {
+  #why-work .why-work-grid > .why-work-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }

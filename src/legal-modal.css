@@ -1,0 +1,118 @@
+/* Legal modal (Privacy Policy / Terms of Service) — sits above the navbar and the floating WhatsApp button */
+.legal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.28s ease, visibility 0s linear 0.28s;
+  overscroll-behavior: contain;
+}
+.legal-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.28s ease, visibility 0s;
+}
+.legal-modal__panel {
+  width: 100%;
+  max-width: 800px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(8, 8, 8, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  color: var(--text-primary);
+  outline: none;
+  transform: translateY(10px) scale(0.96);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+.legal-modal.is-open .legal-modal__panel { transform: none; }
+
+.legal-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 0 0 auto;
+}
+.legal-modal__title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+.legal-modal__x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.legal-modal__x:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+.legal-modal__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.5rem 1.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+.legal-body { font-size: 0.95rem; }
+.legal-body > p:first-child { margin-bottom: 1.75rem !important; font-size: 0.85rem !important; }
+.legal-body h2 { font-size: 1.1rem !important; }
+.legal-body > div { gap: 1.5rem !important; font-size: 0.95rem !important; }
+
+.legal-modal__foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 0 0 auto;
+}
+.legal-modal__close {
+  padding: 0.7rem 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.legal-modal__close:hover { background: #e5e5ea; transform: translateY(-1px); }
+.legal-modal__x:focus-visible,
+.legal-modal__close:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .legal-modal { padding: 0.75rem; }
+  .legal-modal__panel { max-height: 85vh; border-radius: 16px; }
+  .legal-modal__head, .legal-modal__content, .legal-modal__foot { padding-left: 1.1rem; padding-right: 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .legal-modal, .legal-modal__panel { transition: none; }
+}

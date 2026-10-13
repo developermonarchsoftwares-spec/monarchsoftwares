@@ -40,7 +40,8 @@ export function AboutHeroElectricBackground() {
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          opacity: 0.8
         }}
       >
         <ElectricLogo

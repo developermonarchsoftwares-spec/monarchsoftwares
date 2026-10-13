@@ -135,6 +135,7 @@ export function initPrinciplesScroll() {
         end: () => `+=${Math.round(getScrollDistance() * 1.15)}`,
         scrub: 1, // Fluid, natural scrub value
         pin: true,
+        pinSpacing: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {

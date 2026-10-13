@@ -81,8 +81,15 @@ function FooterWarp({ stage }) {
     );
 }
 
-const stage = document.querySelector('.footer-wordmark__stage');
-if (stage && !stage.dataset.warp) {
-    stage.dataset.warp = '1';
-    createRoot(stage).render(<FooterWarp stage={stage} />);
+export function initFooterWarp() {
+    const stage = document.querySelector('.footer-wordmark__stage');
+    if (stage && !stage.dataset.warp) {
+        stage.dataset.warp = '1';
+        createRoot(stage).render(<FooterWarp stage={stage} />);
+    }
 }
+
+if (typeof document !== 'undefined') {
+    initFooterWarp();
+}
+

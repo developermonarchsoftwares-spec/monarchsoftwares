@@ -1,133 +1,130 @@
-/**
- * Legal.js - Manages Privacy Policy and Terms of Service modals.
- */
+import './legal-modal.css';
 
-// HTML content for legal pages
-const legalContent = {
-    privacy: {
-        title: "Privacy Policy",
-        content: `
-            <div class="legal-section">
-                <h3>1. Introduction</h3>
-                <p>Welcome to MONARCH SOFTWARES. We respect your privacy and are committed to protecting your personal data. This privacy policy informs you how we handle personal data when you visit our website or get in touch regarding project engagements.</p>
-            </div>
-            <div class="legal-section">
-                <h3>2. The Data We Collect</h3>
-                <p>We may collect, use, and process the following contact and technical information:</p>
-                <ul>
-                    <li><strong>Contact Information:</strong> Your name, company name, email address, phone number, and project details provided in forms.</li>
-                    <li><strong>Technical Telemetry:</strong> Anonymized browser type, general geography, referral source, and device parameters to ensure reliable rendering.</li>
-                </ul>
-            </div>
-            <div class="legal-section">
-                <h3>3. How We Use Your Data</h3>
-                <p>We use your information exclusively to:</p>
-                <ul>
-                    <li>Evaluate project scope and respond to inquiries with technical architectures and cost estimates.</li>
-                    <li>Coordinate client sprint milestones and deliver custom software services.</li>
-                    <li>We never sell, rent, or trade your personal data to third parties for marketing.</li>
-                </ul>
-            </div>
-            <div class="legal-section">
-                <h3>4. Data Security</h3>
-                <p>We implement standard organizational and technical security measures to prevent unauthorized disclosure, alteration, or destruction of your information.</p>
-            </div>
-            <div class="legal-section">
-                <h3>5. Contact Details</h3>
-                <p>If you have questions about this policy or your personal data, reach us at <a href="mailto:contact@monarchsoftwares.com">contact@monarchsoftwares.com</a> or +91 6385753874.</p>
-            </div>
-        `
-    },
-    terms: {
-        title: "Terms of Service",
-        content: `
-            <div class="legal-section">
-                <h3>1. Engagement Terms</h3>
-                <p>By accessing the website at <a href="https://monarchsoftwares.com">monarchsoftwares.com</a>, you agree to be bound by these terms of service, applicable laws, and regulations.</p>
-            </div>
-            <div class="legal-section">
-                <h3>2. Professional Services & IP</h3>
-                <p>All custom software architectures, codebases, and digital assets developed under contract belong 100% to our clients upon fulfillment of contract milestones. Informational materials published on this website are protected by copyright.</p>
-            </div>
-            <div class="legal-section">
-                <h3>3. Disclaimer</h3>
-                <p>Informational content and demonstration features on this website are provided on an 'as is' basis. While we maintain rigorous engineering standards, warranties regarding third-party platforms are governed by respective client agreements.</p>
-            </div>
-            <div class="legal-section">
-                <h3>4. Governing Law</h3>
-                <p>These terms and conditions are governed by and construed in accordance with the laws of India, with jurisdiction in Coimbatore, Tamil Nadu.</p>
-            </div>
-        `
+/**
+ * Privacy Policy / Terms of Service as one reusable modal.
+ * Any link to /privacy or /terms (footer legal bars on every page) opens the document in a centred popup on the
+ * current page — no navigation, no URL change. The text is read from the existing privacy.html / terms.html
+ * (so the legal copy stays in one place); if that fetch fails, the link falls back to its normal navigation.
+ */
+const DOCS = {
+    privacy: { url: '/privacy.html', title: 'Privacy Policy' },
+    terms: { url: '/terms.html', title: 'Terms of Service' }
+};
+const cache = {};
+let modal = null, bodyEl = null, titleEl = null, lastFocus = null;
+
+const docOf = (a) => {
+    if (a.matches('.privacy-trigger, #open-privacy-link')) return 'privacy'; // triggers the previous modal used
+    if (a.matches('.terms-trigger, #open-terms-link')) return 'terms';
+    const href = (a.getAttribute('href') || '').replace(/\.html$/, '').replace(/\/$/, '');
+    if (href === '/privacy') return 'privacy';
+    if (href === '/terms') return 'terms';
+    return null;
+};
+
+const load = async (key) => {
+    if (cache[key]) return cache[key];
+    const res = await fetch(DOCS[key].url, { credentials: 'same-origin' });
+    if (!res.ok) throw new Error('legal fetch failed');
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const wrap = doc.querySelector('main .container');
+    if (!wrap) throw new Error('legal content missing');
+    const label = wrap.querySelector('.tag-mono');
+    if (label && label.parentElement) label.parentElement.remove(); // "Legal Documentation" label
+    const h1 = wrap.querySelector('h1');
+    if (h1) h1.remove(); // the modal header carries the title
+    const frag = document.createElement('div');
+    frag.className = 'legal-body';
+    frag.innerHTML = wrap.innerHTML;
+    cache[key] = frag.outerHTML;
+    return cache[key];
+};
+
+const build = () => {
+    modal = document.createElement('div');
+    modal.className = 'legal-modal';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('data-lenis-prevent', '');
+    modal.innerHTML =
+        '<div class="legal-modal__panel" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" tabindex="-1">' +
+        '<div class="legal-modal__head"><h2 id="legal-modal-title" class="legal-modal__title"></h2>' +
+        '<button type="button" class="legal-modal__x" aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
+        '<div class="legal-modal__content" data-lenis-prevent></div>' +
+        '<div class="legal-modal__foot"><button type="button" class="legal-modal__close">Close</button></div>' +
+        '</div>';
+    document.body.appendChild(modal);
+    titleEl = modal.querySelector('.legal-modal__title');
+    bodyEl = modal.querySelector('.legal-modal__content');
+    // overlay click only; clicks inside the panel never close it
+    modal.addEventListener('mousedown', (e) => { if (e.target === modal) close(); });
+    modal.querySelector('.legal-modal__x').addEventListener('click', close);
+    modal.querySelector('.legal-modal__close').addEventListener('click', close);
+};
+
+const lock = (on) => {
+    const root = document.documentElement;
+    if (on) {
+        const sw = window.innerWidth - root.clientWidth;
+        root.style.overflow = 'hidden';
+        if (sw > 0) root.style.paddingRight = sw + 'px';
+        if (window.lenis && window.lenis.stop) window.lenis.stop();
+    } else {
+        root.style.overflow = '';
+        root.style.paddingRight = '';
+        if (window.lenis && window.lenis.start) window.lenis.start();
     }
 };
 
-/**
- * Initializes the legal modal structure and sets up event listeners for triggers.
- */
-export function initLegalModals() {
-    const modalHTML = `
-        <div id="legal-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-            <div class="modal-container">
-                <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid var(--border-light); padding-bottom:1rem;">
-                    <h2 id="modal-title" style="font-size:1.4rem; font-weight:600; color:var(--text-primary); margin:0;"></h2>
-                    <button id="modal-close" class="modal-close-btn" aria-label="Close modal" style="font-size:1.5rem; cursor:pointer; line-height:1; color:var(--text-secondary);">&times;</button>
-                </div>
-                <div id="modal-content" class="modal-body" style="font-size:0.95rem; line-height:1.7; color:var(--text-secondary);"></div>
-                <div class="modal-footer" style="margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border-light); display:flex; justify-content:flex-end;">
-                    <button class="btn btn-outline close-footer-btn" style="padding:0.6rem 1.5rem;">Close</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    if (!document.getElementById('legal-modal')) {
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
+const onKey = (e) => {
+    if (e.key === 'Escape') { close(); return; }
+    if (e.key === 'Tab' && modal) { // keep focus inside the dialog
+        const f = modal.querySelectorAll('button, a[href]');
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
+};
 
-    const modal = document.getElementById('legal-modal');
-    const title = document.getElementById('modal-title');
-    const body = document.getElementById('modal-content');
-    const closeBtn = document.getElementById('modal-close');
-    const footCloseBtn = modal.querySelector('.close-footer-btn');
-
-    const openModal = (type) => {
-        const data = legalContent[type];
-        if (!data) return;
-
-        title.innerText = data.title;
-        body.innerHTML = data.content;
-        modal.classList.add('active');
+function open(key) {
+    if (!modal) build();
+    const wasOpen = modal.classList.contains('is-open');
+    titleEl.textContent = DOCS[key].title;
+    bodyEl.innerHTML = cache[key] || '';
+    bodyEl.scrollTop = 0;
+    if (!wasOpen) {
+        lastFocus = document.activeElement;
+        lock(true);
+        document.addEventListener('keydown', onKey);
         modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-    };
-
-    const closeModal = () => {
-        modal.classList.remove('active');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-    };
-
-    document.addEventListener('click', (e) => {
-        const privTrigger = e.target.closest('.privacy-trigger, #open-privacy-link');
-        const termsTrigger = e.target.closest('.terms-trigger, #open-terms-link');
-        if (privTrigger) {
-            e.preventDefault();
-            openModal('privacy');
-        } else if (termsTrigger) {
-            e.preventDefault();
-            openModal('terms');
-        }
-    });
-
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (footCloseBtn) footCloseBtn.addEventListener('click', closeModal);
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
+        requestAnimationFrame(() => modal.classList.add('is-open'));
     }
+    modal.querySelector('.legal-modal__panel').focus({ preventScroll: true });
+}
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-    });
+function close() {
+    if (!modal || !modal.classList.contains('is-open')) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('keydown', onKey);
+    lock(false);
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+}
+
+export function initLegalModals() {
+    document.addEventListener('click', async (e) => {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        const a = e.target.closest && e.target.closest('a[href]');
+        const key = a && docOf(a);
+        if (!key) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        try {
+            await load(key);
+            open(key);
+        } catch (err) {
+            window.location.href = DOCS[key].url.replace(/\.html$/, ''); // fallback: normal navigation
+        }
+    }, true);
 }

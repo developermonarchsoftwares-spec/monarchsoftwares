@@ -60,7 +60,7 @@ export function initWhyWorkScroll() {
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: section,
-      start: 'top 70%',
+      start: 'top 45%',
       end: scrollRange,
       scrub: 1,
       invalidateOnRefresh: true,

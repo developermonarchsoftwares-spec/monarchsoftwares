@@ -35,6 +35,7 @@ import { initPrinciplesScroll } from './principles-scroll.js';
 import { initWhyWorkScroll } from './why-work-scroll.js';
 import { initCareerHero } from './career-hero.js';
 import { initOpenPositions } from './open-positions-3d.js';
+import { initAboutHeroScroll } from './about-hero-scroll.js';
 import { initHiringProcessCarousel } from './hiring-process.jsx';
 import { initCultureSection } from './culture-section.js';
 import './service-hero.css';
@@ -46,7 +47,12 @@ import { initTrainerDeploymentScroll } from './trainer-deployment.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    window.scrollTo(0, 0);
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // 1. Scroll Progress Bar (Pure White)
@@ -71,17 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     gsap.ticker.lagSmoothing(0);
 
-    ScrollTrigger.scrollerProxy(document.documentElement, {
-        scrollTop(val) {
-            if (arguments.length) lenis.scrollTo(val, { immediate: true });
-            return lenis.scroll;
-        },
-        getBoundingClientRect() {
-            return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-        },
-        pinType: document.documentElement.style.transform ? 'transform' : 'fixed'
-    });
-    ScrollTrigger.defaults({ scroller: document.documentElement });
 
     const onScrollUpdate = () => {
         const limit = lenis.limit || (document.documentElement.scrollHeight - window.innerHeight);
@@ -106,7 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Smooth Anchor Link Scrolling (for hash links on the same page)
     const getTargetScrollTop = (element) => {
-        if (!element) return 0;
+        if (!element || element.id === 'hero' || element.tagName === 'BODY') return 0;
+        if (typeof ScrollTrigger !== 'undefined' && ScrollTrigger.create) {
+            ScrollTrigger.sort();
+            const st = ScrollTrigger.create({ trigger: element, start: 'top 80px' });
+            const pos = st.start;
+            st.kill();
+            return pos + 80;
+        }
         return element.getBoundingClientRect().top + lenis.scroll;
     };
 
@@ -145,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.blur) this.blur();
 
             const targetTop = getTargetScrollTop(target);
-            lenis.scrollTo(targetTop - 80, {
+            lenis.scrollTo(Math.max(0, targetTop - 80), {
                 duration: 1.1,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
             });
@@ -312,17 +314,22 @@ document.addEventListener('DOMContentLoaded', () => {
     initChallengeScroll();
     initPillarsScroll();
     initWhySection();
-    initMissionVisionScroll();
-    initPrinciplesScroll();
-    initWhyWorkScroll();
+    initAboutHeroScroll();
     initCareerHero();
     initOpenPositions();
     initCultureSection();
     initHiringProcessCarousel();
+    initMissionVisionScroll();
+    initPrinciplesScroll();
+    initWhyWorkScroll();
     initServiceHero();
     initAllServiceSecondSections();
     initTrainerDeploymentScroll();
     initHoverFAQ();
+
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+    if (typeof lenis.resize === 'function') lenis.resize();
 
     // 12c. 3D Flip Down Scroll Animation for Selected Work & About Images
     const initWorkImageFlipDown = () => {
@@ -695,7 +702,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Footer wordmark rendered with the React Bits WarpText (loaded on demand)
-    if (document.querySelector('.footer-wordmark__stage')) import('./footer-warp.jsx');
+    if (document.querySelector('.footer-wordmark__stage')) {
+        import('./footer-warp.jsx').then((m) => m.initFooterWarp?.());
+    }
 
     // 20. Legal Modals
     initLegalModals();
@@ -720,10 +729,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Arriving with a section hash (e.g. from an old page URL redirect): scroll to that section.
         if (onHome && window.location.hash.length > 1) {
-            const target = document.querySelector(window.location.hash);
-            if (target) {
-                setTimeout(() => lenis.scrollTo(getTargetScrollTop(target) - 80, { immediate: true }), 150);
-            }
+            const handleHashLanding = () => {
+                const target = document.querySelector(window.location.hash);
+                if (target) {
+                    ScrollTrigger.sort();
+                    ScrollTrigger.refresh();
+                    if (typeof lenis.resize === 'function') lenis.resize();
+                    const targetTop = getTargetScrollTop(target);
+                    lenis.scrollTo(Math.max(0, targetTop - 80), { immediate: true });
+                }
+            };
+            setTimeout(handleHashLanding, 150);
+            setTimeout(handleHashLanding, 600);
         }
     });
 });

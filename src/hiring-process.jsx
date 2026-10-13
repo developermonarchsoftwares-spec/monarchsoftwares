@@ -286,6 +286,12 @@ export function HiringProcessSection() {
     // Stage 04 stays solid through 1.00 before cleanly unpinning
     tl.to({}, { duration: 0.18 }, 0.82);
 
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+    if (window.lenis && typeof window.lenis.resize === 'function') {
+      window.lenis.resize();
+    }
+
     return () => {
       tl.kill();
       if (scrollTriggerInstance.current) {
