@@ -17,7 +17,9 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import './style.css';
+import './open-positions-3d.css'; // static: the Open Positions track height must exist before later ScrollTrigger pins measure the page
 import { initLegalModals } from './legal.js';
 import { initMagneticElements } from './magnetic.js';
 import { initCardSpotlight } from './spotlight.js';
@@ -65,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
         duration: 1.1,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         wheelMultiplier: 0.95,
-        smooth: true,
-        smoothTouch: false
+        smoothWheel: true,   // Lenis 1.x option names (the old `smooth` / `smoothTouch` were ignored)
+        syncTouch: false     // touch devices keep native scrolling
     });
     window.lenis = lenis;
 
@@ -316,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initWhySection();
     initAboutHeroScroll();
     initCareerHero();
-    if (document.getElementById('positions')) import('./open-positions-3d.js').then((m) => m.initOpenPositions());
+    if (document.getElementById('positions')) import('./open-positions-3d.js').then((m) => { m.initOpenPositions(); ScrollTrigger.refresh(); });
     initCultureSection();
     initHiringProcessCarousel();
     initMissionVisionScroll();
