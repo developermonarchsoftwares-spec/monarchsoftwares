@@ -90,8 +90,8 @@ export function initHeroCanvas(containerId = 'hero-canvas-container') {
 
     // Initialize Real 3D Earth Globe with NASA Textures
     const globe = new ThreeGlobe()
-        .globeImageUrl('/textures/earth-night.jpg')
-        .bumpImageUrl('/textures/earth-topology.png')
+        .globeImageUrl('/textures/earth-night.webp')
+        .bumpImageUrl('/textures/earth-topology.webp')
         .showAtmosphere(true)
         .atmosphereColor('#38bdf8') // Photorealistic azure atmospheric halo
         .atmosphereAltitude(0.20)

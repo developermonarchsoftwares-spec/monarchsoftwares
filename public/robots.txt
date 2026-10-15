@@ -1,4 +1,77 @@
+# Monarch Softwares — robots.txt
+# Every public page is open to search engines and to AI search / answer-engine crawlers.
+# Policy: AI crawlers are allowed so the site can be discovered, cited and summarised by answer engines.
+# To opt a specific AI crawler out later, change its "Allow: /" to "Disallow: /".
+
 User-agent: *
 Allow: /
 
+# --- Traditional search ---
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# --- OpenAI (ChatGPT search, training, user-initiated browsing) ---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# --- Anthropic (Claude) ---
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# --- Perplexity ---
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# --- Google AI (Gemini / AI Overviews training control) and Apple Intelligence ---
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# --- Other AI / answer-engine crawlers ---
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Machine-readable site map and AI summary
 Sitemap: https://monarchsoftwares.com/sitemap.xml
+# LLM-friendly overview: https://monarchsoftwares.com/llms.txt

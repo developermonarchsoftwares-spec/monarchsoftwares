@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "playwright test"
+    "test": "playwright test",
+    "crawl": "node scripts/crawl.mjs local",
+    "crawl:live": "node scripts/crawl.mjs live"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",

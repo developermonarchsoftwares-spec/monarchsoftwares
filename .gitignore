@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# local SiteOne Crawler binary
+tools/
+tmp/

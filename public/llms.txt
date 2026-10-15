@@ -1,0 +1,28 @@
+# Monarch Softwares
+
+> Monarch Softwares is a company based in Kovilpalayam, Coimbatore, Tamil Nadu, India that unifies IT, HR and marketing into one growth engine: software development, digital marketing, and talent / training services delivered by one team.
+
+Monarch Softwares combines IT solutions, digital marketing and talent services into a single, unified strategy so businesses can focus on building their business instead of managing multiple vendors for development, marketing and hiring.
+
+Contact: contact@monarchsoftwares.com · +91 63857 53874 · WhatsApp: https://wa.me/916385753874
+Social: https://www.linkedin.com/company/monarchsoftwares · https://www.instagram.com/monarchsoftwares/
+
+## Services
+
+- [IT Services & Software Development](https://monarchsoftwares.com/it-services): Custom web and mobile app development, AI/ML solutions, cloud infrastructure and enterprise systems. Includes an FAQ section.
+- [Digital Marketing Services](https://monarchsoftwares.com/digital-marketing): SEO, PPC, social media, content marketing and creative branding. Includes an FAQ section.
+- [Corporate Training & Trainer Deployment](https://monarchsoftwares.com/corporate-training): Customized corporate training programs and on-demand trainers for colleges and firms. Includes an FAQ section.
+- [IT Training & Placement Support](https://monarchsoftwares.com/training-placement): IT skills training for freshers and professionals, plus placement support that matches trained candidates to hiring needs. Includes an FAQ section.
+
+## Company
+
+- [Home](https://monarchsoftwares.com/): Overview of the integrated growth model, the four service pillars, why Monarch, About, Careers (open positions and hiring process) and a contact / inquiry form. About, Careers and Contact are sections of this page.
+
+## Legal
+
+- [Privacy Policy](https://monarchsoftwares.com/privacy): How inquiry data and technical logs are collected, used, retained and protected.
+- [Terms of Service](https://monarchsoftwares.com/terms): Terms for using the website and engaging Monarch Softwares for engineering, automation and marketing services.
+
+## Optional
+
+- [Sitemap](https://monarchsoftwares.com/sitemap.xml): All public URLs.

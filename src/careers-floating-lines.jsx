@@ -2,16 +2,14 @@ import { createRoot } from 'react-dom/client';
 import FloatingLines from './floating-lines/FloatingLines.jsx';
 
 /**
- * React Bits <FloatingLines /> as the background of the Careers area only
- * (the #careers hero section only). One fixed, click-through layer sitting behind the page content: it never
- * intercepts scroll or clicks, the component itself listens for pointer events on window (bend + click swirl).
- * It is mounted while any part of the Careers hero is on screen and unmounted otherwise, so other sections
- * pay no cost and never show it.
+ * React Bits <FloatingLines /> as the background of the Careers area (#careers).
+ * Fixed click-through canvas sitting behind page content.
+ * Pre-rendered with intro={false} so WebGL shaders compile immediately on startup.
+ * Early trigger begins as soon as the user scrolls from "Why Monarch Softwares" toward Careers.
  */
 const first = document.getElementById('careers');
-const last = first;
 
-if (first && last) {
+if (first) {
     const layer = document.createElement('div');
     layer.id = 'careers-floating-lines';
     layer.setAttribute('aria-hidden', 'true');
@@ -19,7 +17,8 @@ if (first && last) {
     const root = createRoot(layer);
     let shown = false;
 
-    const lines = (
+    // Pre-mount immediately so WebGL context and shaders are warm and ready with zero latency
+    root.render(
         <FloatingLines
             linesGradient={['#eeebef', '#ffffff']}
             enabledWaves={['top', 'middle', 'bottom']}
@@ -29,22 +28,56 @@ if (first && last) {
             scrollSpeed={0.004}
             interactive
             clickSwirl
+            intro={false}
         />
     );
 
-    const update = () => {
-        const a = first.getBoundingClientRect();
-        const b = last.getBoundingClientRect();
-        const vh = window.innerHeight;
-        const inRange = a.top < vh && b.bottom > 0;
+    const setVisibility = (inRange) => {
         if (inRange === shown) return;
         shown = inRange;
         layer.classList.toggle('is-on', inRange);
-        document.body.classList.toggle('has-careers-lines', inRange); // let the black <html> show through so the layer behind the content is visible
-        root.render(inRange ? lines : null);
+        document.body.classList.toggle('has-careers-lines', inRange);
     };
 
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+    let ticking = false;
+    const update = () => {
+        ticking = false;
+        const target = first.closest('.pin-spacer') || first;
+        const a = target.getBoundingClientRect();
+        const vh = window.innerHeight;
+        // Early trigger: starts immediately when scrolling from the previous section toward Careers
+        const leadMargin = Math.min(vh * 0.4, 350);
+        const inRange = a.top < (vh + leadMargin) && a.bottom > -leadMargin;
+        setVisibility(inRange);
+    };
+
+    const requestUpdate = () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+    };
+
+    // IntersectionObserver with early rootMargin for immediate compositor-level detection
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            for (const entry of entries) {
+                if (entry.isIntersecting) {
+                    setVisibility(true);
+                } else {
+                    requestUpdate();
+                }
+            }
+        }, {
+            root: null,
+            rootMargin: '350px 0px 250px 0px',
+            threshold: 0
+        });
+        observer.observe(first);
+    }
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
     update();
 }
+

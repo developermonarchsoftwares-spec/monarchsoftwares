@@ -19,7 +19,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import './style.css';
 import { initLegalModals } from './legal.js';
-import { initHeroCanvas } from './hero-canvas.js';
 import { initMagneticElements } from './magnetic.js';
 import { initCardSpotlight } from './spotlight.js';
 import { initPrecisionCursor } from './cursor.js';
@@ -34,7 +33,6 @@ import { initMissionVisionScroll } from './mission-vision.js';
 import { initPrinciplesScroll } from './principles-scroll.js';
 import { initWhyWorkScroll } from './why-work-scroll.js';
 import { initCareerHero } from './career-hero.js';
-import { initOpenPositions } from './open-positions-3d.js';
 import { initAboutHeroScroll } from './about-hero-scroll.js';
 import { initHiringProcessCarousel } from './hiring-process.jsx';
 import { initCultureSection } from './culture-section.js';
@@ -182,7 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', updateActiveNav);
 
     // 5. Initialize 3D WebGL Digital Horizon in Hero
-    initHeroCanvas('hero-canvas-container');
+    // Three.js (~1.4 MB) is only needed by the home page's globe and Open Positions scene: load it on demand so
+    // every other page (and the first HTML payload) stays light. Both modules are no-ops without their markup.
+    if (document.getElementById('hero-canvas-container')) import('./hero-canvas.js').then((m) => m.initHeroCanvas('hero-canvas-container'));
 
     // 6. Initialize Precision Smooth Cursor & Glow Ring
     initPrecisionCursor();
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initWhySection();
     initAboutHeroScroll();
     initCareerHero();
-    initOpenPositions();
+    if (document.getElementById('positions')) import('./open-positions-3d.js').then((m) => m.initOpenPositions());
     initCultureSection();
     initHiringProcessCarousel();
     initMissionVisionScroll();
