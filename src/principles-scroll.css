@@ -77,7 +77,7 @@
   flex-direction: row;
   align-items: center;
   gap: clamp(1.5rem, 2.8vw, 2.75rem);
-  padding: 0 clamp(2.5rem, 19vw, 19vw);
+  padding: 0 calc((100vw - clamp(520px, 50vw, 800px)) / 2);   /* first / last card sit exactly centred */
   width: max-content;
   will-change: transform;
   transform: translate3d(0, 0, 0);
@@ -85,8 +85,8 @@
 
 /* Single Unified Horizontal Principle Card */
 .principle-card {
-  flex: 0 0 clamp(600px, 62vw, 980px);
-  width: clamp(600px, 62vw, 980px);
+  flex: 0 0 clamp(520px, 50vw, 800px);
+  width: clamp(520px, 50vw, 800px);
   height: clamp(300px, 40vh, 380px);
   display: grid;
   grid-template-columns: 1.3fr 1px 1fr;
@@ -242,9 +242,11 @@
     padding-top: 5rem;
   }
 
+  .principles-track { padding: 0 16vw; }
+
   .principle-card {
-    flex: 0 0 76vw;
-    width: 76vw;
+    flex: 0 0 68vw;
+    width: 68vw;
     height: clamp(300px, 40vh, 380px);
   }
 }

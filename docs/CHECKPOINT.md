@@ -1,7 +1,7 @@
 # Monarch Softwares - Checkpoint
 
 Running record of what has been built and changed in this project. Update it at the end of each work session.
-Last updated: 2026-10-17.
+Last updated: 2026-10-17 (after comet revert).
 
 ## 1. Project at a glance
 
@@ -17,7 +17,8 @@ Last updated: 2026-10-17.
 
 - Remotes: `poorani` (04Poorani/Monarchy), `monarch-spec` (developermonarchsoftwares-spec/monarchsoftwares),
   `origin`, `new-origin`.
-- Last pushed commit on `monarch-spec/main`: `e5f8dbf` (footer icon row + map, scroll fixes, Open Positions overlay fix).
+- Latest local commit: `9b9846d` (scroll reveals, star background, footer redesign, Core Principles sizing, checkpoint doc).
+  Earlier pushed commit: `e5f8dbf`. Check `git log monarch-spec/main` for what is on the remote.
 - **Everything below marked "uncommitted" is in the working tree but not committed or pushed yet.**
 - Pushing to `monarch-spec` needs the owner account for that repo. This machine's saved GitHub login is `04Poorani`
   (no write access there). Working command:
@@ -37,10 +38,8 @@ Last updated: 2026-10-17.
   from `src/main.js` (CSS is imported statically so the track height exists before other pins measure).
 - **Hiring process**, **Mission & Vision**, **Why Work With Us** (`src/why-work-scroll.js`, now pinned and scrubbed:
   label + heading, then three cards one by one).
-- **Core Principles** (`src/principles-scroll.js/css`): pinned 3D cylinder carousel on desktop/tablet (>=769px).
-  Four cards on a cylinder, scroll rotates it, side cards get a subtle "liquid paper" look (SVG displacement filter per card +
-  sheen + translucency, strength = distance from centre), the centred card is solid and sharp. Counter `01 / 04`... follows the
-  active card. Phones keep the vertical stack; reduced motion shows plain cards.
+- **Core Principles** (`src/principles-scroll.js/css`): pinned horizontal scroll of the principle cards (the 3D cylinder / liquid-paper
+  version is NOT in the files at present; an earlier version was reverted). Card and grid sizes were reduced (uncommitted CSS change).
 - **About hero** (`src/about-hero-scroll.js`): pinned; the emblem starts bright (soft white glow, opacity 0.85) and dims with
   scroll to a subtle background emblem while label, heading, description rise in. Heading is larger and white.
 - **Star background** (`src/space-stars.js`): slow white falling/twinkling stars, fixed to the screen (background stays still while
@@ -84,7 +83,6 @@ Last updated: 2026-10-17.
 
 - Verification was done in headless Chromium (software WebGL) and the built-in browser pane, at widths 320-1920px.
   No real GPU, touch device or phone was used.
-- Core Principles liquid effect: performance on slow laptops/phones not measured. Phones do not get the 3D carousel.
 - A thin white line seen once at the bottom edge of the Careers hero while scrolling could not be reproduced; cause unknown.
 - React Bits Pro "Luminous Type" is NOT installed: no `REACTBITS_LICENSE_KEY` on this machine and no `components.json` / Tailwind.
 - Live site crawl (`crawl:live`) showed an older deployment; nothing from this checkpoint is deployed until pushed and built on Vercel.
@@ -94,13 +92,10 @@ Last updated: 2026-10-17.
 
 ## 5. Uncommitted work at the time of this checkpoint
 
-Since commit `e5f8dbf` the working tree also contains (not pushed):
-- Footer: Get in Touch column, full-width lines, map card restyle and resizing, mobile/tablet footer layout, per-letter watermark,
-  new map embed address.
-- Careers hero scroll reveal rewrite; About hero dimming; Why Work With Us pin; service-page 4th section scroll reveal.
-- Core Principles cylinder carousel + liquid-paper effect.
-- Space stars background (`src/space-stars.js`), em-dash removal across sources, small scrolling/overlay fixes.
-- Other files modified by tools or collaborators outside these sessions (check `git diff` before committing).
+- `src/principles-scroll.css`: smaller Core Principles cards and narrower grid.
+- Comet experiment on the Open Positions scene (replacing the falling rock) was tried and fully reverted; the scene is the original
+  rock version from the last commit. Scratch patch scripts remain in `scratch/` (git-ignored).
+- Open question: restore the Core Principles cylinder carousel? (needs a decision)
 
 ## 6. How to continue
 
