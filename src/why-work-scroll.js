@@ -5,23 +5,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * "Why Work With Us?" — Slow, Sequential Scroll-Scrubbed Reveal
+ * "Why Work With Us?" - Slow, Sequential Scroll-Scrubbed Reveal
  *
- * Sequence directly mapped to one continuous scroll interaction:
- * - Before scrolling (Initial State):
- *     opacity: 0, translateY: 40px, translateX: -30px, scale: 0.96, blur: 5px
- * - 0% to 30% Scroll:
- *     Card 01 slowly reveals (opacity 0 -> 1, y: 40 -> 0, x: -30 -> 0, scale: 0.96 -> 1, blur: 5px -> 0)
- * - 30% to 60% Scroll:
- *     Card 02 slowly reveals; Card 01 remains fully visible & stable
- * - 60% to 90% Scroll:
- *     Card 03 slowly reveals; Cards 01 & 02 remain fully visible & stable
- * - 90% to 100% Scroll:
- *     Hold all three cards fully visible
- *
- * Symmetrically reverses on upward scroll:
- *   Card 03 reverses first -> then Card 02 -> then Card 01
- * Pauses immediately at exact scroll frame when user stops scrolling.
+ * The section is pinned and one scrubbed timeline reveals it:
+ *   label + heading, then Card 01, Card 02, Card 03 one after another (each opacity / y / x / scale / blur),
+ *   then a short hold before the pin releases.
+ * It reverses on upward scroll and pauses at the exact frame when scrolling stops.
  */
 export function initWhyWorkScroll() {
   const section = document.getElementById('why-work');
@@ -44,7 +33,11 @@ export function initWhyWorkScroll() {
     return;
   }
 
-  // Initial State: opacity: 0, translateY: 40px, translateX: -30px, scale: 0.96, blur: 5px
+  const head = section.querySelector('.content-head');
+  const headParts = head ? Array.from(head.children) : [];
+
+  // Initial state: heading hidden and slightly low; cards as before (hidden, offset, blurred)
+  gsap.set(headParts, { opacity: 0, y: 24 });
   gsap.set([card1, card2, card3], {
     opacity: 0,
     y: 40,
@@ -54,15 +47,18 @@ export function initWhyWorkScroll() {
   });
 
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const scrollRange = isMobile ? '+=550' : '+=700';
 
-  // Single sequential timeline mapped to scroll progress
+  // The section pins and ONE scrubbed timeline plays the whole reveal: nothing autoplays, it holds when scrolling
+  // stops and reverses when scrolling up.
   const tl = gsap.timeline({
+    defaults: { ease: 'none' },
     scrollTrigger: {
       trigger: section,
-      start: 'top 45%',
-      end: scrollRange,
+      start: 'top top',
+      end: () => '+=' + Math.round(window.innerHeight * (isMobile ? 2.2 : 2.6)),
+      pin: true,
       scrub: 1,
+      anticipatePin: 1,
       invalidateOnRefresh: true,
     },
   });
@@ -73,19 +69,14 @@ export function initWhyWorkScroll() {
     x: 0,
     scale: 1,
     filter: 'blur(0px)',
-    duration: 1.2,
+    duration: 20,
     ease: 'power2.out',
   };
 
-  // 0% – 30% scroll: Card 01 slowly reveals
-  tl.to(card1, revealConfig, 0);
-
-  // 30% – 60% scroll: Card 02 slowly reveals (Card 01 remains stable)
-  tl.to(card2, revealConfig, 1.2);
-
-  // 60% – 90% scroll: Card 03 slowly reveals (Card 01 and Card 02 remain stable)
-  tl.to(card3, revealConfig, 2.4);
-
-  // 90% – 100% scroll: Hold window where all 3 cards stay fully visible (duration: 0.4 -> total = 4.0)
-  tl.to({}, { duration: 0.4 }, 3.6);
+  // 0-16: label + heading;  16-100: the three cards one after another (previous cards stay in place);  then hold
+  tl.to(headParts, { opacity: 1, y: 0, duration: 14, stagger: 6 }, 0);
+  tl.to(card1, revealConfig, 16);
+  tl.to(card2, revealConfig, 40);
+  tl.to(card3, revealConfig, 64);
+  tl.to({}, { duration: 16 }, 88);
 }

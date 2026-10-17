@@ -16,7 +16,7 @@ export const CORPORATE_TRAINING_CARDS = [
     id: '01',
     num: '01',
     title: 'Curriculum Design',
-    desc: 'We collaborate with your leadership to create training content that meets your goals — for example a new technology adoption, leadership development, or digital marketing skills.'
+    desc: 'We collaborate with your leadership to create training content that meets your goals, for example a new technology adoption, leadership development, or digital marketing skills.'
   },
   {
     id: '02',
@@ -85,7 +85,7 @@ export const TRAINING_PLACEMENT_CARDS = [
     id: '01',
     num: '01',
     title: 'Hands-On Curriculum',
-    desc: 'We teach industry-relevant skills — full-stack development, AI & ML, digital marketing, HR operations — through practical projects. Graduates don\'t just have certificates; they have code and campaigns to show.'
+    desc: 'We teach industry-relevant skills (full-stack development, AI & ML, digital marketing, HR operations) through practical projects. Graduates don\'t just have certificates; they have code and campaigns to show.'
   },
   {
     id: '02',

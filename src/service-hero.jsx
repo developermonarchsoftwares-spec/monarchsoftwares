@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import './service-hero.css';
 
 /**
- * ServiceHeroBackground — React Bits ShapeGrid filling the entire hero section
+ * ServiceHeroBackground - React Bits ShapeGrid filling the entire hero section
  * Continuous slow-motion diagonal animation with zero scroll dependency
  */
 export function ServiceHeroBackground() {

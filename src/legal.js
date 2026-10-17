@@ -3,7 +3,7 @@ import './legal-modal.css';
 /**
  * Privacy Policy / Terms of Service as one reusable modal.
  * Any link to /privacy or /terms (footer legal bars on every page) opens the document in a centred popup on the
- * current page — no navigation, no URL change. The text is read from the existing privacy.html / terms.html
+ * current page - no navigation, no URL change. The text is read from the existing privacy.html / terms.html
  * (so the legal copy stays in one place); if that fetch fails, the link falls back to its normal navigation.
  */
 const DOCS = {

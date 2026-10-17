@@ -1,5 +1,5 @@
 /* =============================================================================
-   WEB & MOBILE APPLICATIONS — Two-Column Cinematic Scroll Experience
+   WEB & MOBILE APPLICATIONS - Two-Column Cinematic Scroll Experience
    Left: Fixed Heading (40%) • Right: Sequential Scroll-Driven Content (60%)
    Monochrome Black & White • Editorial • No Cards • No Grids
    ============================================================================= */
@@ -55,7 +55,7 @@
   box-sizing: border-box;
 }
 
-/* LEFT COLUMN — Fixed Content (~40% width) */
+/* LEFT COLUMN - Fixed Content (~40% width) */
 .web-mobile-left-col {
   flex: 0 0 40%;
   max-width: 500px;
@@ -84,7 +84,7 @@
   margin: 0;
 }
 
-/* RIGHT COLUMN — CardSwap 3D Grid Mount Area (~60% width) */
+/* RIGHT COLUMN - CardSwap 3D Grid Mount Area (~60% width) */
 .web-mobile-right-col {
   flex: 1 1 60%;
   max-width: 760px;

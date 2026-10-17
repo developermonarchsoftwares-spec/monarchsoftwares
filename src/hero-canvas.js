@@ -131,8 +131,9 @@ export function initHeroCanvas(containerId = 'hero-canvas-container') {
     // Initial tilt and orientation
     globe.rotation.x = 0.22;
     globe.rotation.y = -1.65;
+    window.__heroGlobe = globe;
 
-    // Responsive Positioning — Anchored in right area with increased size
+    // Responsive Positioning - Anchored in right area with increased size
     function updateResponsiveLayout() {
         const w = container.clientWidth || window.innerWidth;
         const h = container.clientHeight || window.innerHeight;

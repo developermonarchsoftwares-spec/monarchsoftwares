@@ -1,9 +1,8 @@
 /**
- * Monarch Softwares — Flagship Award-Winning Interactive Experience
+ * Monarch Softwares - Flagship Award-Winning Interactive Experience
  * (Inspired by trion.com, Awwwards Site of the Day, Framer & Apple Pro)
  * 
  * - 3D Interactive WebGL Topographical Wave Horizon (Three.js)
- * - Precision Smooth Cursor & Ambient Luminous Aura
  * - Magnetic Physics on Action Buttons & Navigation Pills
  * - Specular Card Spotlight & 3D Tilt Dynamics (Linear / Raycast style)
  * - Floating Interactive Thumbnail Tooltip for Disciplines
@@ -19,11 +18,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import './style.css';
+import { initSpaceStars } from './space-stars.js';
 import './open-positions-3d.css'; // static: the Open Positions track height must exist before later ScrollTrigger pins measure the page
 import { initLegalModals } from './legal.js';
 import { initMagneticElements } from './magnetic.js';
 import { initCardSpotlight } from './spotlight.js';
-import { initPrecisionCursor } from './cursor.js';
 import { initFloatingPreview } from './floating-preview.js';
 import { initCanvasText } from './canvas-text.js';
 import { initSectionStack } from './section-stack.js';
@@ -44,6 +43,7 @@ import { initCustomizedTrainingCardSwap, initAllServiceSecondSections } from './
 import { initHoverFAQ } from './faq.js';
 import { initWebMobileCardSwap } from './web-mobile-cardswap.jsx';
 import { initTrainerDeploymentScroll } from './trainer-deployment.js';
+import { initServiceCardsScroll } from './service-cards-scroll.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 4. Active Nav Link Indicator — one item active, driven by the section currently in view.
+    // 4. Active Nav Link Indicator - one item active, driven by the section currently in view.
     //    Home covers everything above #services; "Why Monarch" belongs to Services; Careers runs until Contact.
     const homeLink = document.querySelector('.nav-links > li > a[href="/"]');
     const navAnchors = Array.from(document.querySelectorAll('.nav-links > li > a[href^="#"]'));
@@ -186,11 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // every other page (and the first HTML payload) stays light. Both modules are no-ops without their markup.
     if (document.getElementById('hero-canvas-container')) import('./hero-canvas.js').then((m) => m.initHeroCanvas('hero-canvas-container'));
 
-    // 6. Initialize Precision Smooth Cursor & Glow Ring
-    initPrecisionCursor();
-
-    // 7. Initialize Magnetic Action Elements
-    initMagneticElements('.btn, .float-btn, .nav-links a, .service-item');
+    // 7. Initialize Magnetic Action Elements (buttons use isolated CSS transitions)
+    initMagneticElements('.float-btn, .nav-links > li > a, .service-item');
 
     // 8. Initialize Specular Card Spotlights & 3D Tilt
     initCardSpotlight('.project-card, .tech-matrix-card, .service-preview-card, .stat-box, .test-mini-card, .about-image-card');
@@ -313,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 12b. Global Section Stacking Engine (Every section stacks like cards)
     // initSectionStack(); // slide-over card stacking disabled so the Galaxy background can show through the sections
+    initSpaceStars();
     initChallengeScroll();
     initPillarsScroll();
     initWhySection();
@@ -327,6 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initServiceHero();
     initAllServiceSecondSections();
     initTrainerDeploymentScroll();
+    initServiceCardsScroll();
     initHoverFAQ();
 
     ScrollTrigger.sort();
@@ -642,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (res.status === 200) {
                     if (formStatus) {
                         formStatus.style.color = '#ffffff';
-                        formStatus.innerHTML = 'Inquiry received. Thank you — we aim to reply within 24 hours.';
+                        formStatus.innerHTML = 'Inquiry received. Thank you. We aim to reply within 24 hours.';
                     }
 
                     const name = dataObj.name || '';
@@ -652,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const message = dataObj.message || '';
 
                     const waText = encodeURIComponent(
-                        `*New Inquiry — MONARCH SOFTWARES*\n\n` +
+                        `*New Inquiry: MONARCH SOFTWARES*\n\n` +
                         `*Name:* ${name}\n` +
                         `*Email:* ${email}\n` +
                         `*Company:* ${company}\n` +

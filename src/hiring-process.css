@@ -1,5 +1,5 @@
 /* =============================================================================
-   OUR HIRING PROCESS — Full-Screen Cinematic Two-Column Scroll Experience
+   OUR HIRING PROCESS - Full-Screen Cinematic Two-Column Scroll Experience
    Monochrome Black & White • Minimal • Technical • Luxury Engineering
    ============================================================================= */
 
@@ -254,16 +254,26 @@
   z-index: 2;
   user-select: none;
   opacity: 0.38;
+  transition: opacity 0.35s ease;
+}
+
+.hiring-timeline-info {
   transition: transform 0.35s ease;
 }
 
 .hiring-timeline-item.is-active {
   opacity: 1;
+}
+
+.hiring-timeline-item.is-active .hiring-timeline-info {
   transform: translateX(3px);
 }
 
 .hiring-timeline-item.is-current {
   opacity: 1;
+}
+
+.hiring-timeline-item.is-current .hiring-timeline-info {
   transform: translateX(4px);
 }
 

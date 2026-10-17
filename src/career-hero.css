@@ -17,7 +17,7 @@
   border-left: none !important;
   border-right: none !important;
   border-bottom: none !important;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Explicitly guarantee NO vertical line appears on any hero element */

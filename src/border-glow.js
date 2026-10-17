@@ -1,5 +1,5 @@
 /**
- * BorderGlow — Official React Bits <BorderGlow /> implementation (JS + CSS variant,
+ * BorderGlow - Official React Bits <BorderGlow /> implementation (JS + CSS variant,
  * https://reactbits.dev/r/BorderGlow-JS-CSS.json).
  *
  * Provides site-wide reusable BorderGlow that integrates seamlessly onto all grid cards

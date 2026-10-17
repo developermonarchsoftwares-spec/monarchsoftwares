@@ -5,10 +5,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Career Hero Section — scroll-scrubbed sequential reveal over the FloatingLines background.
- * The hero is pinned and ONE scrubbed timeline reveals: label → heading (word by word) → description → CTA.
- * Nothing autoplays; the reveal holds when scrolling stops and reverses when scrolling up.
- * With reduced motion (or no GSAP target) the hero simply stays fully visible.
+ * Career Hero Section - scroll-scrubbed sequential reveal.
+ * The hero is pinned and ONE scrubbed timeline reveals: label, heading (word by word), description, CTA.
+ * Nothing autoplays: the reveal holds when scrolling stops and reverses when scrolling up.
+ * With reduced motion (or if any piece is missing) the hero simply stays fully visible.
  */
 export function initCareerHero() {
   const heroSection = document.getElementById('careers');
@@ -18,6 +18,7 @@ export function initCareerHero() {
   if (heroContainer) {
     heroContainer.style.opacity = '1';
     heroContainer.style.transform = 'none';
+    heroContainer.style.visibility = 'visible';
   }
 
   const badge = heroSection.querySelector('.career-hero-badge');
@@ -27,7 +28,7 @@ export function initCareerHero() {
   if (!badge || !title || !desc || !cta) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Heading: wrap each word (text is unchanged; screen readers still get the heading via aria-label)
+  // Heading: wrap each word (text unchanged; the heading keeps its accessible name via aria-label)
   const text = title.textContent.trim();
   title.setAttribute('aria-label', text);
   title.textContent = '';
@@ -41,6 +42,7 @@ export function initCareerHero() {
     return s;
   });
 
+  heroSection.style.minHeight = '100vh'; // fill the screen while pinned so the reveal plays centred on a full-height hero
   const mobile = () => window.innerWidth < 760;
   gsap.set([badge, desc, cta], { opacity: 0, y: 24 });
   gsap.set(words, { opacity: 0, y: 36 });
@@ -58,7 +60,7 @@ export function initCareerHero() {
     }
   });
 
-  tl.to(badge, { opacity: 1, y: 0, duration: 14 }, 0)
+  tl.to(badge, { opacity: 0.9, y: 0, duration: 14 }, 0)
     .to(words, { opacity: 1, y: 0, duration: 22, stagger: 12 }, 12)
     .to(desc, { opacity: 1, y: 0, duration: 20 }, 48)
     .to(cta, { opacity: 1, y: 0, duration: 16 }, 70)

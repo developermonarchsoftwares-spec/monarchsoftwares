@@ -1,6 +1,6 @@
-/* Open Positions — pinned cinematic 3D scene. Heading + job cards keep their existing styling. */
-.op-track { position: relative; height: 1050vh; border-top: 1px solid var(--border); background: transparent; }
-.op-stage { position: sticky; top: 0; height: 100vh; overflow: clip; background: #000; }
+/* Open Positions - pinned cinematic 3D scene. Heading + job cards keep their existing styling. */
+.op-track { position: relative; height: 1050vh; border-top: none !important; border-bottom: none !important; background: transparent; }
+.op-stage { position: sticky; top: 0; height: 100vh; overflow: visible; background: transparent !important; }
 .op-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .op-heading { position: absolute; top: clamp(5.5rem, 12vh, 7.5rem); left: 0; right: 0; text-align: center; z-index: 3; pointer-events: none; padding: 0 16px; }
 .op-cards { position: absolute; inset: 0; z-index: 4; pointer-events: none; }

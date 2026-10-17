@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Our Mission & Vision — Scroll-Progress Driven Cinematic Sequential Reveal
+ * Our Mission & Vision - Scroll-Progress Driven Cinematic Sequential Reveal
  *
  * Sequence tied 1:1 to scroll progress:
  * 1. Heading Reveal (0% -> 22%): Fades in and slides smoothly upward into place.
@@ -73,7 +73,7 @@ export function initMissionVisionScroll() {
     }, 0);
   }
 
-  // 2. Main Horizontal White Line (20% -> 35%) — begins as heading hits ~75% opacity
+  // 2. Main Horizontal White Line (20% -> 35%) - begins as heading hits ~75% opacity
   if (bridgeLine) {
     tl.to(bridgeLine, {
       scaleX: 1,
@@ -114,7 +114,7 @@ export function initMissionVisionScroll() {
     }, 0.45);
   }
 
-  // 5. Vision Card Reveal (65% -> 85%) — only AFTER Mission card has substantially appeared
+  // 5. Vision Card Reveal (65% -> 85%) - only AFTER Mission card has substantially appeared
   if (visionCard) {
     tl.to(visionCard, {
       opacity: 1,
@@ -126,6 +126,6 @@ export function initMissionVisionScroll() {
     }, 0.65);
   }
 
-  // 6. Hold buffer (85% -> 100%) — everything reached final stable position
+  // 6. Hold buffer (85% -> 100%) - everything reached final stable position
   tl.to({}, { duration: 0.15 }, 0.85);
 }

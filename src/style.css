@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800;900&display=swap');
 
 /* =============================================================================
-   MONARCH SOFTWARES — PURE MONOCHROME BLACK DESIGN SYSTEM
+   MONARCH SOFTWARES - PURE MONOCHROME BLACK DESIGN SYSTEM
    Apple Pro / Minimalist: Complete black background, crisp white typography,
    refined grayscale hierarchy, razor-sharp monochrome accents.
    ============================================================================= */
@@ -13,7 +13,7 @@
   --bg-subtle: #121212;
   --bg-footer: #000000;
 
-  /* Typography Colors — Pure White & Grays */
+  /* Typography Colors - Pure White & Grays */
   --text-primary: #ffffff;
   --text-secondary: #a1a1a6;
   --text-tertiary: #666668;
@@ -25,12 +25,12 @@
   --accent-hover: #e5e5ea;
   --accent-light: #1c1c1e;
 
-  /* Borders — Razor-Thin Contrast */
+  /* Borders - Razor-Thin Contrast */
   --border: #222222;
   --border-light: #181818;
   --border-dark: #222222;
 
-  /* Typography — Roboto for Headlines, System Sans for Body */
+  /* Typography - Roboto for Headlines, System Sans for Body */
   --font-headline: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   --font-sans: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -291,40 +291,102 @@ button, input, textarea, select {
   border-radius: 9999px;
   cursor: pointer;
   position: relative;
-  transition: all 0.25s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+  transform: translateZ(0);
+  /* Isolated CSS transitions on button's own properties */
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-primary {
-  background: #ffffff;
+.btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* 1. White Buttons: Invert Colors on Hover */
+.btn-primary,
+.btn-white,
+.btn-invert-hover {
+  background-color: #ffffff;
   color: #000000;
   border: 1px solid #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.btn-primary:hover {
-  background: #d8d8d8;
-  border-color: #d8d8d8;
-  color: #000000;
-}
-
-.btn-outline {
-  background: transparent;
+.btn-primary:hover,
+.btn-white:hover,
+.btn-invert-hover:hover {
+  background-color: #000000;
   color: #ffffff;
-  border: 1px solid #333333;
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
 }
 
-.btn-outline:hover {
+.btn-primary:hover svg,
+.btn-white:hover svg,
+.btn-invert-hover:hover svg,
+.btn-primary:hover .btn-arrow,
+.btn-white:hover .btn-arrow,
+.btn-invert-hover:hover .btn-arrow {
+  color: #ffffff;
+  stroke: currentColor;
+}
+
+.btn-primary:active,
+.btn-white:active,
+.btn-invert-hover:active {
+  transform: translateY(0);
+}
+
+/* 2. Black, Transparent, or Outlined Buttons: Glow and Highlight on Hover */
+.btn-outline,
+.btn-dark,
+.btn-glow-hover {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.btn-outline:hover,
+.btn-dark:hover,
+.btn-glow-hover:hover {
+  background-color: rgba(255, 255, 255, 0.08);
   border-color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.22), 0 0 32px rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.btn-outline:hover svg,
+.btn-dark:hover svg,
+.btn-glow-hover:hover svg,
+.btn-outline:hover .btn-arrow,
+.btn-dark:hover .btn-arrow,
+.btn-glow-hover:hover .btn-arrow {
+  color: #ffffff;
+  stroke: currentColor;
+}
+
+.btn-outline:active,
+.btn-dark:active,
+.btn-glow-hover:active {
+  transform: translateY(0);
 }
 
 .btn-arrow {
   display: inline-flex;
   align-items: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn:hover .btn-arrow {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 /* ── Header / Navigation ───────────────────────────────────────────────────── */
@@ -422,7 +484,7 @@ button, input, textarea, select {
   padding: 0;
 }
 
-.nav-links a {
+.nav-links > li > a {
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -431,18 +493,15 @@ button, input, textarea, select {
   padding: 0.35rem 0;
   transition: color 0.2s ease;
   text-decoration: none;
-}
-
-.nav-links > li > a {
   text-transform: uppercase;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
+.nav-links > li > a:hover,
+.nav-links > li > a.active {
   color: var(--text-primary);
 }
 
-.nav-links a::after {
+.nav-links > li > a::after {
   content: '';
   position: absolute;
   bottom: -3px;
@@ -453,8 +512,8 @@ button, input, textarea, select {
   transition: width 0.25s var(--ease-out);
 }
 
-.nav-links a:hover::after,
-.nav-links a.active::after {
+.nav-links > li > a:hover::after,
+.nav-links > li > a.active::after {
   width: 100%;
 }
 
@@ -531,7 +590,6 @@ button, input, textarea, select {
 
 .dropdown-item.active {
   background: rgba(255, 255, 255, 0.08);
-  border-left: 2px solid var(--text-primary);
 }
 
 .dropdown-item.active .dropdown-content h5 {
@@ -539,6 +597,7 @@ button, input, textarea, select {
 }
 
 .mobile-toggle {
+
   display: none;
   background: none;
   border: none;
@@ -546,6 +605,19 @@ button, input, textarea, select {
   cursor: pointer;
   padding: 0.5rem;
   z-index: 1100;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mobile-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+  scale: 1.02;
+}
+.mobile-toggle:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
 }
 
 /* Fullscreen Mobile Drawer */
@@ -856,8 +928,9 @@ button, input, textarea, select {
   will-change: transform;
 }
 
+.hero-marquee-strip .hero-marquee-track,
 .hero-marquee-strip:hover .hero-marquee-track {
-  animation-play-state: paused;
+  animation-play-state: running !important;
 }
 
 .hero-marquee-item {
@@ -2030,22 +2103,30 @@ button, input, textarea, select {
 }
 
 .float-btn:hover {
-  transform: translateY(-3px) scale(1.06);
-  background: #f0f0f2;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  scale: 1.02;
+  background: #000000;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.25), 0 12px 36px rgba(0, 0, 0, 0.85);
 }
 
 .float-btn:active {
-  transform: translateY(0) scale(0.96);
+  transform: translateY(0);
+  scale: 0.96;
 }
 
 .float-btn svg {
   width: 25px;
   height: 25px;
-  transition: transform 0.2s ease;
+  color: #000000;
+  fill: currentColor;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .float-btn:hover svg {
+  color: #ffffff;
+  fill: #ffffff;
   transform: scale(1.05);
 }
 
@@ -2222,8 +2303,17 @@ button, input, textarea, select {
 
 .hero-editorial .hero-content a,
 .hero-editorial .hero-content button,
-.hero-editorial .hero-content input {
+.hero-editorial .hero-content input,
+.hero-actions-group,
+.hero-actions-group .btn {
   pointer-events: auto;
+  position: relative;
+  z-index: 3;
+}
+
+.hero-marquee-strip {
+  position: relative;
+  z-index: 2;
 }
 
 @media (min-width: 1024px) {
@@ -2243,54 +2333,58 @@ button, input, textarea, select {
   }
 }
 
-/* ── Precision Cursor & Ambient Aura ────────────────────────────────────────── */
-.precision-cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  background: #ffffff;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
-  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+/* ── Native Browser Cursor Standards ────────────────────────────────────────── */
+*, *::before, *::after {
+  cursor: auto;
 }
 
-.precision-cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), border-color 0.25s ease, background 0.25s ease;
+html, body {
+  cursor: default;
 }
 
-.precision-cursor-dot.cursor-hover {
-  width: 10px;
-  height: 10px;
-  background: #ffffff;
+a,
+button,
+[role="button"],
+.btn,
+.nav-links a,
+.dropdown-item,
+.mobile-toggle,
+.float-btn,
+.footer-map__link,
+.footer-social a,
+.footer-legal-links a,
+.jarvis-trigger,
+.option-btn,
+.jarvis-send,
+.legal-modal__close,
+.legal-modal__x,
+.depth-carousel__arrow,
+.depth-carousel__dot,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  cursor: pointer;
 }
 
-.precision-cursor-ring.ring-hover {
-  width: 54px;
-  height: 54px;
-  border-color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.05);
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea,
+[contenteditable="true"] {
+  cursor: text;
 }
 
-@media (pointer: coarse) {
-  .precision-cursor-dot,
-  .precision-cursor-ring {
-    display: none !important;
-  }
+select {
+  cursor: pointer;
+}
+
+.faq-item summary,
+.faq-item .faq-summary {
+  cursor: pointer;
 }
 
 /* ── Specular Card Spotlight & Border Glow ──────────────────────────────────── */
@@ -2391,7 +2485,7 @@ button, input, textarea, select {
 
 
 /* =============================================================================
-   CONTENT PAGES — shared sections for service / about / overview pages
+   CONTENT PAGES - shared sections for service / about / overview pages
    ============================================================================= */
 .content-section { padding: clamp(3rem, 6vw, 5rem) 0; border-top: none; }
 .content-section.alt { background: transparent; }
@@ -2421,7 +2515,7 @@ button, input, textarea, select {
 }
 .faq-item summary,
 .faq-item .faq-summary {
-    cursor: default;
+    cursor: pointer;
     padding: 1.25rem 1.6rem;
     font-weight: 600;
     font-size: 1.05rem;
@@ -2536,7 +2630,7 @@ button, input, textarea, select {
 .hero-headline-line--inline { display: flex; flex-wrap: wrap; column-gap: 0.25em; }
 
 /* =============================================================================
-   PREMIUM NAV — persistent glass header + refined services dropdown
+   PREMIUM NAV - persistent glass header + refined services dropdown
    (selectors are intentionally specific so they win over premium.css)
    ============================================================================= */
 @view-transition { navigation: auto; }
@@ -2561,9 +2655,15 @@ header#header .nav-item-dropdown::before { /* hover bridge so the menu doesn't c
   content: ""; position: absolute; left: -1rem; right: -1rem; top: 100%; height: 1.25rem;
 }
 header#header .dropdown-menu {
-  top: calc(100% + 0.9rem);
+  position: absolute;
+  top: calc(100% + 0.6rem);
   left: 50%;
-  min-width: 400px;
+  width: max-content;
+  min-width: 430px;
+  max-width: 490px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   padding: 0.6rem;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2577,6 +2677,7 @@ header#header .dropdown-menu {
   transform: translateX(-50%) translateY(10px) scale(0.97);
   transform-origin: top center;
   transition: opacity 0.28s var(--ease-out), transform 0.28s var(--ease-out), visibility 0.28s;
+  box-sizing: border-box;
 }
 header#header .dropdown-menu::before { /* notch */
   content: ""; position: absolute; top: -6px; left: 50%; width: 12px; height: 12px;
@@ -2589,35 +2690,142 @@ header#header .nav-item-dropdown:focus-within .dropdown-menu {
   transform: translateX(-50%) translateY(0) scale(1);
 }
 header#header .dropdown-item {
-  position: relative; display: grid; grid-template-columns: 2.1rem 1fr 1rem; align-items: center; gap: 0.85rem;
-  padding: 0.8rem 0.9rem; border-radius: 10px; color: var(--text-secondary);
-  opacity: 0; transform: translateY(6px);
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.1rem 1fr 1rem;
+  align-items: center;
+  gap: 0.85rem;
+  height: 68px;
+  min-height: 68px;
+  max-height: 68px;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  box-sizing: border-box;
+  letter-spacing: normal;
+  text-decoration: none;
+  border: 1px solid transparent;
+  opacity: 0;
+  transform: translateY(6px);
   transition: background 0.2s ease, opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
 header#header .dropdown-item::before {
-  counter-increment: svc; content: "0" counter(svc);
-  display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 8px;
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);
+  counter-increment: svc;
+  content: "0" counter(svc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  flex-shrink: 0;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  transform: none !important;
   transition: background 0.2s ease, color 0.2s ease;
 }
 header#header .dropdown-item::after { /* arrow */
-  content: "\2192"; font-size: 0.95rem; color: var(--text-primary);
-  position: static; width: auto; height: auto; background: none; bottom: auto; left: auto; right: auto;
-  opacity: 0; transform: translateX(-6px); transition: opacity 0.2s ease, transform 0.2s ease;
+  content: "\2192" !important;
+  font-size: 0.95rem !important;
+  color: var(--text-primary) !important;
+  position: static !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  min-width: 1rem !important;
+  background: none !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0;
+  transform: none !important;
+  transition: opacity 0.2s ease !important;
 }
 header#header .nav-item-dropdown:hover .dropdown-item,
-header#header .nav-item-dropdown:focus-within .dropdown-item { opacity: 1; transform: none; }
+header#header .nav-item-dropdown:focus-within .dropdown-item {
+  opacity: 1;
+  transform: none !important;
+}
 header#header .nav-item-dropdown:hover .dropdown-item:nth-child(2) { transition-delay: 0.04s; }
 header#header .nav-item-dropdown:hover .dropdown-item:nth-child(3) { transition-delay: 0.08s; }
 header#header .nav-item-dropdown:hover .dropdown-item:nth-child(4) { transition-delay: 0.12s; }
-header#header .dropdown-item:hover, header#header .dropdown-item:focus-visible,
-header#header .dropdown-item[aria-current="page"] { background: rgba(255, 255, 255, 0.07); }
-header#header .dropdown-item:hover::before, header#header .dropdown-item[aria-current="page"]::before { background: #fff; color: #000; }
-header#header .dropdown-item:hover::after, header#header .dropdown-item:focus-visible::after { opacity: 1; transform: none; }
+
+header#header .dropdown-item:hover,
+header#header .dropdown-item:focus-visible,
+header#header .dropdown-item[aria-current="page"],
+header#header .dropdown-item.active {
+  background: rgba(255, 255, 255, 0.07) !important;
+  transform: none !important;
+  border: 1px solid transparent !important;
+  color: var(--text-primary);
+  height: 68px !important;
+  min-height: 68px !important;
+  max-height: 68px !important;
+  padding: 0.75rem 0.9rem !important;
+}
+header#header .dropdown-item:hover::before,
+header#header .dropdown-item:focus-visible::before,
+header#header .dropdown-item[aria-current="page"]::before,
+header#header .dropdown-item.active::before {
+  background: #fff;
+  color: #000;
+  transform: none !important;
+}
+header#header .dropdown-item:hover::after,
+header#header .dropdown-item:focus-visible::after,
+header#header .dropdown-item[aria-current="page"]::after,
+header#header .dropdown-item.active::after {
+  opacity: 1 !important;
+  transform: none !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  background: none !important;
+}
 header#header .dropdown-item:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.6); outline-offset: -2px; }
-header#header .dropdown-content h5 { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin: 0 0 0.2rem; }
-header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertiary); margin: 0; }
+
+header#header .dropdown-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+header#header .dropdown-content h5 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: var(--text-primary);
+  margin: 0 0 0.2rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+header#header .dropdown-content p {
+  font-size: 0.75rem;
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: var(--text-tertiary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+header#header .dropdown-item:hover .dropdown-content h5,
+header#header .dropdown-item:focus-visible .dropdown-content h5,
+header#header .dropdown-item[aria-current="page"] .dropdown-content h5,
+header#header .dropdown-item.active .dropdown-content h5 {
+  color: #ffffff;
+}
 
 @media (max-width: 1024px) {
   header#header .nav-links.mobile-active .dropdown-menu {
@@ -2644,7 +2852,7 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
 .challenge-media img { display: block; width: 100%; height: auto; }
 @media (max-width: 860px) { .challenge-grid { grid-template-columns: 1fr; } }
 
-/* Challenge section — sticky stage so the scroll-scrubbed reveal plays while content stays put */
+/* Challenge section - sticky stage so the scroll-scrubbed reveal plays while content stays put */
 .challenge-media-wrap { perspective: 1400px; margin-left: auto; width: 100%; max-width: 620px; }
 .challenge-media { will-change: transform, opacity; backface-visibility: hidden; max-width: none; margin: 0; }
 .challenge-track { padding: 0; }
@@ -2657,7 +2865,7 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
 
 
 /* =============================================================================
-   OUR FOUR SERVICE PILLARS — scroll-driven zig-zag timeline
+   OUR FOUR SERVICE PILLARS - scroll-driven zig-zag timeline
    Every card grows out of the centre line; direction alternates left / right.
    ============================================================================= */
 .pillars-track { padding: 0; }
@@ -2721,7 +2929,7 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
 }
 
 
-/* About page hero — taller, content vertically centred */
+/* About page hero - taller, content vertically centred */
 .about-hero {
   position: relative;
   min-height: clamp(34rem, 72vh, 48rem);
@@ -2799,11 +3007,11 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
 .about-hero-content h1,
 .about-hero-content h2,
 .about-hero-title {
-  color: #000000 !important;
+  color: #ffffff !important;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.85);
   paint-order: stroke fill;
   font-weight: 700;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 14px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 14px rgba(0, 0, 0, 0.7); /* white heading now that the emblem dims behind it */
 }
 
 .about-hero-content p,
@@ -2850,8 +3058,8 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
   #about .about-text-side { order: 2; }
 }
 
-/* Send Inquiry — SlingButton inside a refined pill track (see src/contact-sling.jsx) */
-/* Send Inquiry — SlingButton inside a refined pill track (see src/contact-sling.jsx) */
+/* Send Inquiry - SlingButton inside a refined pill track (see src/contact-sling.jsx) */
+/* Send Inquiry - SlingButton inside a refined pill track (see src/contact-sling.jsx) */
 .sling-root { width: 100%; margin-top: 0.35rem; grid-column: 1 / -1; }
 .sling-track {
   position: relative; display: flex; align-items: center; justify-content: center;
@@ -2888,9 +3096,10 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
 
 /* Homepage CTA: 50/50 balanced two-column layout with equal widths, aligned tops & matched visual weight */
 #cta .climax-content {
-  max-width: 1240px;
+  max-width: var(--container-wide);
   width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 @media (min-width: 901px) {
   #cta .climax-content {
@@ -2926,7 +3135,7 @@ header#header .dropdown-content p { font-size: 0.76rem; color: var(--text-tertia
   }
 }
 
-/* Inquiry / contact form — balanced enterprise proportions */
+/* Inquiry / contact form - balanced enterprise proportions */
 .climax-form-wrap, #contact-form-card {
   padding: clamp(1.75rem, 2.4vw, 2.25rem) !important;
   background: #0f0d14 !important;
@@ -3075,7 +3284,7 @@ body { background-color: var(--bg-main, #000000); }
 .section-merged .container { max-width: var(--container-wide) !important; }
 
 /* =============================================================================
-   SCENE SPACING — every major section reads as its own full-screen "scene".
+   SCENE SPACING - every major section reads as its own full-screen "scene".
    Spacing/height only: no colours, typography, cards or animation logic are touched.
    Sticky/pinned tracks (#positioning, #why) keep their own tall heights; min-height never shrinks them.
    ============================================================================= */
@@ -3112,7 +3321,7 @@ body { background-color: var(--bg-main, #000000); }
   /* Final call-to-action scene */
   .section-climax-cta {
     min-height: 100vh;
-    padding: var(--scene-pad) 0;
+    padding: clamp(3.5rem, 6vh, 5.5rem) 0;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -3120,7 +3329,7 @@ body { background-color: var(--bg-main, #000000); }
   .section-climax-cta > .container { width: 100%; }
 }
 
-/* Tablet / mobile: generous but natural spacing — sections grow with their content, no forced 100vh */
+/* Tablet / mobile: generous but natural spacing - sections grow with their content, no forced 100vh */
 @media (max-width: 860px) {
   .content-section { padding: clamp(4.5rem, 14vw, 6.25rem) 0; }
   .section-merged .merged-head { padding-top: clamp(4.5rem, 14vw, 6.25rem); }
@@ -3130,7 +3339,7 @@ body { background-color: var(--bg-main, #000000); }
 }
 
 /* =============================================================================
-   UNIVERSAL DIVIDER REMOVAL — Guarantees NO horizontal lines cut across sections
+   UNIVERSAL DIVIDER REMOVAL - Guarantees NO horizontal lines cut across sections
    ============================================================================= */
 section,
 main > section,
@@ -3271,7 +3480,7 @@ main > section,
 
 
 /* =============================================================================
-   FOOTER REFINEMENT — calm, spacious, black & white. One top hairline, one line above and one below the
+   FOOTER REFINEMENT - calm, spacious, black & white. One top hairline, one line above and one below the
    MONARCH SOFTWARES watermark; more room between columns; no other decoration.
    ============================================================================= */
 .footer-editorial {
@@ -3330,36 +3539,48 @@ main > section,
   .footer-links-grid { grid-template-columns: 1fr; }
 }
 
-/* Footer: equal rhythm — top line -> content, content -> upper watermark line, watermark <-> its lines */
-.footer-editorial { padding-top: clamp(3rem, 5vw, 4rem); }
-.footer-top-row { margin-bottom: clamp(3rem, 5vw, 4rem); }
-.footer-wordmark { padding: clamp(1.5rem, 3vw, 2.25rem) 0; }
-.footer-legal-bar { padding-top: clamp(1.5rem, 2.5vw, 2rem); }
-.footer-wordmark { padding: clamp(1.75rem, 3.6vw, 2.75rem) 0; }
-
-/* Careers-area background (React Bits FloatingLines) — fixed, behind content, never catches events */
-#careers-floating-lines {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+/* Footer: equal rhythm - top line -> content, content -> upper watermark line, watermark <-> its lines */
+.footer-editorial {
+  position: relative;
   overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  will-change: opacity;
+  width: 100%;
+  padding-top: clamp(2.5rem, 4vw, 3.5rem);
 }
-#careers-floating-lines.is-on { opacity: 1; }
-body.has-careers-lines { background: transparent; }
+.footer-top-row { margin-bottom: clamp(2.25rem, 3.5vw, 3.25rem); }
+.footer-wordmark {
+  position: relative;
+  margin: 0;
+  padding: clamp(1.25rem, 2.5vw, 2rem) 0;
+  width: 100%;
+  overflow: hidden;
+}
+.footer-wordmark__stage {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1000 / 128;
+  overflow: hidden;
+}
+/* small screens keep the WarpText box inside the stage (no overflow); on desktop it is centred and wider again so the watermark fills the full footer width */
+@media (max-width: 1024px) {
+  .footer-wordmark__stage > div {
+    max-width: 100% !important;
+    left: 0 !important;
+    margin-left: 0 !important;
+  }
+}
+.footer-legal-bar { padding-top: clamp(1.25rem, 2vw, 1.75rem); }
+
 
 /* =============================================================================
-   FOOTER MAP — square Google Map on the right of the footer content.
+   FOOTER MAP - square Google Map on the right of the footer content.
    Wide screens: third column beside the existing two. Tablet: sits under them. Phone: full width, still square.
    ============================================================================= */
 .footer-map-col { min-width: 0; }
 .footer-map {
   position: relative;
   width: 100%;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 3 / 2;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -3379,9 +3600,21 @@ body.has-careers-lines { background: transparent; }
   line-height: 1;
   text-decoration: none;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  border: 1px solid #ffffff;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), scale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.footer-map__link:hover { background: #e5e5ea; transform: translateY(-1px); }
+.footer-map__link:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2), 0 4px 14px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px);
+  scale: 1.02;
+}
+.footer-map__link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
 
 @media (min-width: 960px) {
   .footer-top-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) clamp(240px, 23vw, 340px); gap: clamp(2rem, 3.5vw, 5rem); }
@@ -3394,7 +3627,7 @@ body.has-careers-lines { background: transparent; }
 }
 
 /* =============================================================================
-   FOOTER — Connect column replaced by an icon row under the description; two link columns + square map.
+   FOOTER - Connect column replaced by an icon row under the description; two link columns + square map.
    ============================================================================= */
 .footer-social { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem; }
 .footer-social a {
@@ -3424,9 +3657,13 @@ body.has-careers-lines { background: transparent; }
 @media (max-width: 760px) {
   .footer-editorial { padding-bottom: 5rem; }
 }
-/* keep Privacy Policy / Terms of Service clear of the fixed WhatsApp button */
-.footer-legal-bar { padding-right: 4.75rem; }
-@media (max-width: 760px) { .footer-legal-bar { padding-right: 0; } }
+/* keep Privacy Policy / Terms of Service clear of the fixed WhatsApp button on tablet */
+@media (min-width: 761px) and (max-width: 1023px) {
+  .footer-legal-bar { padding-right: 4.75rem; }
+}
+@media (min-width: 1024px) {
+  .footer-legal-bar { padding-right: 0 !important; }
+}
 
 /* Footer map in dark mode: Google's embed is light-only, so invert + hue-rotate it (keeps roads/labels readable, pins stay visible) */
 .footer-map__frame { filter: invert(0.92) hue-rotate(180deg) saturate(0.75) contrast(0.92) brightness(0.95); }
@@ -3438,3 +3675,109 @@ body.has-careers-lines { background: transparent; }
 
 /* Lenis drives smooth scrolling; the browser's own `scroll-behavior: smooth` on <html> fights it (double animation → jitter). */
 html.lenis, html.lenis body { scroll-behavior: auto !important; }
+
+/* Falling white stars from below the Why half-circle to the end of Our Hiring Process (src/space-stars.js).
+   Fixed, click-through layer behind the page content. */
+#space-stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 0.4s ease; }
+#space-stars.is-on { opacity: 1; }
+body.has-stars-bg { background: transparent; }
+#about.section-about, #about .about-hero { background: transparent; } /* the About section was an opaque black box that hid the star layer behind it */
+.space-stars-ov { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+/* =============================================================================
+   FOOTER LAYOUT - Brand + social | Company | Services | Get in Touch | map (far right).
+   Desktop footer spans the same width as the navbar so the footer logo lines up with the navbar logo.
+   ============================================================================= */
+.footer-contact-list li { display: flex; align-items: flex-start; gap: 0.7rem; }
+.footer-contact__icon { flex: 0 0 18px; width: 18px; height: 18px; margin-top: 0.12rem; color: var(--text-secondary); }
+.footer-contact-list li:hover .footer-contact__icon { color: #ffffff; }
+.footer-contact-list a { overflow-wrap: anywhere; }
+.footer-link-group { border: 0; } /* no vertical dividers between link columns */
+
+@media (min-width: 960px) {
+  .footer-links-grid { grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.5fr) minmax(0, 1.5fr); gap: clamp(1.5rem, 2.6vw, 3.5rem); }
+  .footer-top-row { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) clamp(260px, 23vw, 430px); gap: clamp(2rem, 3.2vw, 5rem); }
+}
+@media (min-width: 1025px) {
+  /* same side padding as the navbar (40px) and no centred max-width, so the logo edges match at any desktop width */
+  .footer-editorial .container-wide { max-width: none; padding-left: 40px; padding-right: 40px; }
+}
+@media (max-width: 959px) {
+  .footer-links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2.5rem; }
+}
+@media (max-width: 420px) {
+  .footer-links-grid { grid-template-columns: 1fr; }
+}
+
+/* footer polish: icons stay on one row in the brand column; legal links sit clear of the fixed WhatsApp button */
+.footer-social { gap: 0.5rem; }
+.footer-social a { width: 38px; height: 38px; }
+@media (min-width: 1024px) {
+  .footer-legal-bar { padding-right: 5.25rem !important; }
+}
+
+/* desktop: the top footer line spans the same width as the content, like the two lines around the watermark */
+@media (min-width: 1025px) {
+  .footer-editorial::before { left: 40px; right: 40px; }
+}
+
+/* =============================================================================
+   FOOTER - phones & small tablets: compact, two link columns, full-width contact + map, tidy legal row.
+   ============================================================================= */
+@media (max-width: 759px) {
+  .footer-editorial { padding-top: 2.75rem; padding-bottom: 5.5rem; }
+  .footer-top-row { gap: 2rem; margin-bottom: 2rem; }
+  .footer-brand-col { gap: 1.1rem; }
+  .footer-brand-col .logo img { height: 34px; }
+  .footer-links-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); column-gap: 1.25rem; row-gap: 1.75rem; }
+  .footer-contact-group { grid-column: 1 / -1; }
+  .footer-link-group { gap: 0.9rem; }
+  .footer-link-list { gap: 0.6rem; }
+  .footer-link-list a { font-size: 0.9rem; }
+  .footer-map-col { width: 100%; }
+  .footer-map { aspect-ratio: 16 / 8; }
+  .footer-wordmark { padding: 1.25rem 0; }
+  .footer-legal-bar { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding-top: 1.25rem; padding-right: 0 !important; font-size: 0.78rem; }
+  .footer-legal-links { gap: 1.5rem; }
+}
+@media (max-width: 359px) {
+  .footer-links-grid { grid-template-columns: 1fr; }
+}
+
+/* tablets (760 - 959px): brand on the left, link columns on the right, contact and map across the bottom of the block */
+@media (min-width: 760px) and (max-width: 959px) {
+  .footer-top-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 2.5rem 3rem; }
+  .footer-links-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
+  .footer-contact-group { grid-column: 1 / -1; }
+  .footer-map-col { grid-column: 1 / -1; width: 100%; }
+  .footer-map { aspect-ratio: 16 / 4.5; }
+  .footer-legal-bar { flex-direction: row; align-items: center; justify-content: space-between; padding-right: 4.75rem !important; }
+}
+
+/* =============================================================================
+   FOOTER LINES - one flat, very thin, subtle grey line, full width edge to edge (no glow, no fade at the ends):
+   the top line of the footer and the two lines around the watermark.
+   ============================================================================= */
+.footer-editorial::before,
+.footer-wordmark::before,
+.footer-wordmark::after {
+  left: calc(50% - 50vw) !important;
+  right: auto !important;
+  width: 100vw;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.11) !important;
+  box-shadow: none !important;
+}
+.footer-editorial { position: relative; }
+.footer-editorial::before { left: 0 !important; width: 100%; }   /* the footer itself is already full width */
+.footer-wordmark { overflow: visible; }                          /* let the two watermark lines run past the content padding; the watermark itself stays clipped by its own stage */
+
+
+/* Footer watermark as per-letter text: very dark by default, only the hovered letter turns pure white (smooth 250ms).
+   The text is sized by src/footer-warp.jsx so it spans the band exactly like the previous wordmark. */
+.footer-letters { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.footer-letters__text { white-space: nowrap; line-height: 1; text-transform: uppercase; transform: translateY(2.2%) scaleY(var(--letters-k, 1)); transform-origin: 50% 50%; user-select: none; }
+.footer-letter { display: inline-block; pointer-events: auto; cursor: default; transition: color 0.25s ease; }
+.footer-letter:hover { color: #ffffff; }
+.footer-letters__space { display: inline-block; width: 0.21em; }
+@media (prefers-reduced-motion: reduce) { .footer-letter { transition: none; } }

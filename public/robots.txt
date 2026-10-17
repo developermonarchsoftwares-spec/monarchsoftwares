@@ -1,4 +1,4 @@
-# Monarch Softwares — robots.txt
+# Monarch Softwares - robots.txt
 # Every public page is open to search engines and to AI search / answer-engine crawlers.
 # Policy: AI crawlers are allowed so the site can be discovered, cited and summarised by answer engines.
 # To opt a specific AI crawler out later, change its "Allow: /" to "Disallow: /".

@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Our Four Service Pillars — scroll-scrubbed zig-zag timeline.
+ * Our Four Service Pillars - scroll-scrubbed zig-zag timeline.
  * Every row lights a node, draws a connector and grows a card out of the centre line
  * (01 left, 02 right, 03 left, 04 right), scrubbed by the row's own scroll position, so scrolling
  * back up retracts them in reverse. Desktop uses a tall, evenly spaced timeline; phones a vertical flow.

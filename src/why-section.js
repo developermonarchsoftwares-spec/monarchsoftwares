@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initBorderGlow } from './border-glow.js';
 
 /**
- * "Why Monarch Softwares?" — interaction layer (plain DOM + SVG + rAF, no extra libraries).
+ * "Why Monarch Softwares?" - interaction layer (plain DOM + SVG + rAF, no extra libraries).
  *  - scroll reveal (heading, then cards staggered 150ms apart)
  *  - one glowing connector path through the four cards that adapts to the layout
  *    (horizontal wave on desktop, vertical flow on tablet / mobile) with a light travelling 01 -> 04

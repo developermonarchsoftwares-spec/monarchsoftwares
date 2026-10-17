@@ -1,4 +1,4 @@
-# MONARCH SOFTWARES — DESIGN SYSTEM & INTELLIGENCE WORKFLOW
+# MONARCH SOFTWARES - DESIGN SYSTEM & INTELLIGENCE WORKFLOW
 
 > **Standard:** Apple Pro / Framer / Trion-Grade Minimalist Monochrome  
 > **Philosophy:** *Inspiration, Not Cloning.* Restrained elegance, intentional whitespace, mathematical scale, and purposeful interaction.

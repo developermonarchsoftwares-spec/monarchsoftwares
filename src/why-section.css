@@ -1,5 +1,5 @@
 /* =============================================================================
-   WHY MONARCH SOFTWARES? — deep-space glass section (see src/why-section.js)
+   WHY MONARCH SOFTWARES? - deep-space glass section (see src/why-section.js)
    Scoped to #why / .why-*; nothing outside this section is touched.
    ============================================================================= */
 .why-space {
@@ -9,7 +9,8 @@
   --mx: 0;
   --my: 0;
   position: relative;
-  overflow: clip; /* clip (not hidden) so the sticky stage below keeps working */
+  overflow-x: clip;
+  overflow-y: visible;
   isolation: isolate;
   background: #000;
   border-top: none;
@@ -58,20 +59,40 @@
 .why-moon--b { width: clamp(34px, 4vw, 64px); aspect-ratio: 1; left: 2.5%; bottom: 30%; }
 
 .why-planet {
-  position: absolute; left: 50%; width: 170vw; aspect-ratio: 1; margin-left: -85vw;
-  bottom: calc(clamp(170px, 20vw, 300px) - 170vw);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(1000px, 94vw, 1600px);
+  height: clamp(500px, 54vh, 720px);
+  bottom: clamp(-20px, 0vh, 20px);
   translate: calc(var(--mx) * var(--d, 10) * -1px) calc(var(--my) * var(--d, 10) * -0.5px);
+  pointer-events: none;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, rgba(0,0,0,0.85) 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, rgba(0,0,0,0.85) 75%, transparent 100%);
 }
 .why-planet__surface {
-  position: absolute; inset: 0; border-radius: 50%; overflow: hidden;
-  background: radial-gradient(ellipse 60% 14% at 50% 0%, rgba(255,255,255,.06), transparent 70%), #120F17;
-  border: 1px solid rgba(255,255,255,.15);
-  box-shadow: inset 0 0 60px rgba(192,132,252,.1);
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse 65% 50% at 50% 0%, rgba(255, 255, 255, 0.08), transparent 70%), #120F17;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 60px rgba(192, 132, 252, 0.12);
 }
 .why-planet__glow {
-  position: absolute; inset: 0; border-radius: 50%;
-  box-shadow: 0 -2px 16px 1px rgba(192,132,252,.32), 0 -10px 60px 4px rgba(244,114,182,.1), 0 -30px 140px 10px rgba(192,132,252,.07);
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  border-top: 1.5px solid rgba(192, 132, 252, 0.75);
+  box-shadow:
+    0 -3px 20px 2px rgba(192, 132, 252, 0.45),
+    0 -12px 60px 6px rgba(244, 114, 182, 0.18),
+    0 -30px 120px 12px rgba(192, 132, 252, 0.12);
   animation: why-glow 9s ease-in-out infinite alternate;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, rgba(0,0,0,0.5) 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 45%, rgba(0,0,0,0.5) 75%, transparent 100%);
+  pointer-events: none;
 }
 
 /* ---------- content ---------- */
@@ -184,7 +205,11 @@
   .why-card--1, .why-card--2, .why-card--3, .why-card--4 { margin-top: 0; }
   .why-card--1, .why-card--3 { align-self: flex-start; }
   .why-card--2, .why-card--4 { align-self: flex-end; }
-  .why-planet { bottom: calc(clamp(110px, 24vw, 200px) - 170vw); }
+  .why-planet {
+    width: clamp(650px, 125vw, 1000px);
+    height: clamp(380px, 48vh, 540px);
+    bottom: 0;
+  }
 }
 @media (max-width: 640px) {
   .why-card, .why-card--1, .why-card--2, .why-card--3, .why-card--4 { align-self: center; width: 100%; }
@@ -192,6 +217,11 @@
   .why-stars--near { display: none; }
   .why-orb { width: 104px; height: 104px; margin-left: -52px; top: -66px; }
   .why-moon--b { display: none; }
+  .why-planet {
+    width: clamp(380px, 140vw, 650px);
+    height: clamp(260px, 40vh, 380px);
+    bottom: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -207,11 +237,27 @@
   .why-card--1 { margin-top: 66px; }
   .why-card--2 { margin-top: 20px; }
   .why-card--3 { margin-top: 44px; }
-  .why-planet { bottom: calc(clamp(120px, 13vw, 200px) - 170vw); }
+  .why-card--4 { margin-top: 0; }
+  .why-planet {
+    width: 100%; /* full desktop width */
+    height: clamp(180px, 28vh, 300px); /* low, wide dome that fits within the desktop section */
+    bottom: 0;
+  }
 }
 
 /* ---------- scroll-driven card reveal: the section gets scroll distance, the stage stays pinned ---------- */
-.why-stage { position: relative; }
+.why-stage { position: relative; overflow-x: clip; }
+.why-stage::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(100px, 14vh, 180px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, #000000 100%);
+  pointer-events: none;
+  z-index: 2;
+}
 .why-card { will-change: opacity, filter, transform; }
 @media (min-width: 1100px) {
   .why-space { height: 430vh; }

@@ -122,7 +122,7 @@ export function initCultureSection() {
       }, 0);
     }
 
-    // Phase 1: FIRST SCROLL — Center Card emerges from 3D depth (0.12 -> 0.38)
+    // Phase 1: FIRST SCROLL - Center Card emerges from 3D depth (0.12 -> 0.38)
     tl.to(cardCenter, {
       opacity: 1,
       scale: 1,
@@ -145,7 +145,7 @@ export function initCultureSection() {
     // Brief Hold on Center Card (0.38 -> 0.44)
     tl.to({}, { duration: 0.06 }, 0.38);
 
-    // Phase 2: SECOND SCROLL — Left Card emerges from behind center -> left (0.44 -> 0.68)
+    // Phase 2: SECOND SCROLL - Left Card emerges from behind center -> left (0.44 -> 0.68)
     tl.to(cardLeft, {
       opacity: 1,
       x: 0,
@@ -168,7 +168,7 @@ export function initCultureSection() {
     // Brief Hold on Center + Left (0.68 -> 0.74)
     tl.to({}, { duration: 0.06 }, 0.68);
 
-    // Phase 3: THIRD SCROLL — Right Card emerges from behind center -> right (0.74 -> 0.94)
+    // Phase 3: THIRD SCROLL - Right Card emerges from behind center -> right (0.74 -> 0.94)
     tl.to(cardRight, {
       opacity: 1,
       x: 0,

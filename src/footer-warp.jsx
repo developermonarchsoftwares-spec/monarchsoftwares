@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import WarpText from './warp/WarpText.jsx';
 
 /**
- * Footer wordmark: the existing "MONARCH SOFTWARES" band, now drawn by the React Bits <WarpText />.
+ * Footer wordmark: the existing "MONARCH SOFTWARES" band as real text, one <span> per letter (per-letter hover, see style.css).
  *
  * The static band was an SVG whose glyphs were squeezed horizontally to fill the footer width
  * (text width = 100% of the band, cap height = 9.8% of the width). WarpText draws text at its natural
@@ -46,37 +45,22 @@ function FooterWarp({ stage }) {
     }, [stage]);
 
     if (!dims) return null;
-    const { boxW, boxH, f, k, family } = dims;
+    const { f, k, family } = dims;
+    // Each character is its own <span>: dark by default, pure white while the cursor is over that one letter.
     return (
-        <div
-            style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                width: boxW,
-                height: boxH,
-                marginLeft: -boxW / 2,
-                marginTop: -boxH / 2 + boxW * 0.0126, // optical centring: the cap letters sit slightly above the em-box middle
-                '--warp-k': k // vertical stretch applied to the canvas only (see style.css), so WarpText still measures its true box
-            }}
-        >
-            <WarpText
-                text={TEXT}
-                color={COLOR}
-                warpStrength={0.08}
-                warpScale={1.7}
-                speed={0.55}
-                pointerInfluence={0.42}
-                pointerStrength={0.38}
-                refraction={0.018}
-                ripple
-                fontSize={`${f * 3}px`}
-                fontWeight={WEIGHT}
-                fontFamily={family}
-                letterSpacing={`${SPACING}em`}
-                lineHeight={0.9}
-                style={{ minHeight: boxH, height: boxH, overflow: 'visible' }}
-            />
+        <div className="footer-letters" aria-hidden="true" style={{ '--letters-k': k }}>
+            <div
+                className="footer-letters__text"
+                style={{ fontFamily: family, fontSize: f, fontWeight: WEIGHT, letterSpacing: `${SPACING}em`, color: COLOR }}
+            >
+                {Array.from(TEXT).map((ch, i) =>
+                    ch === ' ' ? (
+                        <span key={i} className="footer-letters__space"> </span>
+                    ) : (
+                        <span key={i} className="footer-letter">{ch}</span>
+                    )
+                )}
+            </div>
         </div>
     );
 }

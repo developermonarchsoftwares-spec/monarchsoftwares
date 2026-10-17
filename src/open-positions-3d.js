@@ -10,7 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Open Positions — one continuous, scroll-scrubbed 3D scene (black & white).
+ * Open Positions - one continuous, scroll-scrubbed 3D scene (black & white).
  *
  *  empty space -> rock falls -> impact / break -> particles build the Monarch logo -> orbit rings draw
  *  -> three planets appear -> camera travels to planet 01 / 02 / 03 (job panels) -> settled overview.

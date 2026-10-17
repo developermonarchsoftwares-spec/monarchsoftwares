@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Challenge section — fully scroll-scrubbed reveal.
+ * Challenge section - fully scroll-scrubbed reveal.
  *
  * One normalized scroll progress (0 -> 1) drives every element, in both directions:
  *   label -> heading -> paragraphs -> button, plus the 3D image coming down from above.

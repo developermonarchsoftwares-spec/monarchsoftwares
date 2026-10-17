@@ -4,7 +4,7 @@ import { SentIcon } from '@hugeicons/core-free-icons';
 import SlingButton from './sling/SlingButton.jsx';
 
 /**
- * Contact / inquiry form — replaces the "Send Inquiry →" button with the React Bits <SlingButton />
+ * Contact / inquiry form - replaces the "Send Inquiry →" button with the React Bits <SlingButton />
  * (official source in src/sling/). The form itself is plain HTML; its existing submit handler in
  * src/main.js (validation, loading / success / error states) stays the single submission path:
  * tapping or releasing the sling calls form.requestSubmit(), which fires that same handler.
