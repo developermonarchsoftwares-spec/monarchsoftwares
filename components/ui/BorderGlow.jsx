@@ -63,15 +63,14 @@ function animateValue({ start = 0, end = 100, duration = 1000, delay = 0, ease =
 const BorderGlow = ({
   children,
   className = '',
-  style = {},
-  edgeSensitivity = 10,
+  edgeSensitivity = 30,
   glowColor = '40 80 80',
   backgroundColor = '#120F17',
-  borderRadius = 40,
-  glowRadius = 31,
-  glowIntensity = 2.5,
-  coneSpread = 16,
-  animated = true,
+  borderRadius = 28,
+  glowRadius = 40,
+  glowIntensity = 1.0,
+  coneSpread = 25,
+  animated = false,
   colors = ['#c084fc', '#f472b6', '#38bdf8'],
   fillOpacity = 0.5,
 }) => {
@@ -121,9 +120,6 @@ const BorderGlow = ({
 
   useEffect(() => {
     if (!animated || !cardRef.current) return;
-    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isReducedMotion) return;
-
     const card = cardRef.current;
     const angleStart = 110;
     const angleEnd = 465;
@@ -154,16 +150,15 @@ const BorderGlow = ({
       style={{
         '--card-bg': backgroundColor,
         '--edge-sensitivity': edgeSensitivity,
-        '--border-radius': typeof borderRadius === 'number' ? `${borderRadius}px` : borderRadius,
+        '--border-radius': `${borderRadius}px`,
         '--glow-padding': `${glowRadius}px`,
         '--cone-spread': coneSpread,
         '--fill-opacity': fillOpacity,
         ...glowVars,
         ...buildGradientVars(colors),
-        ...style
       }}
     >
-      <span className="edge-light" aria-hidden="true" />
+      <span className="edge-light" />
       <div className="border-glow-inner">
         {children}
       </div>

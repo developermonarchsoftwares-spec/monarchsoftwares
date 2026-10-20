@@ -172,3 +172,91 @@
 }
 .border-glow-card.bg-host > .border-glow-inner { display: contents; }
 .border-glow-card.bg-keep > .border-glow-inner { display: contents; }
+
+/* =============================================================================
+   PREMIUM CARD HOVER - one shared interaction for every grid card (every card carries .border-glow-card).
+   Uses the independent `translate` / `scale` properties, so it composes with the transforms the scroll animations and the cursor
+   tilt already set on the same cards instead of fighting them. Monochrome only; the BorderGlow edge light stays as it is.
+   ============================================================================= */
+:root { --card-hover-ease: cubic-bezier(0.22, 0.61, 0.36, 1); --card-hover-time: 0.4s; }
+
+.border-glow-card.bg-host,
+.border-glow-card.bg-keep {
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    top var(--card-hover-time) var(--card-hover-ease),
+    translate var(--card-hover-time) var(--card-hover-ease),
+    scale var(--card-hover-time) var(--card-hover-ease),
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow var(--card-hover-time) var(--card-hover-ease);
+}
+
+/* smooth lift for cards in normal flow (position: relative) */
+@media (hover: hover) and (pointer: fine) {
+  .border-glow-card.bg-lift:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):hover,
+  .border-glow-card.bg-lift:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):has(:focus-visible) { top: -6px; }
+}
+
+/* image zoom inside the card's own frame (only for frames that clip: see the safe selectors below) */
+.border-glow-card .card-img-zoom,
+.border-glow-card .principle-media img,
+.border-glow-card .about-image-card img,
+.border-glow-card .content-media img,
+.border-glow-card .job-media img { transition: scale 0.7s var(--card-hover-ease), filter 0.5s ease; will-change: auto; }
+
+/* arrows / "more" links nudge */
+.border-glow-card .card-more, .border-glow-card .btn-arrow, .border-glow-card .service-arrow-icon, .border-glow-card .arrow {
+  transition: translate 0.35s var(--card-hover-ease), opacity 0.3s ease, color 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .border-glow-card.bg-host:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):hover,
+  .border-glow-card.bg-keep:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):hover,
+  .border-glow-card.bg-host:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):has(:focus-visible),
+  .border-glow-card.bg-keep:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):has(:focus-visible) {
+    scale: 1.012;               /* very subtle scale-up (skipped where a scroll animation owns the card's scale) */
+    z-index: 3;                 /* an elevated card sits above its neighbours */
+    border-color: rgba(255, 255, 255, 0.34) !important;   /* brighter, more defined edge */
+    box-shadow:
+      0 18px 38px -12px rgba(0, 0, 0, 0.85),
+      0 2px 0 rgba(255, 255, 255, 0.04),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+      inset 0 46px 90px -46px rgba(255, 255, 255, 0.075) !important;   /* soft monochrome light from the top, as a shade on the surface */
+  }
+  /* the focused Core Principles card: same edge + depth, no lift (its position is driven by the scroll stage) */
+  .border-glow-card.principle-card:hover {
+    border-color: rgba(255, 255, 255, 0.36) !important;
+    box-shadow: 0 24px 54px -14px rgba(0, 0, 0, 0.9), inset 0 46px 90px -46px rgba(255, 255, 255, 0.07) !important;
+  }
+  /* image zoom */
+  .border-glow-card:hover .principle-media img,
+  .border-glow-card:hover .about-image-card img,
+  .border-glow-card:hover .content-media img,
+  .border-glow-card:hover .card-img-zoom { scale: 1.05; }
+  /* content emphasis: titles to full white, arrows / "more" nudge right */
+  .border-glow-card:hover :is(h2, h3, h4, h5, .principle-title, .service-name, .card-title) { color: #ffffff; }
+  .border-glow-card:hover .card-more,
+  .border-glow-card:hover .btn-arrow,
+  .border-glow-card:hover .service-arrow-icon,
+  .border-glow-card:hover .arrow { translate: 4px 0; opacity: 1; }
+}
+
+/* the content-card links already lift themselves by transform; the shared lift replaces it so they never double up */
+.border-glow-card.content-card--link:hover, .border-glow-card.content-card--link:focus-visible { transform: none; }
+
+/* visible keyboard focus on interactive cards */
+.border-glow-card:is(a):focus-visible,
+.border-glow-card:has(> .border-glow-inner > a:focus-visible, a.content-card--link:focus-visible) { outline: 2px solid rgba(255, 255, 255, 0.85); outline-offset: 4px; }
+.border-glow-card a:focus-visible, .border-glow-card button:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.85); outline-offset: 3px; border-radius: 6px; }
+
+/* touch: never leave a card stuck in its hover state */
+@media (hover: none), (pointer: coarse) {
+  .border-glow-card { translate: none !important; scale: none !important; top: auto !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-glow-card, .border-glow-card * { transition-duration: 0.01ms !important; }
+  .border-glow-card:hover { translate: none !important; scale: none !important; top: auto !important; }
+  .border-glow-card:hover .principle-media img, .border-glow-card:hover .about-image-card img, .border-glow-card:hover .content-media img { scale: none !important; }
+}

@@ -144,12 +144,12 @@ export function initHeroCanvas(containerId = 'hero-canvas-container') {
 
         if (w >= 1100) {
             // Desktop: Firmly sticked in right area, elevated to maintain clear separation above banner
-            globeGroup.position.set(100, 22, 0);
+            globeGroup.position.set(125, 22, 0);
             globeGroup.scale.set(0.95, 0.95, 0.95);
             camera.position.set(0, 0, 380);
         } else if (w >= 768) {
             // Tablet: Anchored in right area with comfortable bottom clearance
-            globeGroup.position.set(65, 8, 0);
+            globeGroup.position.set(78, 8, 0);
             globeGroup.scale.set(0.82, 0.82, 0.82);
             camera.position.set(0, 0, 390);
         } else {

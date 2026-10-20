@@ -1,11 +1,11 @@
 .border-glow-card {
   --edge-proximity: 0;
   --cursor-angle: 45deg;
-  --edge-sensitivity: 10;
+  --edge-sensitivity: 30;
   --color-sensitivity: calc(var(--edge-sensitivity) + 20);
-  --border-radius: 40px;
-  --glow-padding: 31px;
-  --cone-spread: 16;
+  --border-radius: 28px;
+  --glow-padding: 40px;
+  --cone-spread: 25;
 
   position: relative;
   border-radius: var(--border-radius);
@@ -148,8 +148,6 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: visible;
+  overflow: auto;
   z-index: 1;
-  width: 100%;
-  height: 100%;
 }

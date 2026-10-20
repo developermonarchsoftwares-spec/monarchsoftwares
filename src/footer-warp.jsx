@@ -13,6 +13,9 @@ const TEXT = 'MONARCH SOFTWARES';
 const COLOR = '#111114';          // the existing fill
 const WEIGHT = 900;               // the existing weight
 const SPACING = -0.04;            // em
+// the tight tracking made a few letter pairs touch (the F's arm met the T's bar); these pairs get a little extra room (em)
+const PAIR_EXTRA = { FT: 0.08, TW: 0.04 };
+const extraBefore = (i) => PAIR_EXTRA[TEXT[i - 1] + TEXT[i]] || 0;
 const CAP = 0.711;                // Roboto cap-height / em
 const TARGET_CAP = 98 / 1000;     // existing cap height as a fraction of the band width (138 * .711 / 1000)
 
@@ -20,7 +23,8 @@ const measureEm = (family) => {
     const ctx = document.createElement('canvas').getContext('2d');
     ctx.font = `${WEIGHT} 100px ${family}`;
     const natural = ctx.measureText(TEXT).width / 100;            // em, no letter spacing
-    return natural + SPACING * (TEXT.length - 1);                  // spacing is applied between glyphs
+    let extra = 0; for (let i = 1; i < TEXT.length; i++) extra += extraBefore(i);
+    return natural + SPACING * (TEXT.length - 1) + extra;                  // spacing is applied between glyphs
 };
 
 function FooterWarp({ stage }) {
@@ -57,7 +61,7 @@ function FooterWarp({ stage }) {
                     ch === ' ' ? (
                         <span key={i} className="footer-letters__space"> </span>
                     ) : (
-                        <span key={i} className="footer-letter">{ch}</span>
+                        <span key={i} className="footer-letter" style={extraBefore(i) ? { marginLeft: `${extraBefore(i)}em` } : undefined}>{ch}</span>
                     )
                 )}
             </div>

@@ -77,7 +77,7 @@ export function initSpaceStars() {
 
     const smooth = (t) => { t = Math.min(1, Math.max(0, t)); return t * t * (3 - 2 * t); };
 
-    const drawOn = (c, offY, w, h, now) => {
+    const drawOn = (c, offY, w, h, now, fade = 0) => {
         c.clearRect(0, 0, w, h);
         const t = now / 1000;
         c.fillStyle = '#ffffff';
@@ -88,7 +88,9 @@ export function initSpaceStars() {
             // fade in near the top of the screen and out near the bottom
             const edge = smooth(s.y / (H * 0.1)) * smooth((H - s.y) / (H * 0.18));
             const tw = reduce ? 1 : 0.68 + 0.32 * Math.sin(t * s.f * 6.2832 + s.p);
-            const al = s.a * edge * tw;
+            // stars never touch the edge of an overlay canvas: a star cut in half by the canvas edge (or a stale, stretched bitmap) shows up as a thin dashed line
+            const soft = fade ? smooth(y / fade) * smooth((h - y) / fade) : 1;
+            const al = s.a * edge * tw * soft;
             if (al < 0.01) continue;
             c.globalAlpha = al * 0.16;                              // soft glow
             c.beginPath(); c.arc(s.x, y, s.r * 3.2, 0, 6.2832); c.fill();
@@ -104,8 +106,14 @@ export function initSpaceStars() {
             const r = o.el.getBoundingClientRect();
             if (r.bottom <= 0 || r.top >= H) continue;
             const w = Math.round(r.width), h = Math.round(r.height);
-            if (w !== o.w || h !== o.h) { o.w = w; o.h = h; o.c.width = Math.round(w * dpr); o.c.height = Math.round(h * dpr); o.x.setTransform(dpr, 0, 0, dpr, 0, 0); }
-            drawOn(o.x, r.top, w, h, now);
+            // a host that is momentarily collapsed (pin / layout changes) must not show a squashed copy of the field
+            if (h < 200 || w < 300) { o.c.style.visibility = 'hidden'; continue; }
+            o.c.style.visibility = '';
+            if (w !== o.w || h !== o.h) {
+                o.w = w; o.h = h; o.c.width = Math.round(w * dpr); o.c.height = Math.round(h * dpr); o.x.setTransform(dpr, 0, 0, dpr, 0, 0);
+                o.c.style.width = w + 'px'; o.c.style.height = h + 'px';   // displayed size always equals the drawn size: never stretched
+            }
+            drawOn(o.x, r.top, w, h, now, 28);
         }
     };
 

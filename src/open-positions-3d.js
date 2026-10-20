@@ -1,5 +1,6 @@
 import './open-positions-3d.css';
 import * as THREE from 'three';
+import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
@@ -123,29 +124,89 @@ export function initOpenPositions() {
         g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 30);
         dust.mat = new THREE.ShaderMaterial({ vertexShader: pointVS, fragmentShader: pointFS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uBurst: { value: 0 }, uForm: { value: 0 }, uFade: { value: 0 }, uPx: { value: px } } });
         dust.pts = new THREE.Points(g, dust.mat); dust.pts.frustumCulled = false; scene.add(dust.pts);
-        // rock fragments: burst outward, then travel onto the outline and shrink away
-        const fg = new THREE.DodecahedronGeometry(1, 0), fm = new THREE.MeshStandardMaterial({ color: 0x3a3a3a, roughness: 1, flatShading: true });
+        // stone fragments: burst outward, then travel onto the outline and shrink away. Each one has its own natural shape,
+        // proportions and tone (charcoal / graphite / grey), built by the same rock generator as the falling stone
+        const NV = small ? 5 : 8, fgs = Array.from({ length: NV }, (_, i) => genRock(i + 1, small ? 3 : 4, [0.75 + 0.55 * hash3(i, 7, 1), 0.65 + 0.5 * hash3(i, 7, 2), 0.7 + 0.45 * hash3(i, 7, 3)], 2 + (i % 4), false));
+        const fmats = [makeRockMat(0x6e6e6e, 0.97), makeRockMat(0x939393, 0.95), makeRockMat(0xb4b4b4, 0.93)];
         for (let k = 0; k < (small ? 16 : 30); k++) {
-            const mesh = new THREE.Mesh(fg, fm); mesh.visible = false;
+            const mesh = new THREE.Mesh(fgs[(k * 5) % NV], fmats[(k * 7) % 3]); mesh.visible = false;
             const th = rr(0, Math.PI * 2), ph = Math.acos(rr(-1, 1)), t = Math.floor(rnd() * m) * 2;
             frags.push({ mesh, s: rr(0.07, 0.24), d: new THREE.Vector3(Math.sin(ph) * Math.cos(th), Math.sin(ph) * Math.sin(th) * 0.8, Math.cos(ph) * 0.9), v: rr(0.5, 1.5), spin: new THREE.Vector3(rr(-5, 5), rr(-5, 5), rr(-5, 5)), r: rnd(), tgt: new THREE.Vector3((edge[t] / S - 0.5) * LOGO_W, -(edge[t + 1] / S - 0.5) * LOGO_W, 0) });
+            frags[frags.length - 1].sc = new THREE.Vector3(0.8 + 0.5 * hash3(k, 9, 1), 0.75 + 0.5 * hash3(k, 9, 2), 0.8 + 0.45 * hash3(k, 9, 3));
             scene.add(mesh);
         }
         dirty = true;
     };
 
     // ---------- rock + trail + flash ----------
-    const rockGeo = new THREE.IcosahedronGeometry(1, small ? 3 : 4);
-    {
-        const p = rockGeo.attributes.position, v = new THREE.Vector3();
+    // boulder: a convex block cut by random planes (angular facets), roughened with fractal noise and
+    // coloured like weathered granite (grey body, tan stains, dark patches, pale veins)
+    const hash3 = (x, y, z) => { const t = Math.sin(x * 127.1 + y * 311.7 + z * 74.7) * 43758.5453; return t - Math.floor(t); };
+    const vnoise = (x, y, z) => {
+        const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = x - xi, yf = y - yi, zf = z - zi;
+        const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), w = zf * zf * (3 - 2 * zf), L = (a, b, t) => a + (b - a) * t;
+        return L(L(L(hash3(xi, yi, zi), hash3(xi + 1, yi, zi), u), L(hash3(xi, yi + 1, zi), hash3(xi + 1, yi + 1, zi), u), v),
+            L(L(hash3(xi, yi, zi + 1), hash3(xi + 1, yi, zi + 1), u), L(hash3(xi, yi + 1, zi + 1), hash3(xi + 1, yi + 1, zi + 1), u), v), w);
+    };
+    const fbm = (x, y, z, o) => { let a = 0, f = 1, amp = 0.5; for (let i = 0; i < o; i++) { a += amp * vnoise(x * f, y * f, z * f); f *= 2.03; amp *= 0.5; } return a; };
+    // asteroid: a rounded, lumpy potato with large shallow craters and fine fractal roughness, smooth-shaded
+    // (merged vertices) so the photographic relief below carries the detail
+    const craters = Array.from({ length: 22 }, () => { const th = rr(0, Math.PI * 2), ph = Math.acos(rr(-1, 1)); return { d: new THREE.Vector3(Math.sin(ph) * Math.cos(th), Math.cos(ph), Math.sin(ph) * Math.sin(th)), r: rr(0.14, 0.42), k: rr(0.035, 0.09) }; });
+    // Natural rock generator: every call produces its own irregular body (fractal lumps, ridges, pits, soft chipped planes),
+    // smooth-shaded from merged vertices, with baked ambient occlusion in the vertex colours (crevices and pits darker).
+    const smin = (x, y, k) => { const h = Math.max(k - Math.abs(x - y), 0) / k; return Math.min(x, y) - h * h * k * 0.25; };
+    const genRock = (sh, detail, el, chips, useCraters) => {
+        let g = new THREE.IcosahedronGeometry(1, detail); g.deleteAttribute('normal'); g.deleteAttribute('uv'); g = mergeVertices(g, 1e-4);
+        const p = g.attributes.position, v = new THREE.Vector3(), col = new Float32Array(p.count * 3), o = sh * 13.7;
+        const planes = [];
+        for (let i = 0; i < chips; i++) { const th = hash3(sh, i, 1) * 6.2832, y = hash3(sh, i, 2) * 2 - 1, q = Math.sqrt(1 - y * y); planes.push({ n: new THREE.Vector3(q * Math.cos(th), y, q * Math.sin(th)), d: 0.7 + hash3(sh, i, 3) * 0.24 }); }
         for (let i = 0; i < p.count; i++) {
             v.fromBufferAttribute(p, i).normalize();
-            const n = Math.sin(v.x * 3.1 + 1.3) * Math.cos(v.y * 2.7) + Math.sin(v.z * 4.3 + v.x * 1.7) * 0.6 + Math.sin(v.y * 7.9 + v.z * 5.1) * 0.22;
-            v.multiplyScalar(1 + 0.2 * n); p.setXYZ(i, v.x, v.y * 0.86, v.z);
+            const big = fbm(v.x * 1.3 + 4 + o, v.y * 1.3 + 4 + o, v.z * 1.3 + 4 + o, 3) - 0.5, mid = fbm(v.x * 3.4 + 17 + o, v.y * 3.4 + 17 + o, v.z * 3.4 + 17 + o, 3) - 0.5, fine = fbm(v.x * 9 + 29 + o, v.y * 9 + 29 + o, v.z * 9 + 29 + o, 3) - 0.5;
+            let cr = 0;
+            if (useCraters) for (const c of craters) { const d = v.distanceTo(c.d) / c.r; if (d < 1.4) cr += d < 1 ? -c.k * (1 - d * d) : c.k * 0.3 * Math.max(0, 1 - Math.abs(d - 1.1) * 5); }
+            const f2 = fbm(v.x * 20 + 7 + o, v.y * 20 + 7 + o, v.z * 20 + 7 + o, 3) - 0.5, rg = 1 - Math.abs(fbm(v.x * 6 + 51 + o, v.y * 6 + 51 + o, v.z * 6 + 51 + o, 3) * 2 - 1);
+            const pit = Math.pow(Math.max(0, fbm(v.x * 14 + 80 + o, v.y * 14 + 80 + o, v.z * 14 + 80 + o, 2) - 0.62) * 4, 2);   // tiny pits
+            let r = 1 + big * (useCraters ? 0.55 : 0.62) + mid * 0.16 + fine * 0.05 + f2 * 0.04 - Math.pow(rg, 5) * 0.05 - pit * 0.03 + cr;
+            for (const pl of planes) { const dp = v.dot(pl.n); if (dp > 0.05) r = smin(r, pl.d / dp, 0.16); }   // soft chipped faces, never razor facets
+            p.setXYZ(i, v.x * r * el[0], v.y * r * el[1], v.z * r * el[2]);
+            const ao = Math.min(1, Math.max(0.32, 0.74 + (big + mid) * 1.3 + cr * 3.0 - Math.pow(rg, 5) * 0.6 - pit * 0.5 + f2 * 0.3));
+            col[i * 3] = col[i * 3 + 1] = col[i * 3 + 2] = ao;
         }
-        rockGeo.computeVertexNormals();
-    }
-    const rock = new THREE.Mesh(rockGeo, new THREE.MeshStandardMaterial({ color: 0x2f2f2f, roughness: 0.95, metalness: 0.08, flatShading: true }));
+        g.setAttribute('color', new THREE.BufferAttribute(col, 3)); g.computeVertexNormals(); return g;
+    };
+    const rockGeo = genRock(0, small ? 5 : 6, [1.08, 0.9, 1.0], 0, true);
+    // surface painted from a photograph of a real asteroid: triplanar-projected colour AND a matching normal map, so the
+    // lighting rakes across crisp cracks, pits and ridges with per-pixel detail (no seams while it tumbles, no blur)
+    const loadRockTex = (url, srgb) => { const t = new THREE.TextureLoader().load(url, () => { dirty = true; }); t.wrapS = t.wrapT = THREE.MirroredRepeatWrapping; if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+    const rockTex = loadRockTex('/rock-tex.webp', true), rockNrm = loadRockTex('/rock-nrm.webp', false);
+    const makeRockMat = (tint, rough) => {
+    const mat = new THREE.MeshStandardMaterial({ color: tint, roughness: rough, metalness: 0.0, flatShading: false, vertexColors: true });
+    mat.onBeforeCompile = (sh) => {
+        sh.uniforms.uRock = { value: rockTex }; sh.uniforms.uRockN = { value: rockNrm };
+        sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vOP; varying vec3 vON; varying vec3 vAx; varying vec3 vAy; varying vec3 vAz;')
+            .replace('#include <begin_vertex>', '#include <begin_vertex>\nvOP = position; vON = normal; vAx = normalize(normalMatrix * vec3(1.0, 0.0, 0.0)); vAy = normalize(normalMatrix * vec3(0.0, 1.0, 0.0)); vAz = normalize(normalMatrix * vec3(0.0, 0.0, 1.0));');
+        sh.fragmentShader = sh.fragmentShader
+            .replace('#include <common>', '#include <common>\nvarying vec3 vOP; varying vec3 vON; varying vec3 vAx; varying vec3 vAy; varying vec3 vAz; uniform sampler2D uRock; uniform sampler2D uRockN;')
+            .replace('#include <map_fragment>', `
+                vec3 tw = pow(abs(normalize(vON)), vec3(5.0)); tw /= (tw.x + tw.y + tw.z);
+                vec2 uvx = vOP.zy * 0.42 + 0.13, uvy = vOP.xz * 0.42 + 0.37, uvz = vOP.xy * 0.42 + 0.61;
+                vec3 tc = texture2D(uRock, uvx).rgb * tw.x + texture2D(uRock, uvy).rgb * tw.y + texture2D(uRock, uvz).rgb * tw.z;
+                vec3 d1 = texture2D(uRock, uvx * 3.1 + 0.3).rgb * tw.x + texture2D(uRock, uvy * 3.1 + 0.5).rgb * tw.y + texture2D(uRock, uvz * 3.1 + 0.7).rgb * tw.z;
+                float dl = dot(d1, vec3(0.3, 0.59, 0.11));
+                diffuseColor.rgb *= pow(tc, vec3(1.25)) * 2.5 * (0.55 + 0.95 * dl);`)
+            .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+                {
+                    vec2 nx = (texture2D(uRockN, uvx).xy + 0.6 * texture2D(uRockN, uvx * 3.1 + 0.3).xy + 0.35 * texture2D(uRockN, uvx * 9.7 + 0.1).xy) / 1.95 * 2.0 - 1.0;
+                    vec2 ny = (texture2D(uRockN, uvy).xy + 0.6 * texture2D(uRockN, uvy * 3.1 + 0.5).xy + 0.35 * texture2D(uRockN, uvy * 9.7 + 0.2).xy) / 1.95 * 2.0 - 1.0;
+                    vec2 nz = (texture2D(uRockN, uvz).xy + 0.6 * texture2D(uRockN, uvz * 3.1 + 0.7).xy + 0.35 * texture2D(uRockN, uvz * 9.7 + 0.3).xy) / 1.95 * 2.0 - 1.0;
+                    vec3 o = vec3(0.0, nx.y, nx.x) * tw.x + vec3(ny.x, 0.0, ny.y) * tw.y + vec3(nz.x, nz.y, 0.0) * tw.z;
+                    normal = normalize(normal + (o.x * vAx + o.y * vAy + o.z * vAz) * 1.6);
+                }`);
+    };
+    return mat; };
+    const rockMat = makeRockMat(0xffffff, 0.95);
+    const rock = new THREE.Mesh(rockGeo, rockMat);
     rock.visible = false; scene.add(rock);
     const TRAIL = small ? 70 : 150;
     const trail = (() => {
@@ -212,6 +273,7 @@ export function initOpenPositions() {
     let composer = null, bokeh = null;
     if (!small) {
         composer = new EffectComposer(renderer);
+        composer.renderTarget1.samples = 4; composer.renderTarget2.samples = 4;   // antialiased edges
         composer.addPass(new RenderPass(scene, camera));
         bokeh = new BokehPass(scene, camera, { focus: 20, aperture: 0.00003, maxblur: 0.012 });
         composer.addPass(bokeh); composer.addPass(new OutputPass());
@@ -271,7 +333,7 @@ export function initOpenPositions() {
         rock.visible = rt > 0.001 && !impact;
         if (rock.visible) {
             const f = Math.pow(rt, 1.7);
-            rock.position.set(0.6 * (1 - f), 10.5 * (1 - f), -3.0 * (1 - f)); rock.scale.set(0.62, 0.62 * (1 + 0.18 * rt), 0.62);
+            rock.position.set(0.6 * (1 - f), 10.5 * (1 - f), -3.0 * (1 - f)); rock.scale.set(1.25, 1.25 * (1 + 0.18 * rt), 1.25);
             rock.rotation.set(rt * 5.2, rt * 3.6, rt * 1.4);
         }
         // trail behind the rock (pure function of rock progress)
@@ -292,7 +354,7 @@ export function initOpenPositions() {
             if (!fr.mesh.visible) return;
             tmp.copy(fr.d).multiplyScalar(fr.v * b * 5.0); tmp.y -= 0.35 * b * b * fr.v;
             fr.mesh.position.copy(tmp).lerp(fr.tgt, f);
-            fr.mesh.scale.setScalar(fr.s * (1 - f * 0.92) * Math.min(1, b * 6));
+            fr.mesh.scale.copy(fr.sc).multiplyScalar(fr.s * (1 - f * 0.92) * Math.min(1, b * 6));
             fr.mesh.rotation.set(fr.spin.x * S.burst, fr.spin.y * S.burst, fr.spin.z * S.burst);
         });
         outlineMat.opacity = S.outline * (1 - S.fill * 0.55); fillMat.opacity = S.fill; glowMat.opacity = S.fill * 0.55;
@@ -318,7 +380,7 @@ export function initOpenPositions() {
             tmp2.set(0, 0, 0).multiplyScalar(1 - Math.min(1, wsum)); tmp.add(tmp2);
             const focus = camera.position.distanceTo(wsum > 0.02 ? tmp.multiplyScalar(1 / Math.max(wsum, 0.0001)) : new THREE.Vector3(0, 0, 0));
             bokeh.uniforms.focus.value = focus;
-            bokeh.uniforms.aperture.value = 0.00003 + 0.00022 * Math.min(1, wsum);
+            bokeh.uniforms.aperture.value = S.cam < 0.02 ? 0 : 0.00003 + 0.00022 * Math.min(1, wsum);
         }
         placePanels();
         if (composer) composer.render(); else renderer.render(scene, camera);
@@ -350,7 +412,7 @@ export function initOpenPositions() {
         const asp = W / H; camera.fov = asp < 0.8 ? 52 : 40; camera.setViewOffset(W, H, 0, -H * 0.08, W, H); camera.updateProjectionMatrix();
         const k = asp < 0.8 ? Math.min(2.4, 1.1 / Math.pow(asp, 0.95)) : 1; // portrait: pull the wide shot back
         WIDE.p.set(0, 7.0 * k, 19.5 * k);
-        if (composer) { composer.setPixelRatio(1); composer.setSize(W, H); }
+        if (composer) { composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(W, H); }
         dirty = true;
     };
     resize();

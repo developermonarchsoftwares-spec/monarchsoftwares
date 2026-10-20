@@ -451,3 +451,9 @@
     margin-bottom: 1.5rem;
   }
 }
+
+/* a clear gap between the step number and its label (they were running together: "01Profile Review") */
+.hiring-timeline-num {
+  display: inline-block;
+  margin-right: 0.7em;
+}
