@@ -55,7 +55,7 @@
 }
 
 .masked-heading-svg text {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-family: var(--font-headline) !important;
   font-weight: 900 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.5em !important;
@@ -75,7 +75,7 @@
 
 /* Canvas / Background Clip Fallback */
 .masked-heading-text-css {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-family: var(--font-headline) !important;
   font-weight: 900 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.5em !important;

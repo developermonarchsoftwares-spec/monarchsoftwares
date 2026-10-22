@@ -171,6 +171,8 @@
     rgba(0, 0, 0, 0.1) 0px 32px 64px !important;
 }
 .border-glow-card.bg-host > .border-glow-inner { display: contents; }
+/* the wrapper is display: contents, so anything inside a card that says `border-radius: inherit` (sheens, spotlights, rims) would get the wrapper's square 0 radius: pass the card's radius through it */
+.border-glow-card > .border-glow-inner { border-radius: inherit; }
 .border-glow-card.bg-keep > .border-glow-inner { display: contents; }
 
 /* =============================================================================
@@ -194,8 +196,8 @@
 
 /* smooth lift for cards in normal flow (position: relative) */
 @media (hover: hover) and (pointer: fine) {
-  .border-glow-card.bg-lift:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):hover,
-  .border-glow-card.bg-lift:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):has(:focus-visible) { top: -6px; }
+  .border-glow-card.bg-lift:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):not(.why-card__glass):hover,
+  .border-glow-card.bg-lift:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):not(.why-card__glass):has(:focus-visible) { top: -6px; }
 }
 
 /* image zoom inside the card's own frame (only for frames that clip: see the safe selectors below) */
@@ -211,10 +213,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .border-glow-card.bg-host:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):hover,
-  .border-glow-card.bg-keep:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):hover,
-  .border-glow-card.bg-host:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):has(:focus-visible),
-  .border-glow-card.bg-keep:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):has(:focus-visible) {
+  .border-glow-card.bg-host:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):not(.why-card__glass):hover,
+  .border-glow-card.bg-keep:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):not(.why-card__glass):hover,
+  .border-glow-card.bg-host:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):not(.why-card__glass):has(:focus-visible),
+  .border-glow-card.bg-keep:not(.principle-card):not(.climax-form-wrap):not(#contact-form-card):not(.faq-item):not(.why-card__glass):has(:focus-visible) {
     scale: 1.012;               /* very subtle scale-up (skipped where a scroll animation owns the card's scale) */
     z-index: 3;                 /* an elevated card sits above its neighbours */
     border-color: rgba(255, 255, 255, 0.34) !important;   /* brighter, more defined edge */

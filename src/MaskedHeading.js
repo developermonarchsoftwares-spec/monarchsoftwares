@@ -92,7 +92,7 @@ export class MaskedHeading {
                                 y="54%" 
                                 text-anchor="middle" 
                                 dominant-baseline="central" 
-                                font-family="'Inter', system-ui, -apple-system, sans-serif"
+                                font-family="Sora, Inter, system-ui, sans-serif"
                                 font-weight="900"
                                 font-size="${fontSizeVal}"
                                 letter-spacing="0.5em"

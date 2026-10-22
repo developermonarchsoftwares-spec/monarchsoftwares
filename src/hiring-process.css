@@ -23,7 +23,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: clamp(2rem, 4.5vh, 3.5rem) clamp(1.5rem, 5vw, 5rem);
+  /* top padding clears the fixed navbar (~83px) so the header is never tucked under it */
+  padding: clamp(5.75rem, 12vh, 7.5rem) clamp(1.5rem, 5vw, 5rem) clamp(1.5rem, 3.5vh, 2.75rem);
   box-sizing: border-box;
   background: transparent;
   overflow: hidden;
@@ -456,4 +457,10 @@
 .hiring-timeline-num {
   display: inline-block;
   margin-right: 0.7em;
+}
+
+/* Large step titles stay on one line on desktop (Sora is wider than the old headline font, so "TECHNICAL INTERVIEW" used to break mid-word) */
+@media (min-width: 1025px) {
+  .hiring-stage-title,
+  .hiring-stage-title .scroll-float-text { white-space: nowrap; }
 }

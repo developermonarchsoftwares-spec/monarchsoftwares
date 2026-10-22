@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Sora:wght@100..800&display=swap');
 
 /* =============================================================================
    MONARCH SOFTWARES - PURE MONOCHROME BLACK DESIGN SYSTEM
@@ -31,9 +31,9 @@
   --border-dark: #222222;
 
   /* Typography - Roboto for Headlines, System Sans for Body */
-  --font-headline: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  --font-sans: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-headline: "Sora", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-mono: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 
   /* Layout */
   --container-max: 1200px;
@@ -3788,4 +3788,16 @@ body.has-stars-bg { background: transparent; }
   header#header .nav-links > li { display: flex; align-items: center; }
   header#header .nav-links > li > a { display: inline-flex; align-items: center; gap: 0.3rem; line-height: 1; padding: 0.5rem 0; }
   header#header .nav-links > li > a::after { bottom: 0; }
+}
+
+/* Hero: "BUILD, HIRE, AND GROW" stays on one line on desktop (Sora is wider than the old headline font, so the line used to break) */
+@media (min-width: 1025px) {
+  .hero-editorial .hero-headline-line--inline { flex-wrap: nowrap; white-space: nowrap; width: max-content; max-width: none; }
+  .hero-editorial .hero-headline-wrap { max-width: none; }
+}
+
+/* About hero: "The Growth Company" on one line on desktop and tablet (Sora is wider than the old headline font, so it used to break after "Growth") */
+@media (min-width: 769px) {
+  /* the block is as wide as the screen (slightly less) and centred on the page, so the unbroken line stays centred even though it is wider than the text column */
+  .about-hero-content .about-hero-title { white-space: nowrap; margin-inline: calc(50% - 49vw); text-align: center; }
 }

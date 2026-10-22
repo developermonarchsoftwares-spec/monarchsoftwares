@@ -264,3 +264,9 @@
   .why-stage { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: clip; }
   .why-stage > .why-inner { width: 100%; }
 }
+
+/* "Why Monarch Softwares?" on one line on desktop (Sora is wider than the old headline font, so it used to break after "Monarch") */
+@media (min-width: 900px) {
+  .why-head { max-width: none; }
+  .why-title { white-space: nowrap; }
+}
