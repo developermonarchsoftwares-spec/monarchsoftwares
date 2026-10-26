@@ -21,6 +21,7 @@ import './style.css';
 import { initSpaceStars } from './space-stars.js';
 import './open-positions-3d.css'; // static: the Open Positions track height must exist before later ScrollTrigger pins measure the page
 import { initLegalModals } from './legal.js';
+import { initContactCaptcha } from './contact-captcha.js';
 import { initMagneticElements } from './magnetic.js';
 import { initCardSpotlight } from './spotlight.js';
 import { initFloatingPreview } from './floating-preview.js';
@@ -593,8 +594,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
 
     if (contactForm) {
+        const captcha = initContactCaptcha(contactForm);
+        let sending = false;   // blocks a second submission while one is in flight
+        let formShownAt = Date.now();   // sent with the inquiry: the server rejects forms that were "filled" faster than a person could
+        const SUBMIT_URL = import.meta.env.DEV ? 'https://api.web3forms.com/submit' : '/api/contact';   // production goes through our own endpoint (rate limit + bot screening)
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
+            if (sending) return;
 
             // Client-side validation (form uses novalidate so messages are consistent)
             if (!contactForm.checkValidity()) {
@@ -606,6 +612,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (firstInvalid) firstInvalid.focus();
                 return;
             }
+
+            // typing CAPTCHA: nothing is sent unless it matches
+            if (captcha && !captcha.verify()) {
+                if (formStatus) formStatus.textContent = '';
+                return;
+            }
+            sending = true;
 
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -626,9 +639,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(contactForm);
             const dataObj = Object.fromEntries(formData);
+            dataObj._ts = formShownAt;
             const jsonBody = JSON.stringify(dataObj);
 
-            fetch('https://api.web3forms.com/submit', {
+            fetch(SUBMIT_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -661,6 +675,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const waUrl = `https://wa.me/916385753874?text=${waText}`;
 
                     contactForm.reset();
+                    if (captcha) captcha.refresh();   // fresh code after a successful submission
+                    formShownAt = Date.now();
+                    sending = false;
                     if (submitBtn) {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = 'Inquiry Sent ✓';
@@ -677,6 +694,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         formStatus.style.color = '#e5e5ea';
                         formStatus.innerHTML = resJson.message || 'Submission failed. Please email contact@monarchsoftwares.com';
                     }
+                    sending = false;
+                    if (captcha) captcha.refresh();
                     if (submitBtn) {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = 'Retry Sending Inquiry';
@@ -689,6 +708,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     formStatus.style.color = '#e5e5ea';
                     formStatus.innerHTML = 'Network error. Reach us directly at contact@monarchsoftwares.com';
                 }
+                sending = false;
+                if (captcha) captcha.refresh();
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = submitBtn.dataset.label || 'Send Inquiry →';
