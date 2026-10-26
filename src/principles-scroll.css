@@ -446,3 +446,8 @@
 }
 #core-principles.is-stage .principle-desc { font-size: clamp(0.78rem, 0.86vw, 0.88rem); line-height: 1.5; }
 @media (max-width: 768px) { #core-principles.is-stage .principle-content { padding: 0.8rem 1rem; } #core-principles.is-stage .principle-desc { font-size: 0.78rem; line-height: 1.45; } }
+
+/* Phones: lift the progress indicator above the floating WhatsApp button so the dots are not covered */
+@media (max-width: 640px) {
+  #core-principles.is-stage .principles-progress-bar { bottom: 5.5rem; }
+}

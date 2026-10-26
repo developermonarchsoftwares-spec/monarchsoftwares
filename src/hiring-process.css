@@ -464,3 +464,8 @@
   .hiring-stage-title,
   .hiring-stage-title .scroll-float-text { white-space: nowrap; }
 }
+
+/* Phones: keep the step description and badge clear of the floating WhatsApp button at the bottom right */
+@media (max-width: 640px) {
+  .hiring-stage-desc, .hiring-stage-meta { padding-right: 3.75rem; box-sizing: border-box; }
+}

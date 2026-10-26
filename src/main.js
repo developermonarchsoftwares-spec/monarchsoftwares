@@ -427,6 +427,31 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        if (mobileDrawer) {
+            // Services submenu: expandable, opens by itself on a service page, marks the current service
+            const subToggle = mobileDrawer.querySelector('.mobile-dropdown-toggle');
+            const subList = mobileDrawer.querySelector('.mobile-subnav-list');
+            const setSub = (open) => {
+                if (!subToggle || !subList) return;
+                subToggle.classList.toggle('open', open);
+                subList.classList.toggle('open', open);
+                subToggle.setAttribute('aria-expanded', String(open));
+                subToggle.setAttribute('aria-label', open ? 'Hide services' : 'Show services');
+            };
+            if (subToggle) subToggle.addEventListener('click', () => setSub(!subList.classList.contains('open')));
+            const here = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+            mobileDrawer.querySelectorAll('.mobile-subnav-link').forEach((a) => {
+                if (a.getAttribute('href') === here) { a.classList.add('active'); a.setAttribute('aria-current', 'page'); setSub(true); }
+            });
+            const closeDrawer = () => {
+                mobileDrawer.classList.remove('active');
+                mobileDrawer.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            };
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && mobileDrawer.classList.contains('active')) { closeDrawer(); if (mobileToggle) mobileToggle.focus(); } });
+            window.addEventListener('resize', () => { if (window.innerWidth > 1024 && mobileDrawer.classList.contains('active')) closeDrawer(); });   // never leave the page locked after rotating / resizing to a desktop width
+        }
+
         if (navLinks) {
             navLinks.querySelectorAll('a').forEach((link) => {
                 link.addEventListener('click', () => {

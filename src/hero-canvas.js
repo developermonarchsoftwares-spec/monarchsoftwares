@@ -154,8 +154,8 @@ export function initHeroCanvas(containerId = 'hero-canvas-container') {
             camera.position.set(0, 0, 390);
         } else {
             // Mobile: Centered below headline with clean clearance
-            globeGroup.position.set(0, -35, 0);
-            globeGroup.scale.set(0.68, 0.68, 0.68);
+            globeGroup.position.set(0, -62, 0);
+            globeGroup.scale.set(0.64, 0.64, 0.64);
             camera.position.set(0, 0, 400);
         }
     }

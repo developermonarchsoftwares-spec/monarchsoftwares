@@ -3836,3 +3836,29 @@ body.has-stars-bg { background: transparent; }
   #contact-form .captcha-message { top: calc(100% + 2px); }
 }
 @media (prefers-reduced-motion: reduce) { #contact-form .captcha-refresh svg { transition: none; } }
+
+/* Mobile drawer: scrolls when its content is taller than the screen (landscape phones, small screens), keeps tap targets comfortable,
+   and is removed entirely at desktop widths (the desktop navbar is shown there) */
+.mobile-drawer { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; gap: 1.5rem; box-sizing: border-box; }
+.mobile-drawer .mobile-nav-list { min-width: 0; }
+.mobile-drawer .mobile-nav-link { min-height: 44px; align-items: center; overflow-wrap: anywhere; }
+.mobile-drawer .mobile-subnav-link { padding: 0.35rem 0; overflow-wrap: anywhere; line-height: 1.35; }
+.mobile-drawer .mobile-nav-dropdown-head { gap: 0.75rem; }
+.mobile-drawer .mobile-nav-dropdown-head .mobile-nav-link { flex: 1 1 auto; min-width: 0; }
+.mobile-drawer .mobile-dropdown-toggle { flex: 0 0 44px; width: 44px; height: 44px; }
+.mobile-drawer-footer { flex-shrink: 0; }
+@media (max-width: 380px) { .mobile-nav-link { font-size: 1.7rem; } }
+@media (max-height: 520px) { .mobile-drawer { padding-top: 4.25rem; } .mobile-nav-list { gap: 0.4rem; } .mobile-nav-link { font-size: 1.5rem; } }
+@media (min-width: 1025px) { .mobile-drawer { display: none; } }
+
+/* While the drawer is open the header (logo + menu button) stays above it, so the menu can always be closed; the button turns into an X */
+@media (max-width: 1024px) {
+  body:has(.mobile-drawer.active) #header { z-index: 1100; background: transparent !important; border-bottom-color: transparent !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  body:has(.mobile-drawer.active) .mobile-toggle svg line { transform-box: fill-box; transform-origin: center; transition: transform 0.25s ease, opacity 0.2s ease; }
+  body:has(.mobile-drawer.active) .mobile-toggle svg line:nth-child(1) { opacity: 0; }
+  body:has(.mobile-drawer.active) .mobile-toggle svg line:nth-child(2) { transform: translateY(6px) rotate(45deg); }
+  body:has(.mobile-drawer.active) .mobile-toggle svg line:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+}
+
+/* Phones: the hero globe sits behind the headline text, so it is dimmed a little to keep the copy readable */
+@media (max-width: 768px) { .hero-canvas-container { opacity: 0.62; } }
