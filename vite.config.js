@@ -4,7 +4,11 @@ import { existsSync } from 'fs';
 
 // Old multi-page URLs now live as sections of the homepage (mirrors the redirects in vercel.json)
 const MOVED = {
-  '/about': '/#about', '/services': '/#services', '/careers': '/#careers', '/contact': '/#cta',
+  '/about': '/home/about',
+  '/services': '/home/services',
+  '/careers': '/home/careers',
+  '/contact': '/home/contact',
+  '/cta': '/home/contact',
   '/hr-services': '/training-placement',
 };
 
@@ -20,6 +24,13 @@ const cleanUrl = (req, res, next) => {
   const serviceMatch = normalized.match(/^\/services\/(corporate-training|it-services|digital-marketing|training-placement)$/);
   if (serviceMatch) {
     req.url = `/${serviceMatch[1]}.html${query ? '?' + query : ''}`;
+    next();
+    return;
+  }
+
+  // Direct rewrite for /home and any /home/* -> /index.html
+  if (normalized === '/home' || normalized.startsWith('/home/')) {
+    req.url = `/index.html${query ? '?' + query : ''}`;
     next();
     return;
   }

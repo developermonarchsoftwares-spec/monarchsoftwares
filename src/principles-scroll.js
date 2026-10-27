@@ -58,10 +58,12 @@ export function initPrinciplesScroll() {
     const W = window.innerWidth, H = window.innerHeight, mobile = W < 769;
     // reference sizes: 380x520 desktop, 280x380 mobile; scaled up on big screens, kept inside the viewport
     const ratio = mobile ? 380 / 280 : 520 / 380;
-    let w = mobile ? Math.min(300, W * 0.74) : Math.min(460, Math.max(340, W * 0.24));
+    let w = mobile ? Math.min(340, Math.max(270, W * 0.82)) : Math.min(460, Math.max(340, W * 0.24));
     let h = w * ratio;
-    const maxH = H * (mobile ? 0.62 : 0.66);
+    // On mobile, reserve ~72px for top fixed navbar and ~100px for bottom progress bar & WhatsApp
+    const maxH = mobile ? Math.min(470, Math.max(340, H - 175)) : H * 0.66;
     if (h > maxH) { h = maxH; w = h / ratio; }
+    if (mobile && w > W - 32) { w = W - 32; h = w * ratio; }
     cw = w; ch = h;
     section.style.setProperty('--ps-w', `${w.toFixed(1)}px`);
     section.style.setProperty('--ps-h', `${h.toFixed(1)}px`);
@@ -96,7 +98,8 @@ export function initPrinciplesScroll() {
     const p = proxy.p;
     const a = activeAt(p);
     const enter = smooth((p - ENTER[0]) / (ENTER[1] - ENTER[0]));
-    const gap = GAP * (cw / 380);
+    const mobile = window.innerWidth < 769;
+    const gap = mobile ? Math.max(16, GAP * (cw / 380) * 0.7) : GAP * (cw / 380);
 
     // heading: centred and alone first, then it lifts away as the stage comes in
     head.style.setProperty('--ps-head-o', (1 - smooth(enter * 1.4)).toFixed(3));

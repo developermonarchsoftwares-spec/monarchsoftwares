@@ -21,7 +21,6 @@ import './style.css';
 import { initSpaceStars } from './space-stars.js';
 import './open-positions-3d.css'; // static: the Open Positions track height must exist before later ScrollTrigger pins measure the page
 import { initLegalModals } from './legal.js';
-import { initContactCaptcha } from './contact-captcha.js';
 import { initMagneticElements } from './magnetic.js';
 import { initCardSpotlight } from './spotlight.js';
 import { initFloatingPreview } from './floating-preview.js';
@@ -127,43 +126,166 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('hashchange', updateDropdownActive);
     updateDropdownActive();
 
-    const onHome = window.location.pathname === '/' || window.location.pathname === '/index.html';
-    document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach((anchor) => {
-        anchor.addEventListener('click', function (e) {
-            let hash = this.getAttribute('href');
-            if (hash && hash.startsWith('/#')) {
-                if (!onHome) return; // other pages navigate normally
-                hash = hash.slice(1);
-            }
-            if (!hash || hash === '#') return;
+    // Section and clean route mapping
+    const SECTION_TO_ROUTE = {
+        '#hero': '/home',
+        '#home': '/home',
+        '#services': '/home/services',
+        '#careers': '/home/careers',
+        '#about': '/home/about',
+        '#cta': '/home/contact',
+        '#contact': '/home/contact'
+    };
 
-            const target = document.querySelector(hash);
-            if (!target) return;
+    const ROUTE_TO_SECTION = {
+        '/home': '#hero',
+        '/home/services': '#services',
+        '/home/careers': '#careers',
+        '/home/about': '#about',
+        '/home/contact': '#cta',
+        '/home/cta': '#cta'
+    };
+
+    // Convert any legacy # hash in URL to clean route URLs without '#'
+    const convertHashToRoute = () => {
+        const hash = window.location.hash;
+        if (!hash) return;
+        const targetRoute = SECTION_TO_ROUTE[hash] || (window.location.pathname.startsWith('/home') ? window.location.pathname : '/home');
+        if (history.replaceState) {
+            history.replaceState(null, '', targetRoute);
+        }
+        const targetId = hash === '#contact' ? '#cta' : hash;
+        const target = document.querySelector(targetId);
+        if (target) {
+            const targetTop = getTargetScrollTop(target);
+            lenis.scrollTo(Math.max(0, targetTop - 80), { immediate: true });
+        }
+    };
+    convertHashToRoute();
+    window.addEventListener('hashchange', convertHashToRoute);
+
+    const onHome = window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname.startsWith('/home');
+
+    // Direct route load: if opened with a section route (e.g. /home/contact, /home/services, etc.), scroll to that section
+    const normalizedPath = window.location.pathname.replace(/\/$/, '');
+    const directTargetId = ROUTE_TO_SECTION[normalizedPath];
+    if (directTargetId && directTargetId !== '#hero') {
+        const scrollToDirectTarget = () => {
+            const target = document.querySelector(directTargetId);
+            if (target) {
+                const targetTop = getTargetScrollTop(target);
+                lenis.scrollTo(Math.max(0, targetTop - 80), { immediate: true });
+            }
+        };
+        setTimeout(scrollToDirectTarget, 120);
+        setTimeout(scrollToDirectTarget, 400);
+    }
+
+    // Handle browser back/forward navigation between clean routes
+    window.addEventListener('popstate', () => {
+        if (!onHome) return;
+        const path = window.location.pathname.replace(/\/$/, '');
+        const targetId = ROUTE_TO_SECTION[path];
+        if (targetId && targetId !== '#hero') {
+            const target = document.querySelector(targetId);
+            if (target) {
+                const targetTop = getTargetScrollTop(target);
+                lenis.scrollTo(Math.max(0, targetTop - 80), { duration: 0.8 });
+            }
+        } else {
+            lenis.scrollTo(0, { duration: 0.8 });
+        }
+    });
+
+    // Clean route navigation for section links on the homepage
+    document.querySelectorAll('a[href^="#"], a[href^="/#"], a[href^="/home"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+            const rawHref = this.getAttribute('href');
+            if (!rawHref) return;
+
+            let targetSectionId = '';
+            let targetCleanRoute = '';
+
+            if (rawHref === '/home' || rawHref === '/home/' || rawHref === '#home' || rawHref === '/#home') {
+                targetSectionId = '#hero';
+                targetCleanRoute = '/home';
+            } else if (rawHref === '/home/services' || rawHref === '/home/services/' || rawHref === '#services' || rawHref === '/#services') {
+                targetSectionId = '#services';
+                targetCleanRoute = '/home/services';
+            } else if (rawHref === '/home/careers' || rawHref === '/home/careers/' || rawHref === '#careers' || rawHref === '/#careers') {
+                targetSectionId = '#careers';
+                targetCleanRoute = '/home/careers';
+            } else if (rawHref === '/home/about' || rawHref === '/home/about/' || rawHref === '#about' || rawHref === '/#about') {
+                targetSectionId = '#about';
+                targetCleanRoute = '/home/about';
+            } else if (rawHref === '/home/contact' || rawHref === '/home/contact/' || rawHref === '#cta' || rawHref === '/#cta' || rawHref === '#contact' || rawHref === '/#contact') {
+                targetSectionId = '#cta';
+                targetCleanRoute = '/home/contact';
+            } else if (rawHref.startsWith('#')) {
+                targetSectionId = rawHref;
+                targetCleanRoute = window.location.pathname.startsWith('/home') ? window.location.pathname : '/home';
+            } else if (rawHref.startsWith('/#')) {
+                if (!onHome) return;
+                targetSectionId = rawHref.slice(1);
+                targetCleanRoute = SECTION_TO_ROUTE[targetSectionId] || '/home';
+            } else {
+                return;
+            }
+
+            if (!onHome) {
+                if (targetCleanRoute) {
+                    window.location.href = targetCleanRoute;
+                    e.preventDefault();
+                }
+                return;
+            }
 
             e.preventDefault();
-            if (history.pushState) {
-                history.pushState(null, '', hash);
+
+            // Push clean route to URL bar without '#'
+            if (history.pushState && targetCleanRoute) {
+                history.pushState(null, '', targetCleanRoute);
                 updateDropdownActive();
             }
+
             if (this.blur) this.blur();
 
-            const targetTop = getTargetScrollTop(target);
-            lenis.scrollTo(Math.max(0, targetTop - 80), {
-                duration: 1.1,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-            });
+            if (targetSectionId === '#hero') {
+                lenis.scrollTo(0, {
+                    duration: 1.1,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                });
+            } else {
+                const target = document.querySelector(targetSectionId);
+                if (target) {
+                    const targetTop = getTargetScrollTop(target);
+                    lenis.scrollTo(Math.max(0, targetTop - 80), {
+                        duration: 1.1,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                    });
+                }
+            }
         });
     });
 
     // 4. Active Nav Link Indicator - one item active, driven by the section currently in view.
-    //    Home covers everything above #services; "Why Monarch" belongs to Services; Careers runs until Contact.
-    const homeLink = document.querySelector('.nav-links > li > a[href="/"]');
-    const navAnchors = Array.from(document.querySelectorAll('.nav-links > li > a[href^="#"]'));
+    const homeLink = document.querySelector('.nav-links > li > a[href="/home"], .nav-links > li > a[href="/"]');
+    const servicesLink = document.querySelector('.nav-links a[href="/home/services"], .nav-links a[href="#services"]');
+    const careersLink = document.querySelector('.nav-links a[href="/home/careers"], .nav-links a[href="#careers"]');
+    const aboutLink = document.querySelector('.nav-links a[href="/home/about"], .nav-links a[href="#about"]');
+    const contactLink = document.querySelector('.nav-links a[href="/home/contact"], .nav-links a[href="#cta"]');
+
+    const allNavLinks = [homeLink, servicesLink, careersLink, aboutLink, contactLink].filter(Boolean);
+
     const navSections = [
         { link: homeLink, el: document.getElementById('hero') },
-        ...navAnchors.map((a) => ({ link: a, el: document.querySelector(a.getAttribute('href')) })),
-        { link: navAnchors.find((a) => a.getAttribute('href') === '#services'), el: document.getElementById('why') }
+        { link: servicesLink, el: document.getElementById('services') },
+        { link: servicesLink, el: document.getElementById('why') },
+        { link: careersLink, el: document.getElementById('careers') },
+        { link: aboutLink, el: document.getElementById('about') },
+        { link: contactLink, el: document.getElementById('cta') }
     ].filter((x) => x.link && x.el);
+
     const updateActiveNav = () => {
         if (!navSections.length) return;
         const scrollPosition = window.scrollY + 140;
@@ -172,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const top = el.getBoundingClientRect().top + window.scrollY;
             if (scrollPosition >= top && top > best) { best = top; current = link; }
         });
-        [homeLink, ...navAnchors].forEach((a) => {
+        allNavLinks.forEach((a) => {
             if (!a) return;
             a.classList.toggle('active', a === current);
             if (a === current) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
@@ -619,7 +741,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
 
     if (contactForm) {
-        const captcha = initContactCaptcha(contactForm);
         let sending = false;   // blocks a second submission while one is in flight
         let formShownAt = Date.now();   // sent with the inquiry: the server rejects forms that were "filled" faster than a person could
         const SUBMIT_URL = import.meta.env.DEV ? 'https://api.web3forms.com/submit' : '/api/contact';   // production goes through our own endpoint (rate limit + bot screening)
@@ -638,11 +759,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // typing CAPTCHA: nothing is sent unless it matches
-            if (captcha && !captcha.verify()) {
-                if (formStatus) formStatus.textContent = '';
-                return;
-            }
             sending = true;
 
             if (submitBtn) {
@@ -700,7 +816,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const waUrl = `https://wa.me/916385753874?text=${waText}`;
 
                     contactForm.reset();
-                    if (captcha) captcha.refresh();   // fresh code after a successful submission
                     formShownAt = Date.now();
                     sending = false;
                     if (submitBtn) {
@@ -720,7 +835,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         formStatus.innerHTML = resJson.message || 'Submission failed. Please email contact@monarchsoftwares.com';
                     }
                     sending = false;
-                    if (captcha) captcha.refresh();
                     if (submitBtn) {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = 'Retry Sending Inquiry';
@@ -734,7 +848,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     formStatus.innerHTML = 'Network error. Reach us directly at contact@monarchsoftwares.com';
                 }
                 sending = false;
-                if (captcha) captcha.refresh();
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = submitBtn.dataset.label || 'Send Inquiry →';
