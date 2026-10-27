@@ -3106,7 +3106,7 @@ header#header .dropdown-item.active .dropdown-content h5 {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: clamp(2.5rem, 4.5vw, 4rem);
-    align-items: start;
+    align-items: center;
     text-align: left;
   }
   #cta .climax-left {
@@ -3802,40 +3802,10 @@ body.has-stars-bg { background: transparent; }
   .about-hero-content .about-hero-title { white-space: nowrap; margin-inline: calc(50% - 49vw); text-align: center; }
 }
 
-/* Contact form: typing CAPTCHA - one compact row (code | input | refresh) so the form keeps the height it had before the CAPTCHA was added.
-   The label is for screen readers, the placeholder and the code itself label it visually; the error line sits in the gap above the button (no layout shift). */
-#contact-form .captcha-field { grid-column: 1 / -1 !important; position: relative; gap: 0 !important; }
-#contact-form .captcha-label { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
-#contact-form .captcha-row { display: flex; align-items: stretch; gap: 0.5rem; min-width: 0; }
-#contact-form .captcha-canvas {
-  flex: 0 0 36%; min-width: 0; width: 36%; height: 44px; display: block; box-sizing: border-box;
-  background: #08070b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px;
-  user-select: none; -webkit-user-select: none; touch-action: manipulation;
-}
-#contact-form .captcha-row .climax-form-input { flex: 1 1 auto; min-width: 0; width: auto; letter-spacing: 0.04em; }
-#contact-form .captcha-row .climax-form-input.is-invalid { border-color: rgba(255, 255, 255, 0.5) !important; }
-#contact-form .captcha-refresh {
-  flex: 0 0 44px; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; cursor: pointer;
-  background: #08070b; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; color: #a1a1aa;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-#contact-form .captcha-refresh:hover { color: #ffffff; border-color: rgba(255, 255, 255, 0.24); background: #0d0b13; }
-#contact-form .captcha-refresh:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.85); outline-offset: 2px; color: #ffffff; }
-#contact-form .captcha-refresh:active svg { transform: rotate(180deg); }
-#contact-form .captcha-refresh svg { transition: transform 0.35s ease; }
-#contact-form .captcha-message { position: absolute; left: 0; top: calc(100% + 2px); font-size: 0.74rem; line-height: 1.3; color: #e5e5ea; pointer-events: none; }
-#contact-form .captcha-message:empty { display: none; }
 /* make room for the CAPTCHA row without growing the form: slightly tighter message box and row gaps */
 #contact-form .climax-form-grid { gap: 0.7rem 0.95rem !important; }
 #contact-form .climax-form-textarea { height: 64px !important; min-height: 64px !important; }
 #contact-form .climax-form-desc { margin-bottom: 1rem !important; }
-@media (max-width: 640px) {
-  #contact-form .captcha-row { flex-wrap: wrap; }
-  #contact-form .captcha-canvas { flex: 1 1 0; width: auto; }
-  #contact-form .captcha-row .climax-form-input { flex: 1 0 100%; order: 3; }
-  #contact-form .captcha-message { top: calc(100% + 2px); }
-}
-@media (prefers-reduced-motion: reduce) { #contact-form .captcha-refresh svg { transition: none; } }
 
 /* Mobile drawer: scrolls when its content is taller than the screen (landscape phones, small screens), keeps tap targets comfortable,
    and is removed entirely at desktop widths (the desktop navbar is shown there) */
@@ -3862,3 +3832,11 @@ body.has-stars-bg { background: transparent; }
 
 /* Phones: the hero globe sits behind the headline text, so it is dimmed a little to keep the copy readable */
 @media (max-width: 768px) { .hero-canvas-container { opacity: 0.62; } }
+
+/* iPhones / iPads zoom the whole page when a text field under 16px gets focus (and do not zoom back): on touch devices the fields are 16px */
+@media (hover: none) and (pointer: coarse) {
+  #contact-form .climax-form-input,
+  #contact-form .climax-form-select,
+  #contact-form .climax-form-textarea,
+  .jarvis-input { font-size: 16px !important; }
+}
