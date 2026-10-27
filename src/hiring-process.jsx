@@ -194,8 +194,8 @@ export function HiringProcessSection() {
         yPercent: 0,
         scaleY: 1,
         scaleX: 1,
-        stagger: 0.012,
-        duration: 0.07,
+        stagger: 0.003,
+        duration: 0.06,
         ease: 'back.out(1.8)'
       }, 0.24);
     }
@@ -233,8 +233,8 @@ export function HiringProcessSection() {
         yPercent: 0,
         scaleY: 1,
         scaleX: 1,
-        stagger: 0.012,
-        duration: 0.07,
+        stagger: 0.003,
+        duration: 0.06,
         ease: 'back.out(1.8)'
       }, 0.49);
     }
@@ -272,8 +272,8 @@ export function HiringProcessSection() {
         yPercent: 0,
         scaleY: 1,
         scaleX: 1,
-        stagger: 0.012,
-        duration: 0.07,
+        stagger: 0.003,
+        duration: 0.06,
         ease: 'back.out(1.8)'
       }, 0.74);
     }

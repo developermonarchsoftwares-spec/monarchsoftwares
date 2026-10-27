@@ -11,6 +11,11 @@
   letter-spacing: -0.03em;
 }
 
+.scroll-float-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .char {
   display: inline-block;
   will-change: transform, opacity;

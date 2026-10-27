@@ -292,34 +292,60 @@ export function initOpenPositions() {
             const pl = PLANETS[i];
             card.style.opacity = String(vis);
             card.style.pointerEvents = vis > 0.6 ? 'auto' : 'none';
-            const cw = card.offsetWidth || 420, ch = card.offsetHeight || 150;
-            const sc = 1 - 0.45 * S.fin;
-            let x, y;
+            const cw = card.offsetWidth || (mobile ? 260 : 420);
+            const ch = card.offsetHeight || (mobile ? 160 : 150);
+
+            tmp.copy(pl.pos).project(camera);
+            const sx = (tmp.x * 0.5 + 0.5) * W, sy = (-tmp.y * 0.5 + 0.5) * H;
+            tmp2.copy(pl.pos).add(new THREE.Vector3(pl.r, 0, 0)).project(camera);
+            const rPx = Math.abs((tmp2.x * 0.5 + 0.5) * W - sx);
+
+            const f = smooth(S.fin);
+            let x, y, sc;
+
             if (mobile) {
-                x = (W - cw) / 2;
-                const f = smooth(S.fin), hs = cards.map((c) => (c.offsetHeight || 150) * sc);
-                const focusY = H - ch - 28;
-                let below = 0; for (let k = i + 1; k < 3; k++) below += hs[k] + 8;
-                const stackY = H - 28 - hs[i] - below;
-                y = focusY + (stackY - focusY) * f;
+                const targetScale = Math.min(0.54, Math.max(0.44, (W - 64) / (cw * 2.25)));
+                sc = 1 - (1 - targetScale) * f;
+                const fw = cw * sc, fh = ch * sc;
+
+                // Focus position (while visiting individual planet i):
+                const focusX = (W - cw) / 2;
+                const focusY = Math.min(H - ch - 24, Math.max(minY, H * 0.62));
+
+                // Settled Final Showcase (every card neatly beside its corresponding planet):
+                let fx, fy;
+                if (i === 0) {
+                    // Planet 0 (Engineering) is on the left
+                    fx = 12;
+                    fy = Math.max(minY, Math.min(sy - fh - rPx - 8, H - fh - 24));
+                } else if (i === 1) {
+                    // Planet 1 (Growth) is on the upper right
+                    fx = Math.min(W - fw - 12, Math.max(W / 2 + 16, sx - fw * 0.2));
+                    fy = Math.max(minY, Math.min(sy - fh - rPx - 8, H / 2 - fh * 0.2));
+                } else {
+                    // Planet 2 (Talent) is on the lower right
+                    fx = Math.min(W - fw - 12, Math.max(W / 2 + 16, sx - fw * 0.2));
+                    fy = Math.max(H / 2 + 8, Math.min(sy + rPx + 8, H - fh - 24));
+                }
+
+                // Smoothly transition between single-planet focus and settled final showcase
+                const startX = (i === 0) ? Math.min(focusX, fx) : (i === 1 ? Math.max(focusX, fx) : focusX);
+                x = startX + (fx - startX) * f;
+                y = focusY + (fy - focusY) * f;
             } else {
-                tmp.copy(pl.pos).project(camera);
-                const sx = (tmp.x * 0.5 + 0.5) * W, sy = (-tmp.y * 0.5 + 0.5) * H;
-                tmp2.copy(pl.pos).add(new THREE.Vector3(pl.r, 0, 0)).project(camera);
-                const rPx = Math.abs((tmp2.x * 0.5 + 0.5) * W - sx);
+                sc = 1 - 0.45 * S.fin;
                 x = sx + rPx * 1.35 + 18; y = sy - ch * 0.4;
                 x = Math.min(x, W - cw * sc - 20); x = Math.max(x, 16);
                 y = Math.min(Math.max(y, minY), H - ch * sc - 24);
-                // final scene: each opening sits beside its own planet (left planet: below; right planets: below / to its left)
-                const f = smooth(S.fin), fw = cw * sc, fh = ch * sc;
+
+                const fw = cw * sc, fh = ch * sc;
                 let fx, fy;
-                // like the focus shot: card beside its planet, vertically centred, on the side away from the logo (flip if no room)
                 const gap = rPx * 1.15 + 12, outward = sx < W / 2 ? -1 : 1;
                 const right = sx + gap, left = sx - gap - fw;
                 const fits = (v) => v >= 16 && v <= W - fw - 16;
                 const side = outward > 0 ? right : left;
                 if (fits(side)) { fx = side; fy = sy - fh / 2; }
-                else { fx = sx - fw / 2; fy = sy + rPx + 12; } // narrow screens: tuck it under the planet instead of over the logo
+                else { fx = sx - fw / 2; fy = sy + rPx + 12; }
                 fx = Math.min(Math.max(fx, 16), W - fw - 16); fy = Math.min(Math.max(fy, minY), H - fh - 20);
                 x += (fx - x) * f; y += (fy - y) * f;
             }

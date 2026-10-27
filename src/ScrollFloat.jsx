@@ -11,10 +11,18 @@ const ScrollFloat = forwardRef(function ScrollFloat({
 }, ref) {
   const splitText = useMemo(() => {
     const text = typeof children === 'string' ? children : '';
-    return text.split('').map((char, index) => (
-      <span className="char" key={index}>
-        {char === ' ' ? '\u00A0' : char}
-      </span>
+    const words = text.split(' ');
+    return words.map((word, wordIdx) => (
+      <React.Fragment key={wordIdx}>
+        <span className="scroll-float-word">
+          {word.split('').map((char, charIdx) => (
+            <span className="char" key={charIdx}>
+              {char}
+            </span>
+          ))}
+        </span>
+        {wordIdx < words.length - 1 && ' '}
+      </React.Fragment>
     ));
   }, [children]);
 
