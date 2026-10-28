@@ -531,10 +531,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const willOpen = !mobileDrawer.classList.contains('active');
                 mobileDrawer.classList.toggle('active', willOpen);
                 mobileDrawer.setAttribute('aria-hidden', String(!willOpen));
+                document.body.classList.toggle('mobile-drawer-open', willOpen);
                 document.body.style.overflow = willOpen ? 'hidden' : '';
             } else if (navLinks) {
                 const willOpen = !navLinks.classList.contains('mobile-active');
                 navLinks.classList.toggle('mobile-active', willOpen);
+                document.body.classList.toggle('mobile-drawer-open', willOpen);
                 document.body.style.overflow = willOpen ? 'hidden' : '';
             }
         });
@@ -544,6 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.addEventListener('click', () => {
                     mobileDrawer.classList.remove('active');
                     mobileDrawer.setAttribute('aria-hidden', 'true');
+                    document.body.classList.remove('mobile-drawer-open');
                     document.body.style.overflow = '';
                 });
             });
@@ -568,6 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const closeDrawer = () => {
                 mobileDrawer.classList.remove('active');
                 mobileDrawer.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('mobile-drawer-open');
                 document.body.style.overflow = '';
             };
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && mobileDrawer.classList.contains('active')) { closeDrawer(); if (mobileToggle) mobileToggle.focus(); } });
