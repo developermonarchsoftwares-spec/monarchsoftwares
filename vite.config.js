@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync, copyFileSync } from 'fs';
 
 // Old multi-page URLs now live as sections of the homepage (mirrors the redirects in vercel.json)
 const MOVED = {
@@ -57,6 +57,20 @@ export default defineConfig({
       name: 'clean-url-rewrite',
       configureServer(server) { server.middlewares.use(cleanUrl); },
       configurePreviewServer(server) { server.middlewares.use(cleanUrl); },
+    },
+    {
+      // Vercel 404s the /home and /home/* rewrites in vercel.json, so emit real files for those routes
+      // (with cleanUrls, dist/home/services.html is served at /home/services just like /it-services is)
+      name: 'home-route-pages',
+      apply: 'build',
+      closeBundle() {
+        const dist = resolve(__dirname, 'dist');
+        const home = resolve(dist, 'index.html');
+        if (!existsSync(home)) return;
+        mkdirSync(resolve(dist, 'home'), { recursive: true });
+        copyFileSync(home, resolve(dist, 'home.html'));
+        for (const section of ['services', 'careers', 'about', 'contact', 'cta']) copyFileSync(home, resolve(dist, 'home', `${section}.html`));
+      },
     },
     {
       name: 'html-transform',
