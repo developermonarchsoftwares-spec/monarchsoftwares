@@ -96,6 +96,8 @@ export default defineConfig({
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('three')) return 'vendor-three';
+            // three-globe's own dependencies: only the lazy-loaded home globe needs them, so keep them out of the shared vendor chunk
+            if (/[\\/]node_modules[\\/](h3-js|d3-geo|d3-geo-voronoi|d3-delaunay|d3-octree|d3-color|d3-format|delaunator|tinycolor2|@tweenjs[\\/]tween\.js|earcut)[\\/]/.test(id)) return 'vendor-three';
             if (id.includes('gsap')) return 'vendor-gsap';
             if (id.includes('lenis')) return 'vendor-lenis';
             return 'vendor';

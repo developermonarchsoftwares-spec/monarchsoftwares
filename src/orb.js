@@ -258,10 +258,14 @@ export class Orb {
         this.mesh = new Mesh(this.gl, { geometry: this.geometry, program: this.program });
 
         this.resize();
-        window.addEventListener('resize', () => this.resize());
+        // kept as properties so destroy() removes these exact listeners
+        this._onResize = () => this.resize();
+        this._onMouseMove = e => this.handleMouseMove(e);
+        this._onMouseLeave = () => this.handleMouseLeave();
+        window.addEventListener('resize', this._onResize);
 
-        this.trackElement.addEventListener('mousemove', e => this.handleMouseMove(e), { passive: true });
-        this.trackElement.addEventListener('mouseleave', () => this.handleMouseLeave());
+        this.trackElement.addEventListener('mousemove', this._onMouseMove, { passive: true });
+        this.trackElement.addEventListener('mouseleave', this._onMouseLeave);
 
         this._bgVec3 = hexToVec3(this.backgroundColor);
         this._setupVisibility();
@@ -340,9 +344,10 @@ export class Orb {
 
     destroy() {
         if (this.rafId) cancelAnimationFrame(this.rafId);
-        window.removeEventListener('resize', () => this.resize());
-        this.trackElement.removeEventListener('mousemove', e => this.handleMouseMove(e));
-        this.trackElement.removeEventListener('mouseleave', () => this.handleMouseLeave());
+        window.removeEventListener('resize', this._onResize);
+        this.trackElement.removeEventListener('mousemove', this._onMouseMove);
+        this.trackElement.removeEventListener('mouseleave', this._onMouseLeave);
+        if (this._visObs) this._visObs.disconnect();
         if (this.gl.canvas.parentElement) {
             this.gl.canvas.parentElement.removeChild(this.gl.canvas);
         }
