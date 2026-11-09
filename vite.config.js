@@ -1,6 +1,29 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { existsSync, mkdirSync, copyFileSync } from 'fs';
+import { execSync } from 'child_process';
+
+// Public, indexable pages. Add one line here when a new HTML entry point is added.
+// /about, /services, /careers and /contact are homepage sections that 308-redirect, so they are not listed.
+const SITE = 'https://monarchsoftwares.com';
+const SITEMAP_PAGES = [
+  { path: '/', file: 'index.html' },
+  { path: '/corporate-training', file: 'corporate-training.html' },
+  { path: '/it-services', file: 'it-services.html' },
+  { path: '/digital-marketing', file: 'digital-marketing.html' },
+  { path: '/training-placement', file: 'training-placement.html' },
+  { path: '/privacy', file: 'privacy.html' },
+  { path: '/terms', file: 'terms.html' },
+];
+
+// Last commit date of a page's source file; null when git history is unavailable (lastmod is then omitted).
+const lastModified = (file) => {
+  try {
+    return execSync(`git log -1 --format=%cs -- ${file}`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim() || null;
+  } catch {
+    return null;
+  }
+};
 
 // Old multi-page URLs now live as sections of the homepage (mirrors the redirects in vercel.json)
 const MOVED = {
@@ -52,6 +75,22 @@ const cleanUrl = (req, res, next) => {
 
 export default defineConfig({
   plugins: [
+    {
+      // Emit dist/sitemap.xml on every production build so it can't drift from the page list
+      name: 'sitemap',
+      apply: 'build',
+      generateBundle() {
+        const urls = SITEMAP_PAGES.map(({ path, file }) => {
+          const date = lastModified(file);
+          return `  <url>\n    <loc>${SITE}${path}</loc>${date ? `\n    <lastmod>${date}</lastmod>` : ''}\n  </url>`;
+        }).join('\n');
+        this.emitFile({
+          type: 'asset',
+          fileName: 'sitemap.xml',
+          source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
+        });
+      },
+    },
     {
       // Mirror vercel.json clean URLs (/about -> /about.html) for dev and preview servers
       name: 'clean-url-rewrite',
