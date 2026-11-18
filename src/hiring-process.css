@@ -131,7 +131,7 @@
   font-family: var(--font-mono, monospace);
   font-size: 0.85rem;
   letter-spacing: 0.22em;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 500;
   text-transform: uppercase;
   margin-bottom: 1.15rem;
@@ -254,7 +254,7 @@
   position: relative;
   z-index: 2;
   user-select: none;
-  opacity: 0.38;
+  opacity: 0.55; /* inactive steps: white at 0.55 on black is 6.4:1 (0.38 was 3.4:1, below WCAG AA) */
   transition: opacity 0.35s ease;
 }
 
@@ -464,7 +464,7 @@
     align-items: center;
     gap: 0.45rem;
     padding: 0.25rem 0;
-    opacity: 0.45;
+    opacity: 0.55;
   }
 
   .hiring-timeline-item.is-active {

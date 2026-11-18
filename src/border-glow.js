@@ -68,14 +68,14 @@ function animateValue({ start = 0, end = 100, duration = 1000, delay = 0, ease =
 /** Official React Bits BorderGlow configuration requested for this site */
 export const BORDER_GLOW_CONFIG = {
   edgeSensitivity: 14,
-  glowColor: '40 80 80',
-  backgroundColor: '#0e0918',
+  glowColor: '3 100 45',
+  backgroundColor: '#0c0c0c',
   borderRadius: 37,
   glowRadius: 13,
   glowIntensity: 0.8,
   coneSpread: 45,
   animated: true,
-  colors: ['#c084fc', '#f472b6', '#38bdf8'],
+  colors: ['#e10600', '#ff3b30', '#7a0300'],
   fillOpacity: 0.5
 };
 
@@ -83,7 +83,7 @@ export const BORDER_GLOW_CONFIG = {
  * Apply BorderGlow to an existing element in place (the element becomes the
  * `.border-glow-card`, preserving its existing layout, dimensions, and DOM hierarchy).
  */
-export function initBorderGlow(element, options = {}) {
+export function initBorderGlow(element, options = {}, batch = null) {
   if (!element || element.classList.contains('border-glow-card')) return;
 
   const {
@@ -92,14 +92,14 @@ export function initBorderGlow(element, options = {}) {
   } = { ...BORDER_GLOW_CONFIG, ...options };
 
   // Preserve existing border-radius if the card already has a specific shape
-  const computedRadius = getComputedStyle(element).borderRadius;
+  const computedRadius = batch ? batch.radius : getComputedStyle(element).borderRadius;
   let finalRadius = typeof borderRadius === 'number' ? `${borderRadius}px` : borderRadius;
   if (computedRadius && computedRadius !== '0px' && computedRadius !== '37px' && !options.borderRadius) {
     finalRadius = computedRadius;
   }
 
   // Preserve original layout display (grid, flex, block, etc.)
-  const originalDisplay = getComputedStyle(element).display;
+  const originalDisplay = batch ? batch.display : getComputedStyle(element).display;
 
   const styles = {
     '--card-bg': backgroundColor,
@@ -115,7 +115,7 @@ export function initBorderGlow(element, options = {}) {
 
   element.classList.add('border-glow-card', keepStyle ? 'bg-keep' : 'bg-host');
   // cards laid out in normal flow get the shared hover lift through `top` (it composes with whatever transform GSAP / the tilt effect sets on the card)
-  if (getComputedStyle(element).position === 'relative') element.classList.add('bg-lift');
+  if (!batch && getComputedStyle(element).position === 'relative') element.classList.add('bg-lift');   // batched callers add it afterwards
   if (isLightColor(backgroundColor)) element.classList.add('border-glow-card--light');
   if (originalDisplay && originalDisplay !== 'none') element.style.display = originalDisplay;
 
@@ -205,5 +205,11 @@ export const BORDER_GLOW_SELECTOR = [
 ].join(',');
 
 export function initAllBorderGlow(root = document) {
-  root.querySelectorAll(BORDER_GLOW_SELECTOR).forEach((el) => initBorderGlow(el));
+  // Read every card first, then write, then read once more: styling the cards one by one made the browser
+  // recalculate layout twice per card (read -> write -> read -> write ...). The result is identical.
+  const cards = [...root.querySelectorAll(BORDER_GLOW_SELECTOR)].filter((el) => !el.classList.contains('border-glow-card'));
+  const before = cards.map((el) => { const cs = getComputedStyle(el); return { radius: cs.borderRadius, display: cs.display }; });
+  cards.forEach((el, i) => initBorderGlow(el, {}, before[i]));
+  const lifts = cards.map((el) => getComputedStyle(el).position === 'relative');
+  cards.forEach((el, i) => { if (lifts[i]) el.classList.add('bg-lift'); });
 }

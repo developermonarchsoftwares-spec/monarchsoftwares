@@ -1,18 +1,42 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { existsSync, mkdirSync, copyFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { withSiteUrl } from './site.config.js';
 
-// Old multi-page URLs now live as sections of the homepage (mirrors the redirects in vercel.json)
+// Old multi-page / section URLs now live as anchors of the homepage (mirrors public/_redirects)
 const MOVED = {
-  '/about': '/home/about',
-  '/services': '/home/services',
-  '/careers': '/home/careers',
-  '/contact': '/home/contact',
-  '/cta': '/home/contact',
+  '/about': '/#about',
+  '/services': '/#services',
+  '/careers': '/#careers',
+  '/contact': '/#cta',
+  '/cta': '/#cta',
+  '/home': '/',
+  '/home/about': '/#about',
+  '/home/services': '/#services',
+  '/home/careers': '/#careers',
+  '/home/contact': '/#cta',
+  '/home/cta': '/#cta',
   '/hr-services': '/training-placement',
 };
 
-const cleanUrl = (req, res, next) => {
+// Files that carry the %SITE_URL% placeholder outside the HTML pages
+const SITE_URL_FILES = ['robots.txt', 'sitemap.xml', 'llms.txt'];
+const TYPES = { 'robots.txt': 'text/plain', 'sitemap.xml': 'application/xml', 'llms.txt': 'text/plain' };
+
+// Branded 404: dev serves it through Vite (so styles/scripts load), preview serves the built file. Always HTTP 404.
+const notFound = (res, server) => {
+  const send = (html) => { res.statusCode = 404; res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(html); };
+  const built = resolve(__dirname, 'dist', '404.html');
+  if (server) {
+    server.transformIndexHtml('/404', readFileSync(resolve(__dirname, '404.html'), 'utf8')).then(send);
+  } else if (existsSync(built)) {
+    send(readFileSync(built, 'utf8'));
+  } else {
+    send('Not found');
+  }
+};
+
+const cleanUrl = (server) => (req, res, next) => {
   // Prevent any browser 301 cache retention in dev mode
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
   res.setHeader('Clear-Site-Data', '"cache"');
@@ -28,13 +52,6 @@ const cleanUrl = (req, res, next) => {
     return;
   }
 
-  // Direct rewrite for /home and any /home/* -> /index.html
-  if (normalized === '/home' || normalized.startsWith('/home/')) {
-    req.url = `/index.html${query ? '?' + query : ''}`;
-    next();
-    return;
-  }
-
   const moved = MOVED[normalized];
   if (moved) {
     res.statusCode = 302; // Use 302 Temporary in dev to avoid permanent browser cache poisoning
@@ -43,9 +60,11 @@ const cleanUrl = (req, res, next) => {
     return;
   }
 
-  if (path !== '/' && !path.includes('.') && !path.startsWith('/@') && !path.startsWith('/src') && !path.startsWith('/node_modules')) {
+  const isAsset = path.includes('.') || path.startsWith('/@') || path.startsWith('/src') || path.startsWith('/node_modules') || path.startsWith('/api');
+  if (path !== '/' && !isAsset) {
     const file = normalized + '.html';
-    if (existsSync(resolve(__dirname, '.' + file))) req.url = file + (query ? '?' + query : '');
+    if (existsSync(resolve(__dirname, '.' + file)) && normalized !== '/404') req.url = file + (query ? '?' + query : '');
+    else return notFound(res, server);
   }
   next();
 };
@@ -53,23 +72,28 @@ const cleanUrl = (req, res, next) => {
 export default defineConfig({
   plugins: [
     {
-      // Mirror vercel.json clean URLs (/about -> /about.html) for dev and preview servers
+      // Mirror the hosting clean URLs (/privacy -> /privacy.html), redirects and the 404 for dev and preview servers
       name: 'clean-url-rewrite',
-      configureServer(server) { server.middlewares.use(cleanUrl); },
-      configurePreviewServer(server) { server.middlewares.use(cleanUrl); },
+      configureServer(server) { server.middlewares.use(cleanUrl(server)); },
+      configurePreviewServer(server) { server.middlewares.use(cleanUrl(null)); },
     },
     {
-      // Vercel 404s the /home and /home/* rewrites in vercel.json, so emit real files for those routes
-      // (with cleanUrls, dist/home/services.html is served at /home/services just like /it-services is)
-      name: 'home-route-pages',
-      apply: 'build',
+      // Single preferred host (www): replaces %SITE_URL% in pages, sitemap.xml, robots.txt and llms.txt
+      name: 'site-url',
+      transformIndexHtml(html) { return withSiteUrl(html); },
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const name = (req.url || '').split('?')[0].replace(/^\//, '');
+          if (!SITE_URL_FILES.includes(name)) return next();
+          res.setHeader('Content-Type', `${TYPES[name]}; charset=utf-8`);
+          res.end(withSiteUrl(readFileSync(resolve(__dirname, 'public', name), 'utf8')));
+        });
+      },
       closeBundle() {
-        const dist = resolve(__dirname, 'dist');
-        const home = resolve(dist, 'index.html');
-        if (!existsSync(home)) return;
-        mkdirSync(resolve(dist, 'home'), { recursive: true });
-        copyFileSync(home, resolve(dist, 'home.html'));
-        for (const section of ['services', 'careers', 'about', 'contact', 'cta']) copyFileSync(home, resolve(dist, 'home', `${section}.html`));
+        for (const name of SITE_URL_FILES) {
+          const file = resolve(__dirname, 'dist', name);
+          if (existsSync(file)) writeFileSync(file, withSiteUrl(readFileSync(file, 'utf8')));
+        }
       },
     },
     {
@@ -91,6 +115,7 @@ export default defineConfig({
         itServices: resolve(__dirname, 'it-services.html'),
         digitalMarketing: resolve(__dirname, 'digital-marketing.html'),
         trainingPlacement: resolve(__dirname, 'training-placement.html'),
+        notFound: resolve(__dirname, '404.html'),
       },
       output: {
         manualChunks(id) {

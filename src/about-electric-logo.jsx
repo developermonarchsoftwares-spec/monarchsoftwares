@@ -68,8 +68,15 @@ export function initAboutElectricLogo() {
   if (rootElement.dataset.mounted === 'true') return;
   rootElement.dataset.mounted = 'true';
 
-  const root = createRoot(rootElement);
-  root.render(<AboutHeroElectricBackground />);
+  const mount = () => createRoot(rootElement).render(<AboutHeroElectricBackground />);
+
+  // The About section is far down the page: start the animated logo only when the visitor gets close,
+  // so its canvas work never competes with the first paint.
+  if (!('IntersectionObserver' in window)) { mount(); return; }
+  const observer = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) { observer.disconnect(); mount(); }
+  }, { rootMargin: '150% 0px' });
+  observer.observe(rootElement);
 }
 
 if (typeof document !== 'undefined') {

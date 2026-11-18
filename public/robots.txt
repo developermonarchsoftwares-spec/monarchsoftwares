@@ -73,5 +73,5 @@ User-agent: CCBot
 Allow: /
 
 # Machine-readable site map and AI summary
-Sitemap: https://monarchsoftwares.com/sitemap.xml
-# LLM-friendly overview: https://monarchsoftwares.com/llms.txt
+Sitemap: %SITE_URL%/sitemap.xml
+# LLM-friendly overview: %SITE_URL%/llms.txt

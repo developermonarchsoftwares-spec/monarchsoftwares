@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { SITE_URL } from '../site.config.js';
 
 const pagesToTest = [
   { path: '/', name: 'Single Page Site' },
@@ -37,7 +38,7 @@ test.describe('Full-Site Responsive & UI Integrity Audit', () => {
       expect((await page.title()).length).toBeGreaterThan(10);
       await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.{50,}/);
       const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
-      expect(canonical).toMatch(/^https:\/\/monarchsoftwares\.com\//);
+      expect(canonical).toBe(SITE_URL + pageInfo.path);
 
       // Verify zero horizontal overflow
       const overflow = await page.evaluate(() => {

@@ -1,0 +1,24 @@
+# Cloudflare Pages redirects (converted from vercel.json). Static assets are served with clean URLs automatically.
+/about /#about 301
+/services /#services 301
+/careers /#careers 301
+/contact /#cta 301
+/cta /#cta 301
+/about.html /#about 301
+/services.html /#services 301
+/careers.html /#careers 301
+/contact.html /#cta 301
+/home / 301
+/home/about /#about 301
+/home/services /#services 301
+/home/careers /#careers 301
+/home/contact /#cta 301
+/home/cta /#cta 301
+/hr-services /training-placement 301
+/hr-services.html /training-placement 301
+
+# /services/<slug> serves the same page as /<slug> (its canonical tag points to /<slug>)
+/services/corporate-training /corporate-training 200
+/services/it-services /it-services 200
+/services/digital-marketing /digital-marketing 200
+/services/training-placement /training-placement 200
