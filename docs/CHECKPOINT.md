@@ -8,7 +8,7 @@ Last updated: 2026-10-17 (after comet revert).
 - Vite multi-page site (vanilla JS modules, GSAP + ScrollTrigger, Lenis smooth scroll, Three.js, some React "islands").
 - Pages: `index.html` (single-page home with every section), four service pages (`corporate-training`, `it-services`,
   `digital-marketing`, `training-placement`), `privacy`, `terms`.
-- Old page URLs (about, careers, contact...) redirect to `/#section` (see `vercel.json`).
+- Old page URLs (about, careers, contact...) redirect to `/#section` (see `public/_redirects`).
 - Run: `npm run dev` (Vite, port 5173, or the next free port). Build: `npm run build`. Preview: `npm run preview` (port 4173).
 - Crawler: `npm run crawl` (local preview, port 4173) and `npm run crawl:live` (production). Runner is `scripts/crawl.mjs`,
   always with `--no-cache`. The SiteOne Crawler binary lives in `tools/siteone-crawler/` (git-ignored; Windows x64, v2.5.1).
@@ -85,8 +85,8 @@ Last updated: 2026-10-17 (after comet revert).
   No real GPU, touch device or phone was used.
 - A thin white line seen once at the bottom edge of the Careers hero while scrolling could not be reproduced; cause unknown.
 - React Bits Pro "Luminous Type" is NOT installed: no `REACTBITS_LICENSE_KEY` on this machine and no `components.json` / Tailwind.
-- Live site crawl (`crawl:live`) showed an older deployment; nothing from this checkpoint is deployed until pushed and built on Vercel.
-- `vercel.json` sets HSTS, X-Frame-Options, nosniff, Referrer-Policy and cache headers. No Content-Security-Policy or Permissions-Policy yet.
+- Live site crawl (`crawl:live`) showed an older deployment; nothing from this checkpoint is deployed until pushed and built on Cloudflare Pages.
+- `public/_headers` sets HSTS, X-Frame-Options, nosniff, Referrer-Policy and cache headers. No Content-Security-Policy or Permissions-Policy yet.
 - Sitemap and `llms.txt` list the home page as one URL (About, Careers, Contact are sections of it).
 - Dev server: port 5173 is occupied by another process on this machine, so the dev server runs on 5174.
 

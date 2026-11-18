@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { withSiteUrl } from './site.config.js';
 
-// Old multi-page / section URLs now live as anchors of the homepage (mirrors the redirects in vercel.json)
+// Old multi-page / section URLs now live as anchors of the homepage (mirrors public/_redirects)
 const MOVED = {
   '/about': '/#about',
   '/services': '/#services',
@@ -72,7 +72,7 @@ const cleanUrl = (server) => (req, res, next) => {
 export default defineConfig({
   plugins: [
     {
-      // Mirror vercel.json clean URLs (/privacy -> /privacy.html), redirects and the 404 for dev and preview servers
+      // Mirror the hosting clean URLs (/privacy -> /privacy.html), redirects and the 404 for dev and preview servers
       name: 'clean-url-rewrite',
       configureServer(server) { server.middlewares.use(cleanUrl(server)); },
       configurePreviewServer(server) { server.middlewares.use(cleanUrl(null)); },
