@@ -19,6 +19,7 @@ import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import './style.css';
 import { initSpaceStars } from './space-stars.js';
+import { initHeroRobot } from './hero-robot.js';
 import './open-positions-3d.css'; // static: the Open Positions track height must exist before later ScrollTrigger pins measure the page
 import { initLegalModals } from './legal.js';
 import { initMagneticElements } from './magnetic.js';
@@ -46,12 +47,21 @@ import { initTrainerDeploymentScroll } from './trainer-deployment.js';
 import { initServiceCardsScroll } from './service-cards-scroll.js';
 
 gsap.registerPlugin(ScrollTrigger);
+// ScrollTrigger also refreshes by itself on load and on resize. This file does both explicitly (with Lenis kept in sync),
+// so every refresh ran twice back to back; keep only the explicit ones.
+ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange' });
 
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Startup is split into a few short tasks (instead of one long one) so the browser can paint and answer taps in between.
+    // When the visitor arrives on a section link (/#cta ...) everything still runs in one go, so the target section is
+    // never shown half-initialised.
+    const arrivedWithHash = window.location.hash.length > 1;
+    const breathe = () => (arrivedWithHash ? undefined : new Promise((resolve) => setTimeout(resolve, 0)));
+
     window.scrollTo(0, 0);
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -92,6 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Assigned in step 4. Declared here because an immediate scroll to a URL hash (step 3) emits a Lenis
+    // 'scroll' event before step 4 runs; calling a later `const` there threw and aborted the whole page init.
+    let updateActiveNav = () => {};
+
     lenis.on('scroll', () => {
         ScrollTrigger.update();
         onScrollUpdate();
@@ -128,13 +142,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Section and clean route mapping
     const SECTION_TO_ROUTE = {
-        '#hero': '/home',
-        '#home': '/home',
-        '#services': '/home/services',
-        '#careers': '/home/careers',
-        '#about': '/home/about',
-        '#cta': '/home/contact',
-        '#contact': '/home/contact'
+        '#hero': '/',
+        '#home': '/',
+        '#services': '/#services',
+        '#careers': '/#careers',
+        '#about': '/#about',
+        '#cta': '/#cta',
+        '#contact': '/#cta'
     };
 
     const ROUTE_TO_SECTION = {
@@ -146,88 +160,80 @@ document.addEventListener('DOMContentLoaded', () => {
         '/home/cta': '#cta'
     };
 
-    // Convert any legacy # hash in URL to clean route URLs without '#'
-    const convertHashToRoute = () => {
-        const hash = window.location.hash;
+    // The homepage sections are real anchors (/#services, /#cta ...). Scroll to the one in the URL;
+    // the legacy '#contact' alias is normalised to '#cta'.
+    const scrollToHash = (immediate = true) => {
+        let hash = window.location.hash;
         if (!hash) return;
-        const targetRoute = SECTION_TO_ROUTE[hash] || (window.location.pathname.startsWith('/home') ? window.location.pathname : '/home');
-        if (history.replaceState) {
-            history.replaceState(null, '', targetRoute);
+        if (hash === '#contact') {
+            hash = '#cta';
+            if (history.replaceState) history.replaceState(null, '', '/#cta');
         }
-        const targetId = hash === '#contact' ? '#cta' : hash;
-        const target = document.querySelector(targetId);
+        let target = null;
+        try { target = document.querySelector(hash); } catch (err) { target = null; }
         if (target) {
             const targetTop = getTargetScrollTop(target);
-            lenis.scrollTo(Math.max(0, targetTop - 80), { immediate: true });
+            lenis.scrollTo(Math.max(0, targetTop - 80), immediate ? { immediate: true } : { duration: 0.8 });
         }
     };
-    convertHashToRoute();
-    window.addEventListener('hashchange', convertHashToRoute);
+    scrollToHash();
+    // pinned sections shift layout once they measure: re-apply after the page settles
+    if (window.location.hash) { setTimeout(scrollToHash, 150); setTimeout(scrollToHash, 500); }
+    window.addEventListener('hashchange', () => scrollToHash(false));
 
     const onHome = window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname.startsWith('/home');
 
-    // Direct route load: if opened with a section route (e.g. /home/contact, /home/services, etc.), scroll to that section
+    // Legacy /home/* URLs (still served so old links work): normalise to the canonical /#section and scroll there
     const normalizedPath = window.location.pathname.replace(/\/$/, '');
     const directTargetId = ROUTE_TO_SECTION[normalizedPath];
-    if (directTargetId && directTargetId !== '#hero') {
-        const scrollToDirectTarget = () => {
-            const target = document.querySelector(directTargetId);
-            if (target) {
-                const targetTop = getTargetScrollTop(target);
-                lenis.scrollTo(Math.max(0, targetTop - 80), { immediate: true });
-            }
-        };
-        setTimeout(scrollToDirectTarget, 120);
-        setTimeout(scrollToDirectTarget, 400);
+    if (directTargetId) {
+        const canonical = directTargetId === '#hero' ? '/' : '/' + directTargetId;
+        if (history.replaceState) history.replaceState(null, '', canonical);
+        if (directTargetId !== '#hero') {
+            setTimeout(scrollToHash, 120);
+            setTimeout(scrollToHash, 400);
+        }
     }
 
-    // Handle browser back/forward navigation between clean routes
+    // Back/forward between sections
     window.addEventListener('popstate', () => {
         if (!onHome) return;
-        const path = window.location.pathname.replace(/\/$/, '');
-        const targetId = ROUTE_TO_SECTION[path];
-        if (targetId && targetId !== '#hero') {
-            const target = document.querySelector(targetId);
-            if (target) {
-                const targetTop = getTargetScrollTop(target);
-                lenis.scrollTo(Math.max(0, targetTop - 80), { duration: 0.8 });
-            }
-        } else {
-            lenis.scrollTo(0, { duration: 0.8 });
-        }
+        if (window.location.hash) scrollToHash(false);
+        else lenis.scrollTo(0, { duration: 0.8 });
     });
 
     // Clean route navigation for section links on the homepage
-    document.querySelectorAll('a[href^="#"], a[href^="/#"], a[href^="/home"]').forEach((anchor) => {
+    document.querySelectorAll('a[href^="#"], a[href^="/#"], a[href="/"], a[href^="/home"]').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
             const rawHref = this.getAttribute('href');
             if (!rawHref) return;
+            if (this.classList.contains('skip-link')) return;   // native jump: moves keyboard focus to <main>
 
             let targetSectionId = '';
             let targetCleanRoute = '';
 
-            if (rawHref === '/home' || rawHref === '/home/' || rawHref === '#home' || rawHref === '/#home') {
+            if (rawHref === '/' || rawHref === '/home' || rawHref === '/home/' || rawHref === '#home' || rawHref === '/#home') {
                 targetSectionId = '#hero';
-                targetCleanRoute = '/home';
+                targetCleanRoute = '/';
             } else if (rawHref === '/home/services' || rawHref === '/home/services/' || rawHref === '#services' || rawHref === '/#services') {
                 targetSectionId = '#services';
-                targetCleanRoute = '/home/services';
+                targetCleanRoute = '/#services';
             } else if (rawHref === '/home/careers' || rawHref === '/home/careers/' || rawHref === '#careers' || rawHref === '/#careers') {
                 targetSectionId = '#careers';
-                targetCleanRoute = '/home/careers';
+                targetCleanRoute = '/#careers';
             } else if (rawHref === '/home/about' || rawHref === '/home/about/' || rawHref === '#about' || rawHref === '/#about') {
                 targetSectionId = '#about';
-                targetCleanRoute = '/home/about';
+                targetCleanRoute = '/#about';
             } else if (rawHref === '/home/contact' || rawHref === '/home/contact/' || rawHref === '#cta' || rawHref === '/#cta' || rawHref === '#contact' || rawHref === '/#contact') {
                 targetSectionId = '#cta';
-                targetCleanRoute = '/home/contact';
+                targetCleanRoute = '/#cta';
             } else if (rawHref.startsWith('#')) {
                 targetSectionId = rawHref;
-                targetCleanRoute = window.location.pathname.startsWith('/home') ? window.location.pathname : '/home';
+                targetCleanRoute = '/' + rawHref;
             } else if (rawHref.startsWith('/#')) {
                 if (!onHome) return;
                 targetSectionId = rawHref.slice(1);
-                targetCleanRoute = SECTION_TO_ROUTE[targetSectionId] || '/home';
+                targetCleanRoute = SECTION_TO_ROUTE[targetSectionId] || '/';
             } else {
                 return;
             }
@@ -269,11 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 4. Active Nav Link Indicator - one item active, driven by the section currently in view.
-    const homeLink = document.querySelector('.nav-links > li > a[href="/home"], .nav-links > li > a[href="/"]');
-    const servicesLink = document.querySelector('.nav-links a[href="/home/services"], .nav-links a[href="#services"]');
-    const careersLink = document.querySelector('.nav-links a[href="/home/careers"], .nav-links a[href="#careers"]');
-    const aboutLink = document.querySelector('.nav-links a[href="/home/about"], .nav-links a[href="#about"]');
-    const contactLink = document.querySelector('.nav-links a[href="/home/contact"], .nav-links a[href="#cta"]');
+    const homeLink = document.querySelector('.nav-links > li > a[href="/"], .nav-links > li > a[href="/home"]');
+    const servicesLink = document.querySelector('.nav-links a[href="/#services"], .nav-links a[href="#services"]');
+    const careersLink = document.querySelector('.nav-links a[href="/#careers"], .nav-links a[href="#careers"]');
+    const aboutLink = document.querySelector('.nav-links a[href="/#about"], .nav-links a[href="#about"]');
+    const contactLink = document.querySelector('.nav-links a[href="/#cta"], .nav-links a[href="#cta"]');
 
     const allNavLinks = [homeLink, servicesLink, careersLink, aboutLink, contactLink].filter(Boolean);
 
@@ -286,14 +292,18 @@ document.addEventListener('DOMContentLoaded', () => {
         { link: contactLink, el: document.getElementById('cta') }
     ].filter((x) => x.link && x.el);
 
-    const updateActiveNav = () => {
+    updateActiveNav = () => {
         if (!navSections.length) return;
-        const scrollPosition = window.scrollY + 140;
+        // probe line at 35% of the viewport (not a fixed 140px) so short last sections still win,
+        // and at the very bottom of the page the last section (contact) is always the active one
+        const scrollPosition = window.scrollY + Math.max(140, window.innerHeight * 0.35);
+        const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
         let current = homeLink, best = -Infinity;
         navSections.forEach(({ link, el }) => {
             const top = el.getBoundingClientRect().top + window.scrollY;
             if (scrollPosition >= top && top > best) { best = top; current = link; }
         });
+        if (atBottom) current = navSections[navSections.length - 1].link;
         allNavLinks.forEach((a) => {
             if (!a) return;
             a.classList.toggle('active', a === current);
@@ -304,11 +314,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', updateActiveNav, { passive: true });
     window.addEventListener('resize', updateActiveNav);
 
-    // 5. Initialize 3D WebGL Digital Horizon in Hero
-    // Three.js (~1.4 MB) is only needed by the home page's globe and Open Positions scene: load it on demand so
-    // every other page (and the first HTML payload) stays light. Both modules are no-ops without their markup.
-    if (document.getElementById('hero-canvas-container')) import('./hero-canvas.js').then((m) => m.initHeroCanvas('hero-canvas-container'));
+    // 5. Hero robot: pointer-parallax tilt over the static image (the float / glow pulse is pure CSS).
+    // Three.js (~1.4 MB) is now only needed by the Open Positions scene, which loads it on demand.
+    initHeroRobot('hero-robot');
 
+    // 6b. "Apply Now" links open /?role=<role>#cta: pre-select "Other" and pre-fill the message
+    // (the API only accepts its existing topics, and the form submission itself is unchanged)
+    (() => {
+        const role = (new URLSearchParams(window.location.search).get('role') || '').trim().slice(0, 80);
+        const form = document.getElementById('contact-form');
+        if (!role || !form) return;
+        const service = form.querySelector('select[name="service"]');
+        const message = form.querySelector('textarea[name="message"]');
+        if (service && !service.value) service.value = 'Other';
+        if (message && !message.value) message.value = `I would like to apply for the ${role} role.`;
+    })();
+
+    await breathe();
     // 7. Initialize Magnetic Action Elements (buttons use isolated CSS transitions)
     initMagneticElements('.float-btn, .nav-links > li > a, .service-item');
 
@@ -324,6 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 9b. Initialize CanvasText Wave Effect
     initCanvasText('.canvas-text-mount');
 
+    await breathe();
     // 10. Interactive Disciplines / Services Stage Switcher
     const serviceItems = document.querySelectorAll('.service-item');
     const previewTag = document.getElementById('preview-tag');
@@ -431,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     initCardStackShowcase();
 
+    await breathe();
     // 12b. Global Section Stacking Engine (Every section stacks like cards)
     // initSectionStack(); // slide-over card stacking disabled so the Galaxy background can show through the sections
     initSpaceStars();
@@ -439,7 +463,26 @@ document.addEventListener('DOMContentLoaded', () => {
     initWhySection();
     initAboutHeroScroll();
     initCareerHero();
-    if (document.getElementById('positions')) import('./open-positions-3d.js').then((m) => { m.initOpenPositions(); ScrollTrigger.refresh(); });
+    // Open Positions 3D scene: Three.js (~570 KB), two rock textures and a scene build that blocks the main thread
+    // for seconds on slow devices. It sits far down the page, so load it only when the visitor gets close
+    // (within two screens) instead of at page load, where it competed with the first paint and first taps.
+    const positionsEl = document.getElementById('positions');
+    if (positionsEl) {
+        let positionsRequested = false;
+        const loadOpenPositions = () => {
+            if (positionsRequested) return;
+            positionsRequested = true;
+            import('./open-positions-3d.js').then((m) => { m.initOpenPositions(); ScrollTrigger.refresh(); });
+        };
+        if ('IntersectionObserver' in window) {
+            const positionsObserver = new IntersectionObserver((entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) { positionsObserver.disconnect(); loadOpenPositions(); }
+            }, { rootMargin: '200% 0px' });
+            positionsObserver.observe(positionsEl);
+        } else {
+            loadOpenPositions();
+        }
+    }
     initCultureSection();
     initHiringProcessCarousel();
     initMissionVisionScroll();
@@ -451,6 +494,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initServiceCardsScroll();
     initHoverFAQ();
 
+    // no pause between the pinned sections above and this refresh: each pin queues a full refresh for the next frame,
+    // and refreshing here in the same task replaces those with this single one
     ScrollTrigger.sort();
     ScrollTrigger.refresh();
     if (typeof lenis.resize === 'function') lenis.resize();
@@ -488,6 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     initWorkImageFlipDown();
 
+    await breathe();
     // 13. Animated Counter Tickers for Commitments / Numbers
     const initCounters = () => {
         const statBoxes = document.querySelectorAll('.stat-box');
@@ -588,6 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    await breathe();
     // 15. Restrained ScrollTrigger Section Reveals
     if (!isReducedMotion) {
         document.querySelectorAll('.reveal').forEach((el) => {
@@ -739,6 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     initProcessTimeline();
 
+    await breathe();
     // 19. Contact Form Pipeline & WhatsApp Integration
     const contactForm = document.getElementById('contact-form');
     const formStatus = document.getElementById('form-result');
@@ -885,9 +933,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 150);
     });
 
-    window.addEventListener('load', () => {
+    const onPageLoaded = (alreadyLoaded = false) => {
         if (typeof lenis.resize === 'function') lenis.resize();
-        ScrollTrigger.refresh();
+        if (!alreadyLoaded) ScrollTrigger.refresh();   // when the page had already loaded, the refresh at the end of startup just covered it
         onScrollUpdate();
         updateActiveNav();
 
@@ -906,5 +954,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(handleHashLanding, 150);
             setTimeout(handleHashLanding, 600);
         }
-    });
+    };
+    // startup now yields between steps, so the load event may already have fired by the time we get here
+    if (document.readyState === 'complete') onPageLoaded(true); else window.addEventListener('load', () => onPageLoaded());
 });

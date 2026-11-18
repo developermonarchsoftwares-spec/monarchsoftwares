@@ -201,7 +201,7 @@ const CardSwap = forwardRef(
         y: -q * s.dy,
         z: -q * s.dz,
         scale: 1 - q * 0.04,
-        opacity: q < s.visible ? 1 - q * 0.12 : 0,
+        opacity: q < s.visible ? 1 - q * 0.06 : 0, // 0.06 per layer keeps back-card text above 4.5:1 (0.12 dropped the 4th card to 3.4:1)
         shade: (s.dim * (q / Math.max(1, s.visible - 1))),
         r: 0
       };

@@ -72,7 +72,7 @@ Last updated: 2026-10-17 (after comet revert).
 ### SEO / AEO / GEO / performance
 - `public/robots.txt`: allows search and named AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, ...), points to the sitemap.
 - `public/sitemap.xml`: all 7 URLs. `public/llms.txt`: plain-text overview for AI systems (facts taken from the site only).
-- Robots meta + Open Graph/Twitter + `WebPage` JSON-LD on Privacy and Terms; JSON-LD (Organization, WebSite, Service, FAQPage, Breadcrumb) was already present.
+- Robots meta + Open Graph/Twitter + `WebPage` JSON-LD on Privacy and Terms; JSON-LD (Organization, WebSite, Service, Breadcrumb) was already present; FAQPage schema was removed (the visible FAQ sections remain).
 - Performance: Three.js lazy-loaded (non-3D pages dropped about 1.5 MB), home images and globe textures converted to WebP
   (originals kept), hidden honeypot checkbox given an `aria-label`, phone numbers as `tel:` links.
 - Crawl result (local build): the "missing form label" and "page over the weight budget" warnings are resolved. Remaining warnings come

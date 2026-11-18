@@ -9,20 +9,20 @@ Social: https://www.linkedin.com/company/monarchsoftwares · https://www.instagr
 
 ## Services
 
-- [IT Services & Software Development](https://monarchsoftwares.com/it-services): Custom web and mobile app development, AI/ML solutions, cloud infrastructure and enterprise systems. Includes an FAQ section.
-- [Digital Marketing Services](https://monarchsoftwares.com/digital-marketing): SEO, PPC, social media, content marketing and creative branding. Includes an FAQ section.
-- [Corporate Training & Trainer Deployment](https://monarchsoftwares.com/corporate-training): Customized corporate training programs and on-demand trainers for colleges and firms. Includes an FAQ section.
-- [IT Training & Placement Support](https://monarchsoftwares.com/training-placement): IT skills training for freshers and professionals, plus placement support that matches trained candidates to hiring needs. Includes an FAQ section.
+- [IT Services & Software Development](%SITE_URL%/it-services): Custom web and mobile app development, AI/ML solutions, cloud infrastructure and enterprise systems. Includes an FAQ section.
+- [Digital Marketing Services](%SITE_URL%/digital-marketing): SEO, PPC, social media, content marketing and creative branding. Includes an FAQ section.
+- [Corporate Training & Trainer Deployment](%SITE_URL%/corporate-training): Customized corporate training programs and on-demand trainers for colleges and firms. Includes an FAQ section.
+- [IT Training & Placement Support](%SITE_URL%/training-placement): IT skills training for freshers and professionals, plus placement support that matches trained candidates to hiring needs. Includes an FAQ section.
 
 ## Company
 
-- [Home](https://monarchsoftwares.com/): Overview of the integrated growth model, the four service pillars, why Monarch, About, Careers (open positions and hiring process) and a contact / inquiry form. About, Careers and Contact are sections of this page.
+- [Home](%SITE_URL%/): Overview of the integrated growth model, the four service pillars, why Monarch, About, Careers (open positions and hiring process) and a contact / inquiry form. About, Careers and Contact are sections of this page.
 
 ## Legal
 
-- [Privacy Policy](https://monarchsoftwares.com/privacy): How inquiry data and technical logs are collected, used, retained and protected.
-- [Terms of Service](https://monarchsoftwares.com/terms): Terms for using the website and engaging Monarch Softwares for engineering, automation and marketing services.
+- [Privacy Policy](%SITE_URL%/privacy): How inquiry data and technical logs are collected, used, retained and protected.
+- [Terms of Service](%SITE_URL%/terms): Terms for using the website and engaging Monarch Softwares for engineering, automation and marketing services.
 
 ## Optional
 
-- [Sitemap](https://monarchsoftwares.com/sitemap.xml): All public URLs.
+- [Sitemap](%SITE_URL%/sitemap.xml): All public URLs.

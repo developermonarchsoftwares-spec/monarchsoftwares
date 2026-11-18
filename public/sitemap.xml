@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://monarchsoftwares.com/</loc>
+    <loc>%SITE_URL%/</loc>
     <lastmod>2026-10-15</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://monarchsoftwares.com/corporate-training</loc>
+    <loc>%SITE_URL%/corporate-training</loc>
     <lastmod>2026-10-15</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://monarchsoftwares.com/it-services</loc>
+    <loc>%SITE_URL%/it-services</loc>
     <lastmod>2026-10-15</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://monarchsoftwares.com/digital-marketing</loc>
+    <loc>%SITE_URL%/digital-marketing</loc>
     <lastmod>2026-10-15</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://monarchsoftwares.com/training-placement</loc>
+    <loc>%SITE_URL%/training-placement</loc>
     <lastmod>2026-10-15</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://monarchsoftwares.com/privacy</loc>
+    <loc>%SITE_URL%/privacy</loc>
     <lastmod>2026-10-15</lastmod>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://monarchsoftwares.com/terms</loc>
+    <loc>%SITE_URL%/terms</loc>
     <lastmod>2026-10-15</lastmod>
     <priority>0.3</priority>
   </url>

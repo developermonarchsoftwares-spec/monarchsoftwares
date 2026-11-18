@@ -6,14 +6,6 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/home",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/home/(.*)",
-      "destination": "/index.html"
-    },
-    {
       "source": "/privacy",
       "destination": "/privacy.html"
     },
@@ -99,22 +91,77 @@
   "redirects": [
     {
       "source": "/about",
-      "destination": "/home/about",
+      "destination": "/#about",
       "permanent": true
     },
     {
       "source": "/services",
-      "destination": "/home/services",
+      "destination": "/#services",
       "permanent": true
     },
     {
       "source": "/careers",
-      "destination": "/home/careers",
+      "destination": "/#careers",
       "permanent": true
     },
     {
       "source": "/contact",
-      "destination": "/home/contact",
+      "destination": "/#cta",
+      "permanent": true
+    },
+    {
+      "source": "/cta",
+      "destination": "/#cta",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/services.html",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/careers.html",
+      "destination": "/#careers",
+      "permanent": true
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/#cta",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home/about",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/home/services",
+      "destination": "/#services",
+      "permanent": true
+    },
+    {
+      "source": "/home/careers",
+      "destination": "/#careers",
+      "permanent": true
+    },
+    {
+      "source": "/home/contact",
+      "destination": "/#cta",
+      "permanent": true
+    },
+    {
+      "source": "/home/cta",
+      "destination": "/#cta",
       "permanent": true
     },
     {
@@ -125,26 +172,6 @@
     {
       "source": "/hr-services.html",
       "destination": "/training-placement",
-      "permanent": true
-    },
-    {
-      "source": "/about.html",
-      "destination": "/home/about",
-      "permanent": true
-    },
-    {
-      "source": "/services.html",
-      "destination": "/home/services",
-      "permanent": true
-    },
-    {
-      "source": "/careers.html",
-      "destination": "/home/careers",
-      "permanent": true
-    },
-    {
-      "source": "/contact.html",
-      "destination": "/home/contact",
       "permanent": true
     }
   ]

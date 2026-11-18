@@ -6,10 +6,11 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { SITE_URL } from '../site.config.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const [target = 'local', ...extra] = process.argv.slice(2);
-const urls = { local: 'http://localhost:4173/', live: 'https://monarchsoftwares.com/' };
+const urls = { local: 'http://localhost:4173/', live: SITE_URL + '/' };
 if (!urls[target]) { console.error('Unknown target "' + target + '" (use local or live)'); process.exit(1); }
 
 const bundled = path.join(root, 'tools', 'siteone-crawler', process.platform === 'win32' ? 'siteone-crawler.exe' : 'siteone-crawler');

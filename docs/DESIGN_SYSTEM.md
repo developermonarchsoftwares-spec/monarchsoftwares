@@ -1,6 +1,6 @@
 # MONARCH SOFTWARES - DESIGN SYSTEM & INTELLIGENCE WORKFLOW
 
-> **Standard:** Apple Pro / Framer / Trion-Grade Minimalist Monochrome  
+> **Standard:** Apple Pro / Framer / Trion-Grade Minimalist Black with a single red accent (see 2.6)  
 > **Philosophy:** *Inspiration, Not Cloning.* Restrained elegance, intentional whitespace, mathematical scale, and purposeful interaction.
 
 ---
@@ -135,6 +135,27 @@ Universal System Sans-Serif font stack:
 4. **Masked Headline Reveals:** Lines split into parent masks and slide up cleanly on entrance.
 5. **Scroll Progress:** 2px high-contrast hairline bar along viewport ceiling.
 6. **Reduced Motion:** Mandatory `@media (prefers-reduced-motion: reduce)` override disabling all animations.
+
+---
+
+### 2.6 Red / Black Theme Layer (current, overrides 2.1, 2.3 and 2.4 where they differ)
+
+The black canvas (`#000000`), the white Monarch logo and white primary text are unchanged. Red is an **accent only**.
+The layer lives at the end of `src/style.css` ("RED / BLACK THEME LAYER") so it wins over the older monochrome rules.
+
+| Token | Value | Use |
+| :--- | :--- | :--- |
+| `--red` | `#e10600` | Highlighted headline word, 1px outlines, glows, hover fills, small icons, focus rings |
+| `--red-soft` / `--red-line` / `--red-glow` / `--red-wash` | `#e10600` at 55% / 35% / 45% / 12% | Secondary borders, edge lights, hover glows, subtle fills |
+| `--surface-border` | `rgba(255,255,255,.1)` | Card borders (turn red-glow on hover) |
+| `--text-secondary` | `#a1a1a6` (8.2:1) | Body / secondary text |
+| `--text-tertiary` | `#8a8a8c` (6.1:1) | Dimmest allowed text, including placeholders |
+
+- **Contrast:** `#e10600` on black is 4.2:1. It passes for large display type and UI outlines (3:1) but is never used for body-size text and never as a large fill.
+- **Fonts (self-hosted via `@fontsource-variable`, no Google Fonts requests):** headings (`h1-h3` and display classes) use **Orbitron**, uppercase; body, labels and nav use **Inter**, with small uppercase letter-spaced captions and links.
+- **Buttons:** every `.btn-*` variant is a pill with a 1px red outline, transparent fill, uppercase letter-spaced label and arrow; hover fills red with a soft red glow. Minimum height 44px.
+- **Focus:** a visible 2px red ring on every interactive element.
+- **Hero robot:** `public/hero-robot.webp` (2200x1650) and `public/hero-robot-900.webp` (1100x825), transparent (alpha derived from the black backdrop so it blends seamlessly), loaded with `fetchpriority="high"` and a preload hint. To replace the artwork, keep the same paths and 4:3 ratio (or update the `width`/`height`, `aspect-ratio` and preload in `index.html` / `style.css`). Float, glow pulse and pointer parallax (`src/hero-robot.js`) are disabled under `prefers-reduced-motion`.
 
 ---
 
